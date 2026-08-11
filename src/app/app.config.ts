@@ -9,6 +9,7 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { tokenInterceptor } from './core/interceptors/token-interceptor';
 import { MessageService } from 'primeng/api';
+import { presest } from './theme/presest';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,8 +27,11 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Aura,
-      },
+        preset: presest,
+        options: {
+            darkModeSelector: '.p-dark', 
+        }
+      }
     }),
     MessageService
   ],
