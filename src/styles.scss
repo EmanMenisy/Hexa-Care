@@ -1,1 +1,75 @@
-/* You can add global styles to this file, and also import other style files */
+
+@use './assets/styles/base/typography';
+@use './assets/styles/vendors/toast.scss';
+@use './assets/icons/style';
+@import 'primeicons/primeicons.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap');
+
+
+html,
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.p-component {
+  font-family: "Poppins", sans-serif;
+}
+
+
+.p-drawer-right {
+  width: 600px !important;
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
+}
+
+.step-content-label {
+  font-size: 36px;
+  font-weight: 600;
+  color: #111928;
+  margin-bottom: 16px;
+}
+
+.step-description {
+  color: #535862;
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 32px;
+}
+
+.p-sidebar-content {
+  padding: 16px;
+}
+
+.p-skeleton {
+  background-color: #cdcdcda3;
+}
+
+.btn-outline {
+  background-color: #d7f3f6;
+  color: #23657b;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: 1px solid #23657b;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+
+  label {
+    margin-bottom: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #374151;
+  }
+}
+
+.hexa-input-text {
+  width: 100%;
+
+  input {
+    width: 100%;
+  }
+}

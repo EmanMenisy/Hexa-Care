@@ -1,0 +1,254 @@
+<section class="login-page">
+  <div class="container-fluid p-0">
+    <div class="topbar">
+      <button
+        class="lang-toggle"
+        type="button"
+        (click)="toggleLanguage()"
+      >
+        <span>
+          {{ currentLang() === 'en' ? 'ع' : 'En' }}
+        </span>
+        <i class="icon-global"></i>
+        <i class="pi pi-chevron-down"></i>
+      </button>
+
+      <button
+        class="theme-toggle"
+        type="button"
+      >
+        <i class="pi pi-moon"></i>
+      </button>
+    </div>
+
+    <div class="row g-0">
+
+      <!-- Dark Section -->
+      <div class="col-md-6 darkSection p-5">
+        <img src="/images/image (1).svg" alt="" class="position-img">
+        <div class="px-5 py-3">
+
+          <span class="icon-wapper">
+            <i class="icon-Symbol"></i>
+          </span>
+
+          <p class="subtitle">
+            <i class="icon-check"></i>
+
+            <span>
+              {{ 'login.unifiedHealthcarePlatform' | translate }}
+            </span>
+          </p>
+
+          <h3 class="title">
+            {{ 'login.title' | translate }}
+          </h3>
+
+          <p class="description">
+            {{ 'login.description' | translate }}
+          </p>
+
+          <div class="feature-list">
+
+            <!-- Contracts -->
+            <div class="feature-item">
+              <span class="feature-icon bg-teal">
+                <i class=" icon-shield"></i>
+              </span>
+
+              <div>
+                <p class="feature-title">
+                  {{ 'login.features.contractsCoverage.title' | translate }}
+                </p>
+
+                <p class="feature-desc">
+                  {{ 'login.features.contractsCoverage.description' | translate }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Claims -->
+            <div class="feature-item">
+              <span class="feature-icon bg-blue">
+                <i class="icon-document"></i>
+              </span>
+
+              <div>
+                <p class="feature-title">
+                  {{ 'login.features.claimsLifecycle.title' | translate }}
+                </p>
+
+                <p class="feature-desc">
+                  {{ 'login.features.claimsLifecycle.description' | translate }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Analytics -->
+            <div class="feature-item">
+              <span class="feature-icon bg-purple">
+                <i class="icon-pie"></i>
+              </span>
+
+              <div>
+                <p class="feature-title">
+                  {{ 'login.features.realTimeAnalytics.title' | translate }}
+                </p>
+
+                <p class="feature-desc">
+                  {{ 'login.features.realTimeAnalytics.description' | translate }}
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <p class="copyright">
+            {{ 'login.copyright' | translate }}
+          </p>
+
+        </div>
+      </div>
+
+      <!-- Login Section -->
+      <div class="col-md-6 lightSection">
+
+        <form
+          class="login-card"
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()"
+        >
+
+          <div class="card-brand">
+
+            <span class="icon-wapper-sm">
+              <i class="icon-Symbol"></i>
+            </span>
+
+            <span class="brand-name">
+              {{ 'login.title' | translate }}
+            </span>
+
+          </div>
+
+          <h4 class="welcome-title">
+            {{ 'login.welcomeBack' | translate }}
+          </h4>
+
+          <p class="welcome-subtitle">
+            {{ 'login.signInSubtitle' | translate }}
+          </p>
+
+          <!-- Username -->
+          <div class="field">
+
+            <label for="username">
+              {{ 'login.username' | translate }}
+            </label>
+
+            <p-iconfield>
+              <p-inputicon class="pi pi-user"></p-inputicon>
+
+              <input
+                pInputText
+                id="username"
+                formControlName="username"
+                class="w-100"
+                [placeholder]="'login.usernamePlaceholder' | translate"
+              />
+            </p-iconfield>
+
+            @if (isInvalid('username')) {
+              <small class="text-danger">
+                {{ 'login.usernameRequired' | translate }}
+              </small>
+            }
+
+          </div>
+
+          <!-- Password -->
+          <div class="field">
+
+            <label for="password">
+              {{ 'login.password' | translate }}
+            </label>
+
+            <p-iconfield>
+              <p-inputicon class="pi pi-lock"></p-inputicon>
+
+              <input
+                pInputText
+                id="password"
+                type="password"
+                formControlName="password"
+                class="w-100"
+                [placeholder]="'login.passwordPlaceholder' | translate"
+              />
+            </p-iconfield>
+
+            @if (isInvalid('password')) {
+              <small class="text-danger">
+                {{ 'login.passwordRequired' | translate }}
+              </small>
+            }
+
+          </div>
+
+          <!-- Remember / Forgot -->
+          <div class="field-row">
+
+            <span class="remember-me">
+
+              <p-checkbox
+                formControlName="rememberMe"
+                [binary]="true"
+                inputId="rememberMe"
+              ></p-checkbox>
+
+              <label for="rememberMe">
+                {{ 'login.rememberMe' | translate }}
+              </label>
+
+            </span>
+
+            <a class="forgot-link">
+              {{ 'login.forgotPassword' | translate }}
+            </a>
+
+          </div>
+
+          <!-- Sign In -->
+          <p-button
+            type="submit"
+            [label]="'login.signIn' | translate"
+            styleClass="signin-btn w-100"
+            [loading]="isSubmitted()"
+            severity="info"
+            [disabled]="loginForm.invalid"
+          ></p-button>
+
+          <!-- Divider -->
+          <div class="divider">
+            <span>
+              {{ 'login.or' | translate }}
+            </span>
+          </div>
+
+          <!-- Signup -->
+          <p class="signup-text">
+
+            {{ 'login.noAccount' | translate }}
+
+            <a>
+              {{ 'login.createAccount' | translate }}
+            </a>
+
+          </p>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</section>

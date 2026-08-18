@@ -1,0 +1,45 @@
+<p-select
+  class="w-100"
+  [panelStyleClass]="panelStyleClass()"
+  [(ngModel)]="selectedValue"
+  [options]="options()"
+  [optionLabel]="optionLabel()"
+  [optionValue]="optionValue()"
+  [placeholder]="placeholderText"
+  [showClear]="showClear()"
+  [disabled]="disabled() || cvaDisabled"
+  [readonly]="readonly()"
+  [virtualScroll]="virtualScroll()"
+  [virtualScrollItemSize]="itemSize()"
+  [emptyMessage]="emptyMessageText"
+  [emptyFilterMessage]="emptyFilterMessageText"
+  inputId="dropdownInputId"
+  [filterPlaceholder]="filterPlaceholderText"
+  [filter]="filter()"
+  (onChange)="onDropdownChange($event)"
+  (onShow)="onDropdownShow()"
+  (onHide)="onDropdownHide()"
+  [resetFilterOnHide]="true"
+  [dropdownIcon]="dropdownIcon"
+  appendTo="body"
+>
+  @if (useTemplate()) {
+    <ng-template let-option pTemplate="item">
+      <ng-container
+        [ngTemplateOutlet]="OptionTemplateOutlet!"
+        [ngTemplateOutletContext]="{
+          $implicit: option,
+        }"
+      />
+    </ng-template>
+
+    <ng-template let-selectedOption pTemplate="selectedItem">
+      <ng-container
+        [ngTemplateOutlet]="SelectedOptionTemplateOutlet!"
+        [ngTemplateOutletContext]="{
+          $implicit: selectedOption,
+        }"
+      />
+    </ng-template>
+  }
+</p-select>

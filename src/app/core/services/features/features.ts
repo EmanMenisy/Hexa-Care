@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Feature } from '../../models/enums/features';
+import { page } from '../../models/enums/page';
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +39,11 @@ export class FeatureService {
    */
 
    //need to handle feature /page enum
-  hasFeature(feature: any): boolean {
+  hasFeature(feature: Feature): boolean {
     return this.userFeatures.includes(feature);
   }
-  hasPage(feature: any): boolean {
-    return this.userPages.includes(feature);
+
+  hasPage(page: page): boolean {
+    return this.userPages.includes(page);
   }
 }

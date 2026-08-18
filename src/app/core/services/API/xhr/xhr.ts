@@ -61,7 +61,8 @@ export class XhrService {
   private readonly baseUrl = environment.backendUrl; 
 
   private readonly defaultOptions = {
-    responseType: 'json' as const
+    responseType: 'json' as const,
+    withCredentials: true,
   };
 
   /**
@@ -129,7 +130,7 @@ export class XhrService {
   // HTTP request
   // ────────────────────────────────
 
-  public call(params: XhrOptions): Observable<unknown> {
+  public call(params: XhrOptions): Observable<any> {
     return new Observable((observer) => {
       if (!this.connectionService.connected()) {
         this.handleNoConnection(observer);
@@ -143,6 +144,7 @@ export class XhrService {
         headers: finalRequest.headers,
         params: finalRequest.params,
         responseType: finalRequest.responseType,
+        withCredentials: true,
       });
 
       this.http.request(req).subscribe({

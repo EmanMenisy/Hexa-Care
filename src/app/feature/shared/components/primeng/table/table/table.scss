@@ -1,0 +1,191 @@
+.opus-table {
+  width: 100%;
+
+  ::ng-deep {
+    .p-datatable-wrapper {
+      overflow-x: auto;
+    }
+
+    .p-datatable-scrollable-header-table,
+    .p-datatable-scrollable-body-table {
+      width: 100%;
+
+      colgroup col {
+        width: auto;
+      }
+    }
+
+    .p-datatable-thead > tr > th {
+      text-align: start;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .p-datatable-tbody > tr > td {
+      text-align: start;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+  }
+
+  // .body-data {
+  //   display: flex;
+  //   justify-content: flex-start;
+  //   align-items: center;
+  // }
+
+  .action-header,
+  .action-column {
+    width: 200px;
+    min-width: 200px;
+    text-align: start;
+  }
+
+  .action-header {
+    background-color: var(--surface-section, #ffffff);
+  }
+
+  .action-column {
+    background-color: inherit;
+
+    .actions-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: flex-start;
+      min-height: 40px;
+
+      .icon-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        em {
+          font-size: 1.25rem;
+        }
+      }
+    }
+  }
+.table-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0; // Prevents the image from squishing
+    border: 1px solid #eaecf0;
+  }
+
+.file-icon-box {
+  width: 36px;
+  height: 36px;
+  background: #f4f7fe;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
+  .text-grey { color: #667085; font-size: 0.8rem; }
+  .text-dark { color: #101828; }
+  .font-bold { font-weight: 600; }
+}
+
+.badge-permission {
+  background-color: #e0f0ff;
+   color:#255465;
+  padding:8px;
+  border-radius: 2px;
+  // border: 1px solid #B3E6EE;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.badge-permission:hover {
+  background-color: #c9e5ff;
+  color: #004c99;
+}
+
+
+/* Base badge style */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem; /* صغير الحجم */
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-radius: 0.25rem; /* دائري الأطراف */
+  color: #fff;
+  cursor: default;
+    color: #004c99;
+    background-color:   #DEF7EC;
+}
+
+/* Active state (true) */
+.badge-success {
+  color: #28a745; /* أخضر */
+}
+
+/* Inactive state (false) */
+.badge-danger {
+   color: #dc3545; /* أحمر */
+}
+
+/* Optional: hover effect */
+.badge:hover {
+  opacity: 0.85;
+  transition: 0.2s;
+}
+
+
+
+
+.description{
+  display: flex;
+  align-items: center;
+  background-color: #F3F4F6;
+  width: 100%;
+  padding: 8px;
+  gap: 8px;
+  p{
+    width: 60%;
+    text-wrap: wrap;
+    padding: 0;
+    margin: 0;
+  }
+  .icon-info{
+    background-color: #EFFBFC;
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    em{
+      color: #23657B;
+      transition: all 0.5s;
+    }
+  }
+}
+.opus-icon-arrow-down {
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.arrowUp{
+  transform: rotate(180deg);
+}
+.pi-ellipsis-v{
+  cursor: pointer;
+}

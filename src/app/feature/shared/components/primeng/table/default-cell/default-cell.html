@@ -1,0 +1,11 @@
+<span
+  class="text-blue unicode-plainText d-flex {{ column.cssClass }} {{dynamicStyle}}"
+  [ngClass]="{ clickable: column.isClickable }"
+>
+  {{ value }}
+  <ng-container *ngIf="column.extraColumnData">
+    <span class="font-regular-medium text-blue unicode-plainText extraColumn">
+      {{ column.extraColumnData | translate }}
+    </span>
+  </ng-container>
+</span>

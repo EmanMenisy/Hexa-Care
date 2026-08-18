@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ToastType } from '../../models/enums/toast-type';
+import { inject, Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { ToastType } from '../../models/enums/toast-type';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ToastService {
-  constructor(private readonly messageService: MessageService) {
-    // This is intentional
-  }
+  private readonly messageService = inject(MessageService);
 
   addToast(
     key: ToastType,

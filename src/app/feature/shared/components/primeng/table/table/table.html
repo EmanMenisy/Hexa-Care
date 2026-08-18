@@ -1,0 +1,132 @@
+<div opusRtl class="opus-table" [ngClass]="{ 'd-none': loading }">
+  <p-table [value]="data!" [columns]="columns" [rows]="pageSize" [totalRecords]="totalRecordsLength!" [lazy]="true"
+    [paginator]="true" [showCurrentPageReport]="true" [currentPageReportTemplate]="pagesCount"
+    [alwaysShowPaginator]="alwaysShowPaginator" [sortMode]="sortable ? 'multiple' : 'single'"
+    [multiSortMeta]="multiSortMeta" responsiveLayout="stack" breakpoint="768px" [scrollable]="true"
+    [scrollHeight]="scrollHeight" [(first)]="firstIndex" [(selection)]="selectedRecords" [selectionPageOnly]="true"
+    [dataKey]="recordId" (onSort)="onSort($event)" (onPage)="onPageChange($event)"
+    (selectionChange)="onSelectionChange()">
+    <!-- Table Header -->
+    <ng-template pTemplate="header">
+      <tr class="mx-3">
+        <th *ngFor="let col of columns; trackBy: trackByIndex" [pSortableColumn]="col.field" [scope]="col.field"
+          [ngClass]="{ 'd-none': col.hidden }"
+          [style.width]="col.width ? 'calc(100% / ' + columns.length + ' * ' + col.width + ')' : 'calc(100% / ' + columns.length + ')'">
+          {{ col.name |translate}}
+        </th>
+        <th class="action-header" *ngIf="actions.length > 0 && hasVisibleActions()" [scope]="'actions'">
+          {{'shared.actions'|translate}}
+        </th>
+      </tr>
+    </ng-template>
+    <!-- Table Body -->
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr class="body-row" [ngClass]="{
+          expanded: rowData.isExpanded,
+          collapsed: !rowData.isExpanded
+        }">
+        <!-- <td *ngIf="isExpanded">
+          <em class="opus-icon-arrow-down"   [ngClass]="{ arrowUp: rowData.expanded }"  (click)="expand(rowData)"></em>
+        </td> -->
+        <td *ngFor="let col of columns; trackBy: trackByIndex" class="body-data"
+          [tooltipStyleClass]="!col.tooltip || !rowData[col.tooltip] ? 'd-none' : ''"
+          [pTooltip]="col.tooltip ? rowData[col.tooltip] : ''" [tooltipPosition]="'top'"
+          [style.width]="col.width ? 'calc(100% / ' + columns.length + ' * ' + col.width + ')' : 'calc(100% / ' + columns.length + ')'"
+          [ngClass]="{ 'd-none': col.hidden }">
+          <div class="f-width-large" *ngIf="!col.hidden">
+            <ng-container *ngIf="
+                rowData[col.field] ||
+                  rowData[col.tooltip] ||
+                  rowData[col.field] === 0 ||
+                  rowData[col.field] === false;
+                else emptyCell
+              ">
+              <div [ngSwitch]="col.type" class="unicode-plainText">
+                <div *ngSwitchCase="TableHeaderType.Date">
+                  <hexa-date-cell [value]="rowData[col.field]" [column]="col" (click)="onTitleClicked(rowData, col)"
+                    (keydown)="onTitleClicked(rowData, col)"></hexa-date-cell>
+                </div>
+                <div *ngSwitchCase="TableHeaderType.Enum">
+                  <hexa-enum-cell [value]="rowData[col.field]" [column]="col" (click)="onTitleClicked(rowData, col)"
+                    (keydown)="onTitleClicked(rowData, col)"></hexa-enum-cell>
+                </div>
+                <div *ngSwitchCase="TableHeaderType.Boolean">
+                  <span class="badge" [ngClass]="{
+                        'badge-success': rowData[col.field],
+                        'badge-danger': !rowData[col.field]
+                      }">
+                    {{ rowData[col.field] ? 'Active' : 'Inactive' }}
+                  </span>
+                </div>
+                <div *ngSwitchCase="TableHeaderType.ColorCircle" class="d-flex align-items-center">
+                  <div class="color-circle" [style.backgroundColor]="rowData[col.field]"
+                    [pTooltip]="rowData[col.field]"></div>
+                  <span class="ml-2"><i class="pi pi-stop-circle me-2" [style.color]="rowData[col.field]"></i></span>
+                </div>
+                <div *ngSwitchCase="TableHeaderType.FileWithIcon" class="d-flex align-items-center">
+                  <div class="file-icon-box mr-3">
+                    <i class="opus-icon-documnetIcon"></i>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <span class="font-semibold text-dark">{{ rowData[col.field] }}</span>
+
+                  </div>
+                </div>
+                <div *ngSwitchCase="TableHeaderType.AvatarWithText" class="d-flex align-items-center">
+                  <img [src]="rowData[col.imageField!] || rowData['userImage'] || rowData['avatar']"
+                    class="table-avatar mr-3" alt="user"
+                    onerror="this.src='../../../../../assets/images/defaultProfile.jpg'">
+
+                  <div class="d-flex flex-column">
+                    <span class="font-semibold text-dark">{{ rowData[col.field] }}</span>
+
+                  </div>
+                </div>
+                <div *ngSwitchDefault>
+                  <hexa-default-cell [value]="rowData[col.field]" [column]="col"
+                    [dynamicStyle]="rowData[col.dynamicStyle]" (click)="onTitleClicked(rowData, col)"
+                    (keydown)="onTitleClicked(rowData, col)"></hexa-default-cell>
+                </div>
+              </div>
+            </ng-container>
+            <span class="font-regular-medium text-grey d-block ellipsis-large-text"
+              *ngIf="rowData[col!.extraCellData!]">
+              {{ rowData[col!.extraCellData!] }}
+            </span>
+            <ng-template #emptyCell>
+              <ng-container *ngIf="col.nullValue; else default">
+                {{ col.nullValue }}
+              </ng-container>
+              <ng-template #default>-</ng-template>
+            </ng-template>
+          </div>
+        </td>
+        <td class="action-column" *ngIf="hasVisibleActions()">
+          <div class="actions-wrapper" *ngIf="actions.length">
+
+            <p-menu #assignMenu [popup]="true" [model]="assignItemsMenu" appendTo="body">
+            </p-menu>
+
+            <div class="icon-actions">
+         
+    
+              <p-menu #bulkMenu [popup]="true" [model]="bulkMenuItems" appendTo="body"></p-menu>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <!-- <tr *ngIf="rowData.expanded">
+         <td colspan="3" class="description">
+            <div class="icon-info">
+              <em class="opus-icon-information-circle"></em>
+            </div>
+            <p >
+              {{rowData.name ?? 'No info found!'}}
+            </p>
+        </td>
+      </tr> -->
+    </ng-template>
+  </p-table>
+</div>
+
+<opus-table-loading *ngIf="loading"></opus-table-loading>

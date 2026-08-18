@@ -1,0 +1,56 @@
+.card-content {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.hexa-icon-notifications {
+  color: rgba(55, 65, 81, 1);
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #f9fafb;
+  &.active {
+    background-color: rgba(235, 245, 255, 1);
+    color: rgba(28, 100, 242, 1);
+  }
+}
+
+.unread-notification {
+  background-color: rgba(28, 100, 242, 1);
+  width: 8px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
+.notification-title {
+  margin-bottom: 6px;
+  color: #111928;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.notification-time {
+  color: #374151;
+  text-align: center;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.1px;
+}
+
+.notification-body {
+  margin: 0;
+  color: #4b5563;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 150%;
+  .see-more {
+    color: #1c64f2;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}

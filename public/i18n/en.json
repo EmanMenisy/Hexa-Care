@@ -1,0 +1,115 @@
+{
+  "shared": {
+    "sorting": "Sorting",
+    "sortBy": "Sort by",
+    "firstOnTop": "First Added On Top",
+    "lastOnTop": "Last Added On Top",
+    "optional": "optional",
+    "loading": "loading...",
+    "mainInformation": "Main Information",
+    "structureAssignation": "Structure Assignation",
+    "dropdown": {
+      "select": "Please Select",
+      "noItems": "No items found",
+      "search": "Search"
+    },
+    "assignStructure": {
+      "toggleBtn": "Assign for specific structure",
+      "selectCompany": "Select company",
+      "selectBranch": "Select branch",
+      "selectDepartment": "Select department",
+      "selectTeam": "Select team",
+      "selectEmployee": "Select employee"
+    }
+  },
+  "buttons": {
+    "back": "Back",
+    "reset": "Reset",
+    "apply": "Apply",
+    "cancel": "Cancel",
+    "next": "Next",
+    "save": "Save"
+  },
+  "login": {
+    "language": "English",
+    "arabic": "Arabic",
+    "english": "English",
+
+    "unifiedHealthcarePlatform": "A unified healthcare platform",
+    "title": "Hexa-Care",
+    "description": "The platform for managing reimbursements and claims between hospitals and insurers — from approval to collection and reporting, all in one place..",
+    "features": {
+      "contractsCoverage": {
+        "title": "Contracts & Coverage",
+        "description": "Digital contracts, tight insurer integration, and proactive updates.."
+      },
+      "claimsLifecycle": {
+        "title": "Full claims lifecycle",
+        "description": "From the approval request to collection, follow-up and files..."
+      },
+      "realTimeAnalytics": {
+        "title": "Real-Time Analytics",
+        "description": "Interactive reports and KPI dashboards for sharper,faster decisions.."
+      }
+    },
+
+    "copyright": "© Hexa-Care 2026 · All rights reserved.",
+    "welcomeBack": "Welcome Back 👋",
+    "signInSubtitle": "Sign in to access your dashboard",
+    "username": "Username",
+    "usernamePlaceholder": "Username",
+    "usernameRequired": "Username is required.",
+    "password": "Password",
+    "passwordPlaceholder": "Password",
+    "passwordRequired": "Password is required.",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign In",
+    "or": "OR",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create an account"
+  },
+  "configurations": {
+    "role": {
+      "create": {
+        "header": {
+          "title": "Create Role",
+          "subtitle": "Create a new role and assign its permissions"
+        },
+        "name": {
+          "label": "Role Name",
+          "placeholder": "Enter role name",
+          "errors": {
+            "required": "Role name is required",
+            "minLength": "Role name must be at least 3 characters"
+          }
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter role description"
+        },
+        "roleCode": {
+          "label": "Role Code",
+          "placeholder": "Enter role code",
+          "errors": {
+            "required": "Role code is required"
+          }
+        },
+        "activeRole": {
+          "label": "Active Role"
+        },
+        "parentRole": {
+          "label": "Parent Role",
+          "placeholder": "Select parent role",
+          "errors": {
+            "required": "Parent role is required"
+          }
+        },
+        "copyFeatures": {
+          "label": "Copy Features From",
+          "placeholder": "Select a role to copy features from"
+        }
+      }
+    }
+  }
+}

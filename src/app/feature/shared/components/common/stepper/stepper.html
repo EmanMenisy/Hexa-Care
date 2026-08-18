@@ -1,0 +1,28 @@
+<div class="stepper w-100">
+  @for (s of steps(); track s.label; let i = $index) {
+    <div class="step-container" (click)="goToStep(i)">
+      <div class="step-circle" [class.active]="step() === i + 1 && !completedSteps()[i]"
+           [class.completed]="completedSteps()[i]"
+           [class.disabled]="step() < i + 1 && !completedSteps()[i]">
+
+        @if (completedSteps()[i]) {
+          <em class="opus-icon-complete-step"></em>
+        } @else {
+          <span class="step-number">{{ i + 1 }}</span>
+        }
+      </div>
+
+      <span class="step-label" [class.active-label]="step() === i + 1 && !completedSteps()[i]"
+            [class.completed-label]="completedSteps()[i]"
+            [class.disabled-label]="step() < i + 1 && !completedSteps()[i]">
+        {{ s.label | translate }}
+      </span>
+    </div>
+
+    @if (i < steps().length - 1) {
+      <div class="step-arrow mx-3">
+        <img src="assets/images/next-step.svg" alt="Arrow" />
+      </div>
+    }
+  }
+</div>

@@ -1,0 +1,96 @@
+.hexa-toast {
+  .p-toast {
+    opacity: 1;
+    z-index: 15000 !important; // to overcome the dialog => 11500
+    width: fit-content;
+    min-width: 25rem; // primeng default is width: 25rem
+  }
+  .p-toast-message-content {
+    align-items: center;
+    justify-content: space-between;
+  }
+  .p-toast-message .p-toast-icon-close {
+    width: 24px;
+    height: 24px;
+    &:hover {
+      background: transparent;
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  .p-toast-message-custom {
+    padding: 0;
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+  }
+  timesicon {
+    font-size: 70%;
+    color: wheat;
+  }
+
+  @media screen and (max-width: 500px) {
+    .p-toast {
+      min-width: unset;
+    }
+  }
+  &.success {
+    .p-toast-message-content {
+      background: #def7ec;
+      border: 2px solid #057a55;
+      border-radius: 8px;
+      color: #046c4e;
+      timesicon {
+        color: #046c4e;
+      }
+    }
+  }
+  &.error {
+    .p-toast-message-content {
+      background: #fde8e8;
+      border: 2px solid #c81e1e;
+      border-radius: 8px;
+      color: #c81e1e;
+      timesicon {
+        color: #c81e1e;
+      }
+    }
+  }
+  &.warning {
+    .p-toast-message-content {
+      background: #feecdc;
+      color: #b43403;
+      border-radius: 8px;
+      border: 2px solid #b43403;
+      timesicon {
+        color: #b43403;
+      }
+    }
+  }
+  &.info {
+    .p-toast-message-content {
+      background: #17a2b8;
+      border-radius: 8px;
+      timesicon {
+        color: #17a2b8;
+      }
+    }
+  }
+  &.notification {
+    background-color: transparent;
+    .p-toast {
+      min-width: 30rem;
+      max-width: 40rem;
+    }
+    .p-toast-message-content {
+      width: 100%;
+      background-color: white;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(243, 244, 246, 1);
+    }
+  }
+}

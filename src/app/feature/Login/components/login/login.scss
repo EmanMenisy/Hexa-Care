@@ -1,0 +1,567 @@
+
+// =====================================================
+// Shared Variables
+// =====================================================
+
+// ---------- Colors ----------
+$white: #ffffff;
+$black: #111827;
+
+$primary: #0d9488;
+$primary-light: #14b8a6;
+$primary-soft: #e7fbf7;
+
+$text-primary: #111827;
+$text-secondary: #374151;
+$text-muted: #6b7280;
+$text-light: #9ca3af;
+
+$border-light: #e5e7eb;
+
+$dark-bg: #0f172a;
+$dark-text: #d1d5db;
+
+$teal: #2dd4bf;
+$blue: #60a5fa;
+$purple: #c084fc;
+
+// ---------- Radius ----------
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+$radius-pill: 9999px;
+
+// ---------- Shadows ----------
+$shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+$shadow-card: 0 20px 40px rgba(0, 0, 0, 0.08);
+
+$shadow-feature:
+  0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+// ---------- Common ----------
+$full-width: 100%;
+
+
+// =====================================================
+// Login Page
+// =====================================================
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+}
+
+
+// =====================================================
+// Top Bar
+// =====================================================
+
+.topbar {
+  position: absolute;
+  top: 20px;
+  inset-inline-end: 20px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    border: none;
+    background: $white;
+    border-radius: $radius-sm;
+    padding: 5px 8px;
+    font-size: 12px;
+    box-shadow: $shadow-sm;
+
+    cursor: pointer;
+
+    .pi-chevron-down,
+    .icon-global {
+      color: rgb(199, 196, 196);
+    }
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: $white;
+    border-radius: $radius-sm;
+    padding: 4px;
+    font-size: 12px;
+    box-shadow: $shadow-sm;
+  }
+}
+
+
+// =====================================================
+// Bootstrap Row
+// =====================================================
+
+.row.g-0 {
+  min-height: 100vh;
+}
+
+
+// =====================================================
+// Dark Section
+// =====================================================
+
+.darkSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: $dark-bg;
+  background-image: linear-gradient(
+    135deg,
+    rgba(20, 184, 166, 0.2) 0%,
+    rgba(30, 58, 138, 0.4) 100%
+  );
+
+
+  // ---------------------------------------------------
+  // Position Image
+  // ---------------------------------------------------
+
+  .position-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+
+  // ---------------------------------------------------
+  // Main Icon Wrapper
+  // ---------------------------------------------------
+
+  .icon-wapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: $radius-lg;
+    border: 1px solid rgba(235, 221, 221, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: $shadow-feature;
+  }
+
+
+  // ---------------------------------------------------
+  // Subtitle
+  // ---------------------------------------------------
+
+  .subtitle {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    gap: 8px;
+    margin: 16px 0;
+    padding: 5px 20px;
+    border-radius: $radius-pill;
+    border: 1px solid rgba(235, 221, 221, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: $shadow-feature;
+
+    span {
+      color: $white;
+      font-size: 12px;
+      font-weight: lighter;
+    }
+  }
+
+
+  // ---------------------------------------------------
+  // Title
+  // ---------------------------------------------------
+
+  .title {
+    display: inline-block;
+
+    background: linear-gradient(
+      270deg,
+      $white 0%,
+      #99f6e4 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-size: 48px;
+    font-weight: 800;
+  }
+
+
+  // ---------------------------------------------------
+  // Icons
+  // ---------------------------------------------------
+
+  .icon-check,
+  .icon-Symbol {
+    color: #5eead4;
+  }
+
+
+  // ---------------------------------------------------
+  // Description
+  // ---------------------------------------------------
+
+  .description {
+    color: $dark-text;
+    line-height: 28px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+
+  // ---------------------------------------------------
+  // Feature List
+  // ---------------------------------------------------
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 20px 0 15px;
+  }
+
+
+  // ---------------------------------------------------
+  // Feature Item
+  // ---------------------------------------------------
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+
+
+    // -------------------------------------------------
+    // Feature Icon
+    // -------------------------------------------------
+
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      width: 48px;
+      height: 48px;
+      border-radius: $radius-md;
+      font-size: 18px;
+
+
+      // -----------------------------------------------
+      // Teal
+      // -----------------------------------------------
+
+      &.bg-teal {
+        border: 1px solid $teal;
+        background-color: #14b8a633;
+
+        i {
+          color: $teal;
+        }
+      }
+
+
+      // -----------------------------------------------
+      // Blue
+      // -----------------------------------------------
+
+      &.bg-blue {
+        border: 1px solid $blue;
+        background-color: #3b82f633;
+
+        i {
+          color: $blue;
+        }
+      }
+
+
+      // -----------------------------------------------
+      // Purple
+      // -----------------------------------------------
+
+      &.bg-purple {
+        border: 1px solid $purple;
+        background-color: #a855f74d;
+
+        i {
+          color: $purple;
+        }
+      }
+    }
+
+
+    // -------------------------------------------------
+    // Feature Title
+    // -------------------------------------------------
+
+    .feature-title {
+      margin: 0 0 2px;
+      color: $white;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+
+    // -------------------------------------------------
+    // Feature Description
+    // -------------------------------------------------
+
+    .feature-desc {
+      margin: 0;
+      color: $text-light;
+      font-size: 12px;
+      line-height: 21px;
+      font-weight: 300;
+    }
+  }
+
+
+  // ---------------------------------------------------
+  // Copyright
+  // ---------------------------------------------------
+
+  .copyright {
+    margin-top: 26px;
+    color: $text-muted;
+    font-size: 11px;
+  }
+}
+
+
+// =====================================================
+// Light Section
+// =====================================================
+
+.lightSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 36px;
+  background: #dbecf6;
+
+
+  // ===================================================
+  // Login Card
+  // ===================================================
+
+  .login-card {
+    width: $full-width;
+    max-width: 450px;
+    padding: 40px;
+    background: $white;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-card;
+
+
+    // -------------------------------------------------
+    // Card Brand
+    // -------------------------------------------------
+
+    .card-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+
+      .icon-wapper-sm {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: $radius-sm;
+        background: $primary-soft;
+        color: $primary-light;
+      }
+
+
+      .brand-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: $text-primary;
+      }
+    }
+
+
+    // -------------------------------------------------
+    // Welcome Title
+    // -------------------------------------------------
+
+    .welcome-title {
+      margin-bottom: 4px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-primary;
+    }
+
+
+    // -------------------------------------------------
+    // Welcome Subtitle
+    // -------------------------------------------------
+
+    .welcome-subtitle {
+      margin-bottom: 21px;
+      text-align: center;
+      font-size: 13px;
+      color: $text-muted;
+    }
+
+
+    // -------------------------------------------------
+    // Field
+    // -------------------------------------------------
+
+    .field {
+      margin-bottom: 20px;
+      label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: $text-secondary;
+      }
+
+
+      p-iconfield,
+      .p-password {
+        display: block;
+
+        width: $full-width;
+      }
+    }
+
+
+    // -------------------------------------------------
+    // Field Row
+    // -------------------------------------------------
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      margin-bottom: 17px;
+
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: $text-secondary;
+      }
+
+
+      .forgot-link {
+        font-size: 13px;
+        font-weight: 700;
+        color: $primary;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+
+
+    // -------------------------------------------------
+    // Divider
+    // -------------------------------------------------
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 17px 0;
+      color: $text-light;
+      font-size: 12px;
+      &::before,
+      &::after {
+        content: "";
+        flex: 1;
+        border-bottom: 1px solid $border-light;
+      }
+
+      span {
+        padding: 0 10px;
+      }
+    }
+
+
+    // -------------------------------------------------
+    // Signup
+    // -------------------------------------------------
+
+    .signup-text {
+      margin: 0;
+      text-align: center;
+      font-size: 13px;
+      color: $text-secondary;
+      
+      a {
+        color: $primary;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    }
+
+
+    // -------------------------------------------------
+    // Language Toggle
+    // -------------------------------------------------
+
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      border: none;
+      background: $white;
+      border-radius: $radius-pill;
+      padding: 8px 12px;
+      font-size: 13px;
+      cursor: pointer;
+
+      .pi-chevron-down {
+        margin-inline-start: 2px;
+        color: rgb(193, 190, 190) !important;
+        font-size: 10px;
+      }
+
+      .icon-global {
+        color: rgb(193, 190, 190) !important;
+      }
+    }
+  }
+}
+
+
+// =====================================================
+// Sign In Button
+// =====================================================
+
+:host ::ng-deep p-button {
+  display: block;
+  width: $full-width;
+}
+
+
+:host ::ng-deep .signin-btn {
+  width: $full-width !important;
+}
+

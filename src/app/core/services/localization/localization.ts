@@ -18,7 +18,7 @@ export class Localization {
   // Constants
   // ────────────────────────────────
   private readonly AR_STYLESHEET_ID = 'ar-stylesheet';
-  private readonly AR_STYLESHEET_PATH = 'ar.css';
+  private readonly AR_STYLESHEET_PATH = '/ar.css';
   private readonly STORAGE_KEY = 'userLang';
   private readonly DEFAULT_LANG = LanguagesLocalization.EN;
 
@@ -101,6 +101,9 @@ export class Localization {
   // Events
   // ────────────────────────────────
 
+  getTranslate(key: string, interpolateParams?: object): Observable<string> {
+  return this.translate.get(key, interpolateParams);
+  } 
   /**
    * Observable that emits when the current language changes.
    **/

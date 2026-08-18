@@ -7,16 +7,16 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import { tokenInterceptor } from './core/interceptors/token-interceptor';
+// import { tokenInterceptor } from './core/interceptors/token-interceptor';
 import { MessageService } from 'primeng/api';
-import { presest } from './theme/presest';
+import { presest } from '../assets/theme/presest';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([tokenInterceptor])),
+    provideHttpClient(),
     provideTranslateService({
       loader: provideTranslateHttpLoader({
         prefix: '/i18n/',

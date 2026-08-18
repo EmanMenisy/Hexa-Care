@@ -31,6 +31,7 @@ export class ErrorHandlerService {
 
           case 401:
             errorMessage = 'Unauthorized';
+             this.router.navigate(['/login']);
             break;
 
           case 403:

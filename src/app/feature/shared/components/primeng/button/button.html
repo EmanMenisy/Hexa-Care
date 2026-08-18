@@ -1,0 +1,44 @@
+<div class="hexa-button" [ngClass]="[styleType(), disabled() ? 'disabled' : '']">
+  <p-button
+    [styleClass]="styleClass()"
+    [disabled]="disabled()"
+    [loading]="loading()"
+    [loadingIcon]="loadingIcon()"
+    [badge]="badge()"
+    [type]="type()"
+    (click)="onClick($event)"
+    [attr.aria-label]="label()"
+  >
+    @if (icon() && iconPos() === 'left') {
+      @if (iconType() === 'icon') {
+        <em [class]="icon()"></em>
+      }
+      @if (iconType() === 'image') {
+        <img class="me-2" [src]="icon()" [alt]="icon()" />
+      }
+    }
+
+    <span class="btn-name">{{ label() }}</span>
+
+    @if (isSortingApplied()) {
+      <span class="sort"></span>
+    }
+
+    @if (actionIcon()) {
+      <em
+        [class]="actionIcon()"
+        class="ms-2"
+        (click)="onActionIconClick($event)"
+      ></em>
+    }
+
+    @if (icon() && iconPos() === 'right') {
+      @if (iconType() === 'icon') {
+        <em [class]="icon()" class="ms-2"></em>
+      }
+      @if (iconType() === 'image') {
+        <img [src]="icon()" [alt]="icon()" class="ms-2" />
+      }
+    }
+  </p-button>
+</div>

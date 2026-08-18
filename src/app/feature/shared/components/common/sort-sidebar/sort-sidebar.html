@@ -1,0 +1,91 @@
+<p-drawer
+  [visible]="visible()"
+  position="right"
+  [modal]="true"
+  [dismissible]="false"
+  [showCloseIcon]="false"
+  [closeOnEscape]="false"
+  styleClass="sidebar"
+>
+  <ng-template pTemplate="header">
+    <div class="d-flex flex-column gap-3 w-100">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+          <em class="opus-icon-sort header-icon"></em>
+          <div class="d-flex align-items-center justify-content-between gap-2">
+            <p class="modal-header mb-1">
+              {{ 'shared.sorting' | translate }}
+            </p>
+          </div>
+        </div>
+
+        <div (click)="onSkip()">
+          <em class="opus-icon-cancel"></em>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="body">
+
+    <div class="card">
+
+      <div class="d-flex flex-column gap-2">
+
+        <p>
+          {{ 'shared.sortBy' | translate }}
+        </p>
+
+        <div class="d-flex flex-column gap-2">
+
+          @for (option of sortOptions; track option.key) {
+
+            <div class="d-flex align-items-center gap-2">
+
+              <p-radioButton
+                name="sortOption"
+                [value]="option.key"
+                [(ngModel)]="selectedKey"
+              />
+
+              <label>
+                {{ option.label | translate }}
+              </label>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+
+    <div class="d-flex justify-content-end align-items-center gap-2">
+
+      <hexa-button
+        [label]="'buttons.back' | translate"
+        (clicked)="onSkip()"
+      />
+
+      <hexa-button
+        [label]="'buttons.reset' | translate"
+        (clicked)="resetSort()"
+      />
+
+      <hexa-button
+        [disabled]="!selectedKey"
+        (clicked)="applySort()"
+        [label]="'buttons.apply' | translate"
+      />
+
+    </div>
+
+  </ng-template>
+
+</p-drawer>

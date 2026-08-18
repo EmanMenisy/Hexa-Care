@@ -1,0 +1,189 @@
+<p-drawer
+  [closeOnEscape]="false"
+  [visible]="visible()"
+  position="right"
+  [modal]="true"
+  [dismissible]="false"
+  [showCloseIcon]="false"
+  styleClass="sidebar"
+>
+  <ng-template pTemplate="header">
+    <div class="d-flex flex-column w-100 gap-4">
+      <div class="d-flex flex-row align-items-center justify-content-between w-100">
+        <div class="d-flex flex-row align-items-center gap-3">
+          <em class="opus-icon-role header-icon"></em>
+          <div>
+            <p class="modal-header mb-1">
+              {{ 'configurations.role.create.header.title' | translate }}
+            </p>
+            <p class="sub-header mb-0">
+              {{ 'configurations.role.create.header.subtitle' | translate }}
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="p-button p-button-text p-0"
+          aria-label="Close"
+          (click)="closeSidebar()"
+          title="Close"
+        >
+          <em class="hexa-icon-cancel"></em>
+        </button>
+      </div>
+      <app-stepper
+        [steps]="[
+          { label: ('shared.mainInformation' | translate) },
+          { label: ('shared.structureAssignation' | translate) },
+        ]"
+        [step]="showSuccess() ? 2 : currentStep()"
+        [completedSteps]="showSuccess() ? [true, true] : completedSteps()"
+        (stepChange)="onStepChange($event)"
+      >
+      </app-stepper>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    @if (!showSuccess()) {
+      <form [formGroup]="roleForm">
+        @if (currentStep() == 1) {
+          <ng-container>
+            <p class="text-sm-bold my-2">{{ 'shared.mainInformation' | translate }}</p>
+            <div class="field mb-3">
+              <label for="roleName">{{
+                'configurations.role.create.name.label' | translate
+              }}</label>
+              <hexa-input-text
+                [emitOnBlur]="false"
+                formControlName="name"
+                placeholder="{{ 'configurations.role.create.name.placeholder' | translate }}"
+                [id]="'roleName'"
+              />
+              @if (roleForm.get('name')?.touched) {
+                @if (roleForm.get('name')?.hasError('required')) {
+                  <span class="text-danger text-sm-regular mt-2">{{
+                    'configurations.role.create.name.errors.required' | translate
+                  }}</span>
+                }
+                @if (roleForm.get('name')?.hasError('minlength')) {
+                  <span class="text-danger text-sm-regular mt-2">{{
+                    'configurations.role.create.name.errors.minLength' | translate
+                  }}</span>
+                }
+              }
+            </div>
+
+            <div class="field mb-3">
+              <label for="roleDescription">{{
+                'configurations.role.create.description.label' | translate
+              }}</label>
+              <hexa-input-text
+                [emitOnBlur]="false"
+                formControlName="description"
+                placeholder="{{ 'configurations.role.create.description.placeholder' | translate }}"
+                [id]="'roleDescription'"
+              />
+            </div>
+
+            <div class="field mb-3">
+              <label for="roleCode">{{
+                'configurations.role.create.roleCode.label' | translate
+              }}</label>
+              <hexa-input-text
+                [emitOnBlur]="false"
+                formControlName="roleCode"
+                placeholder="{{ 'configurations.role.create.roleCode.placeholder' | translate }}"
+                [id]="'roleCode'"
+              />
+              @if (roleForm.get('roleCode')?.touched) {
+                @if (roleForm.get('roleCode')?.hasError('required')) {
+                  <span class="text-danger text-sm-regular mt-2">{{
+                    'configurations.role.create.roleCode.errors.required' | translate
+                  }}</span>
+                }
+              }
+            </div>
+
+            <div class="d-flex flex-row align-items-center gap-2 my-2">
+              <p-toggleswitch inputId="isActive" formControlName="isActive" />
+              <label for="isActive">{{
+                'configurations.role.create.activeRole.label' | translate
+              }}</label>
+            </div>
+
+            <div class="field mb-3">
+              <label for="parentRoleId">{{
+                'configurations.role.create.parentRole.label' | translate
+              }}</label>
+              <hexa-dropdown
+                formControlName="parentRoleId"
+                [options]="parentRolesOptions()"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="{{ 'configurations.role.create.parentRole.placeholder' | translate }}"
+                [showClear]="true"
+                [filter]="false"
+                (dropdownChanged)="onParentChange($event)"
+              />
+              @if (roleForm.get('parentRoleId')?.touched) {
+                @if (roleForm.get('parentRoleId')?.hasError('required')) {
+                  <span class="text-danger text-sm-regular mt-2">{{
+                    'configurations.role.create.parentRole.errors.required' | translate
+                  }}</span>
+                }
+              }
+            </div>
+            <div class="field mb-3">
+              <label>{{ 'configurations.role.create.copyFeatures.label' | translate }}</label>
+              <hexa-dropdown
+                formControlName="roleCopierFeatureId"
+                [options]="roleFeaturesOptions()"
+                optionLabel="name"
+                optionValue="id"
+                placeholder="{{
+                  'configurations.role.create.copyFeatures.placeholder' | translate
+                }}"
+                [showClear]="true"
+                [filter]="false"
+              />
+            </div>
+          </ng-container>
+        }
+        @if (currentStep() == 2) {
+          <ng-container>
+            <app-assign-structure
+              [formGroup]="uiStructure"
+              [organizationalData]="assignService.organizationalStructure"
+              [currentLevel]="assignService.roleLevel"
+              [loading]="assignService.loadingStructure"
+            ></app-assign-structure>
+          </ng-container>
+        }
+      </form>
+    }
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="d-flex gap-1 justify-content-end">
+      <hexa-button label="{{ 'buttons.cancel' | translate }}" (clicked)="closeSidebar()"/>
+      @if(currentStep() ==2){
+          <hexa-button label="{{ 'buttons.back' | translate }}" (clicked)="goBack()" />
+      }
+      @if (currentStep()==1) {
+        <hexa-button
+          label="{{ 'buttons.next' | translate }}"
+          (clicked)="goToStep(2)"
+          [disabled]="isDisabled"
+        />
+      }
+    
+      @if (currentStep() == 2) {
+        <hexa-button
+          label="{{ 'buttons.save' | translate }}"
+          (clicked)="submit()"
+          [disabled]="disabledForm"
+        />
+      }
+    </div>
+  </ng-template>
+</p-drawer>

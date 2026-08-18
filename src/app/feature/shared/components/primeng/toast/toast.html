@@ -1,0 +1,79 @@
+<!-- Success Toast -->
+<div class="hexa-toast success">
+  <p-toast key="success">
+    <ng-template let-message pTemplate="message">
+      <div class="toaster-container success">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <p class="m-0">{{ message.summary | translate }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+</div>
+
+<!-- Error Toast -->
+<div class="hexa-toast error">
+  <p-toast key="error">
+    <ng-template let-message pTemplate="message">
+      <div class="toaster-container error">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <p class="m-0">{{ message.summary | translate }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+</div>
+
+<!-- Warning Toast -->
+<div class="hexa-toast warning">
+  <p-toast key="warning">
+    <ng-template let-message pTemplate="message">
+      <div class="toaster-container warning">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <p class="m-0">{{ message.summary | translate }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+</div>
+
+<!-- Info Toast -->
+<div class="hexa-toast info">
+  <p-toast key="info">
+    <ng-template let-message pTemplate="message">
+      <div class="toaster-container info">
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <p class="m-0">{{ message.summary | translate }}</p>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+</div>
+
+<!-- Notification Toast -->
+<div class="hexa-toast notification">
+  <p-toast key="notification">
+    <ng-template let-message pTemplate="message">
+      <div class="card-content">
+        <div class="d-flex flex-column gap-3 align-items-center">
+          <em class="hexa-icon-notifications active"></em>
+          <div class="unread-notification"></div>
+        </div>
+        <div class="d-flex flex-column flex-1">
+          <div class="d-flex justify-content-between">
+            <p class="notification-title">{{ message.data.title }}</p>
+            <span class="notification-time">{{ message.data.time | date: 'hh:mm a' }}</span>
+          </div>
+          <p class="notification-body">
+            {{ getDisplayMessage(message) }}
+            @if (isLongMessage(message)) {
+              <span class="see-more" (click)="toggle(message, $event)">
+                {{ isExpanded(message) ? 'see less' : 'see more ...' }}
+              </span>
+            }
+          </p>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+</div>

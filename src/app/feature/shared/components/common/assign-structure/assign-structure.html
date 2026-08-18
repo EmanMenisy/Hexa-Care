@@ -1,0 +1,132 @@
+<form [formGroup]="formGroup()" class="assign-structure">
+
+  @if (!loading()) {
+
+    <div class="d-flex flex-row gap-2 align-items-center">
+
+      <p-toggleswitch
+        inputId="assignForSpecificStructure"
+        formControlName="assignForSpecificStructure">
+      </p-toggleswitch>
+
+      <label class="mb-0">
+        {{ 'shared.assignStructure.toggleBtn' | translate }}
+      </label>
+
+    </div>
+
+
+    @if (formGroup().get('assignForSpecificStructure')?.value) {
+
+      <div class="mb-3 field">
+
+        <label>
+          {{ 'shared.assignStructure.selectCompany' | translate }}
+
+          @if (isRequired('selectedCompanies')) {
+            <span class="text-danger">*</span>
+          }
+        </label>
+
+        <hexa-multi-select
+          formControlName="selectedCompanies"
+          [options]="companyList"
+          optionLabel="label"
+          optionValue="value"
+          [disabled]="disableCompany"
+          [showClear]="true"
+          (multiSelectChanged)="onCompanyChange($event)"
+          placeholder="{{ 'shared.assignStructure.selectCompany' | translate }}">
+        </hexa-multi-select>
+
+      </div>
+
+
+      <div class="mb-3 field">
+
+        <label>
+          {{ 'shared.assignStructure.selectBranch' | translate }}
+
+          <span class="text-muted">
+            ({{ 'shared.optional' | translate }})
+          </span>
+        </label>
+
+        <hexa-multi-select
+          formControlName="selectedBranches"
+          [options]="filteredBranches"
+          optionLabel="label"
+          optionValue="value"
+          [disabled]="disableBranch"
+          [showClear]="true"
+          (multiSelectChanged)="onBranchChange($event)"
+          placeholder="{{ 'shared.assignStructure.selectBranch' | translate }}">
+        </hexa-multi-select>
+
+      </div>
+
+
+      <div class="mb-3 field">
+
+        <label>
+          {{ 'shared.assignStructure.selectDepartment' | translate }}
+
+          <span class="text-muted">
+            ({{ 'shared.optional' | translate }})
+          </span>
+        </label>
+
+        <hexa-multi-select
+          formControlName="selectedDepartments"
+          [options]="filteredDepartments"
+          optionLabel="label"
+          optionValue="value"
+          [disabled]="disableDepartment"
+          [showClear]="true"
+          (multiSelectChanged)="onDepartmentChange($event)"
+          placeholder="{{ 'shared.assignStructure.selectDepartment' | translate }}">
+        </hexa-multi-select>
+
+      </div>
+
+
+      <div class="mb-3 field">
+
+        <label>
+          {{ 'shared.assignStructure.selectTeam' | translate }}
+
+          <span class="text-muted">
+            ({{ 'shared.optional' | translate }})
+          </span>
+        </label>
+
+        <hexa-multi-select
+          formControlName="selectedTeams"
+          [options]="filteredTeams"
+          optionLabel="label"
+          optionValue="value"
+          [disabled]="disableTeam"
+          [showClear]="true"
+          (multiSelectChanged)="onTeamsChange($event)"
+          placeholder="{{ 'shared.assignStructure.selectTeam' | translate }}">
+        </hexa-multi-select>
+
+      </div>
+
+    }
+
+  } @else {
+
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="min-height: 200px;">
+
+      <p>
+        {{ 'shared.loading' | translate }}
+      </p>
+
+    </div>
+
+  }
+
+</form>
