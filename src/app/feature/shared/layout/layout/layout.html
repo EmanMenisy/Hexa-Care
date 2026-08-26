@@ -1,2 +1,21 @@
+<div class="app-layout">
+  @if (isSidebarOpen()) {
+    <div
+      class="sidebar-backdrop"
+      (click)="toggleSidebar()">
+    </div>
+  }
 
-  <router-outlet></router-outlet>  
+  <app-sidebar
+    [isOpen]="isSidebarOpen()"
+    (toggle)="toggleSidebar()">
+  </app-sidebar>
+
+  <div class="main-wrapper">
+    <app-header></app-header>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

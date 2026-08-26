@@ -1,0 +1,77 @@
+<aside
+  class="sidebar"
+  [class.open]="isOpen()">
+
+  <div class="sidebar-header">
+    <div class="brand">
+      <img class="brand-logo" src="/images/logo.png" alt="" (click)="toggle.emit()">
+
+      @if (isOpen()) {
+        <div class="brand-text">
+          <strong>Hexa-Care</strong>
+          <small>Contracts</small>
+        </div>
+      }
+    </div>
+  </div>
+
+
+  <nav class="sidebar-nav">
+    <ul>
+      @for (item of items; track item.id) {
+
+        @if (item.description && isOpen()) {
+          <li class="section-label">{{ item.description }}</li>
+        }
+
+        <li
+          class="menu-item"
+          [class.active]="isModuleActive(item)">
+
+          @if (isSinglePage(item)) {
+            <a
+              class="menu-link"
+              [routerLink]="item.route">
+
+              <span class="icon-tile">{{ item.icon }}</span>
+
+              @if (isOpen()) {
+                <span class="label">{{ item.label }}</span>
+              }
+            </a>
+          } @else {
+            <button
+              type="button"
+              class="menu-link"
+              (click)="onItemClick(item)">
+
+              <span class="icon-tile" [class.active]="isModuleActive(item)">{{ item.icon }}</span>
+
+              @if (isOpen()) {
+                <span class="label">{{ item.label }}</span>
+                <i class="chevron pi pi-angle-down" [class.rotated]="isExpanded(item)"></i>
+              }
+            </button>
+          }
+        </li>
+
+        @if (!isSinglePage(item) && isExpanded(item) && isOpen()) {
+          <ul class="submenu">
+            @for (child of item.children; track child.id) {
+              <li
+                class="submenu-item"
+                [class.active]="isItemActive(child)">
+
+                <a [routerLink]="child.route">
+                  <span class="icon-tile child-item">{{ child.icon }}</span>
+                  <span class="label">{{ child.label }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      }
+    </ul>
+  </nav>
+
+</aside>

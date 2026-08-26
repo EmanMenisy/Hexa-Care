@@ -1,0 +1,29 @@
+$sidebar-collapsed-width: 60px;
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #C7DCF5 0%, #DEECFB 35%, #DDF1EF 70%, #D6E6FB 100%);
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+}
+
+.main-wrapper {
+  flex: 1;
+  min-width: 0;
+  margin-inline-start: $sidebar-collapsed-width;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding: 1.5rem;
+}

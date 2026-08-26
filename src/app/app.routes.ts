@@ -14,7 +14,7 @@ export const routes: Routes = [
     path: 'layout',
     // canActivate:[authGuard],
     component: Layout, children:[
-      {path:'' , component:Role}
+      {path:'role' , component:Role}
     ]
   },
 ];
