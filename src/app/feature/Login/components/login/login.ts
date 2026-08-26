@@ -26,6 +26,7 @@ import { Localization } from '../../../../core/services/localization/localizatio
 import { TranslatePipe } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { LanguagesLocalization } from '../../../../core/models/enums/localization';
+import { InputTextComponent } from "../../../shared/components/primeng/input-text/input-text";
 
 
 @Component({
@@ -40,7 +41,8 @@ import { LanguagesLocalization } from '../../../../core/models/enums/localizatio
     InputIconModule,
     TranslatePipe,
     MenuModule,
-  ],
+    InputTextComponent
+],
   templateUrl: './login.html',
   styleUrl: './login.scss',
   standalone: true,

@@ -1,0 +1,125 @@
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  background: #ffffff99;;
+  border-radius: 8px;
+  gap: 0; 
+  width: 100%;
+}
+
+.step {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 15px 16px;
+  background: transparent;
+  transition: all 0.3s ease;
+  transform: scale(1);
+  text-align: left; /* Changed from center to align with image */
+
+  &.active {
+    background: #cfe8f8; // The deep teal background
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+    z-index: 3;
+
+    .step-circle {
+      background: transparent; // Hollow circle
+      color: #0e6378;
+      border: 2px solid #9bcdec; // White border as seen in image
+      width: 44px;  /* Slightly larger for active state */
+      height: 44px;
+    }
+
+    .step-title {
+      color: #0e6378;
+      font-weight: 700;
+      font-size: 16px; /* Matches the bold "Employee info" */
+    }
+
+    .step-subtitle {
+      color: #0e6378; /* Muted white "Employee Main Details" */
+      font-size: 13px;
+    }
+    
+    /* If an active step is also completed, you might want to keep the white/teal look 
+       or show the checkmark. To match the image specifically: */
+    &.completed .step-circle {
+      background: #d7f3f6;
+      border: none;
+      color: #23657b;
+    }
+  }
+
+  &.completed:not(.active) {
+    .step-circle {
+      background: #d7f3f6;
+      color: #23657b;
+      border: none;
+    }
+    .step-title { color: #000; font-weight: 200; }
+    .step-subtitle { color: #7ca8b1; }
+  }
+
+  &.upcoming {
+    opacity: 0.6;
+    cursor: not-allowed;
+    .step-circle { background: #f3f4f6; color: #9ca3af; border: none; }
+    .step-title { color: #333; }
+    .step-subtitle { color: #c1c6cc; }
+  }
+}
+
+.step-content {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Increased gap to match image layout */
+}
+
+.step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.step-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 13px;
+    background: #d7f3f6;
+    color: #23657B;
+    transition: all 0.3s ease;
+
+    em {
+        font-size: 16px;
+    }
+}
+
+.step-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    transition: all 0.3s ease;
+}
+
+.step-title {
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.step-subtitle {
+    font-size: 11px;
+}
+
+.step-separator {
+    color: #cbd5e1;
+    font-size: 14px;
+}

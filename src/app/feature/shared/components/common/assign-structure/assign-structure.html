@@ -33,7 +33,6 @@
           [options]="companyList"
           optionLabel="label"
           optionValue="value"
-          [disabled]="disableCompany"
           [showClear]="true"
           (multiSelectChanged)="onCompanyChange($event)"
           placeholder="{{ 'shared.assignStructure.selectCompany' | translate }}">
@@ -57,7 +56,6 @@
           [options]="filteredBranches"
           optionLabel="label"
           optionValue="value"
-          [disabled]="disableBranch"
           [showClear]="true"
           (multiSelectChanged)="onBranchChange($event)"
           placeholder="{{ 'shared.assignStructure.selectBranch' | translate }}">
@@ -81,7 +79,6 @@
           [options]="filteredDepartments"
           optionLabel="label"
           optionValue="value"
-          [disabled]="disableDepartment"
           [showClear]="true"
           (multiSelectChanged)="onDepartmentChange($event)"
           placeholder="{{ 'shared.assignStructure.selectDepartment' | translate }}">
@@ -105,7 +102,6 @@
           [options]="filteredTeams"
           optionLabel="label"
           optionValue="value"
-          [disabled]="disableTeam"
           [showClear]="true"
           (multiSelectChanged)="onTeamsChange($event)"
           placeholder="{{ 'shared.assignStructure.selectTeam' | translate }}">

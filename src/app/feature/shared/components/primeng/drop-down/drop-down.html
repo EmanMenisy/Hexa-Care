@@ -1,7 +1,7 @@
 <p-select
   class="w-100"
   [panelStyleClass]="panelStyleClass()"
-  [(ngModel)]="selectedValue"
+  [ngModel]="selectedValue()"
   [options]="options()"
   [optionLabel]="optionLabel()"
   [optionValue]="optionValue()"
@@ -28,16 +28,15 @@
       <ng-container
         [ngTemplateOutlet]="OptionTemplateOutlet!"
         [ngTemplateOutletContext]="{
-          $implicit: option,
+          $implicit: option
         }"
       />
     </ng-template>
-
     <ng-template let-selectedOption pTemplate="selectedItem">
       <ng-container
         [ngTemplateOutlet]="SelectedOptionTemplateOutlet!"
         [ngTemplateOutletContext]="{
-          $implicit: selectedOption,
+          $implicit: selectedOption
         }"
       />
     </ng-template>

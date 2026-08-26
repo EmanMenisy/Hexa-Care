@@ -35,13 +35,9 @@
     "language": "العربية",
     "arabic": "العربية",
     "english": "الإنجليزية",
-
     "unifiedHealthcarePlatform": "منصة صحية موحدة",
-
     "title": "هيكسا كير",
-
     "description": "منصة لإدارة المطالبات والتعويضات بين المستشفيات وشركات التأمين — بدءًا من الموافقة وحتى التحصيل والمتابعة وإعداد التقارير، كل ذلك في مكان واحد.",
-
     "features": {
       "contractsCoverage": {
         "title": "العقود والتغطية",
@@ -58,25 +54,18 @@
     },
 
     "copyright": "© Hexa-Care 2026 · جميع الحقوق محفوظة.",
-
     "welcomeBack": "مرحبًا بعودتك 👋",
     "signInSubtitle": "سجّل الدخول للوصول إلى لوحة التحكم",
-
     "username": "اسم المستخدم",
     "usernamePlaceholder": "اسم المستخدم",
     "usernameRequired": "اسم المستخدم مطلوب.",
-
     "password": "كلمة المرور",
     "passwordPlaceholder": "كلمة المرور",
     "passwordRequired": "كلمة المرور مطلوبة.",
-
     "rememberMe": "تذكرني",
     "forgotPassword": "هل نسيت كلمة المرور؟",
-
     "signIn": "تسجيل الدخول",
-
     "or": "أو",
-
     "noAccount": "ليس لديك حساب؟",
     "createAccount": "إنشاء حساب"
   },

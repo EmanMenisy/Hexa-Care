@@ -1,0 +1,52 @@
+<div class="creation-page">
+
+  <div class="creation-page__stepper">
+    <hexa-creation-stepper
+      [steps]="steps()"
+      [(step)]="step"
+      [completedSteps]="completedSteps()"
+    />
+  </div>
+
+  <div class="creation-page__content">
+    @switch (step()) {
+      @case (1) {
+        <!-- <hexa-personal-info /> -->
+      }
+      @case (2) {
+        <!-- <hexa-professional-info /> -->
+      }
+      @case (3) {
+        <!-- <hexa-schedule-info /> -->
+      }
+      @case (4) {
+        <!-- <hexa-documents-info /> -->
+      }
+    }
+  </div>
+
+  <div class="creation-page__footer">
+    <div class="creation-page__footer-note">
+      <em class="pi pi-info-circle"></em>
+      <span>Fields marked * are required; the doctor code is generated automatically.</span>
+    </div>
+
+    <div class="creation-page__footer-actions">
+      <button type="button" class="btn btn-outline" (click)="onCancel()">
+        Cancel
+      </button>
+
+      @if (!isLastStep) {
+        <button type="button" class="btn btn-primary" (click)="onNext()">
+          Next
+        </button>
+      } @else {
+        <button type="button" class="btn btn-primary" (click)="onSave()">
+          <em class="pi pi-save"></em>
+          Save doctor
+        </button>
+      }
+    </div>
+  </div>
+
+</div>

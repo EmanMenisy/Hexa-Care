@@ -1,11 +1,7 @@
 <section class="login-page">
   <div class="container-fluid p-0">
     <div class="topbar">
-      <button
-        class="lang-toggle"
-        type="button"
-        (click)="toggleLanguage()"
-      >
+      <button class="lang-toggle" type="button" (click)="toggleLanguage()">
         <span>
           {{ currentLang() === 'en' ? 'ع' : 'En' }}
         </span>
@@ -13,21 +9,16 @@
         <i class="pi pi-chevron-down"></i>
       </button>
 
-      <button
-        class="theme-toggle"
-        type="button"
-      >
+      <button class="theme-toggle" type="button">
         <i class="pi pi-moon"></i>
       </button>
     </div>
 
     <div class="row g-0">
-
       <!-- Dark Section -->
       <div class="col-md-6 darkSection p-5">
-        <img src="/images/image (1).svg" alt="" class="position-img">
+        <img src="/images/image (1).svg" alt="" class="position-img" />
         <div class="px-5 py-3">
-
           <span class="icon-wapper">
             <i class="icon-Symbol"></i>
           </span>
@@ -49,11 +40,10 @@
           </p>
 
           <div class="feature-list">
-
             <!-- Contracts -->
             <div class="feature-item">
               <span class="feature-icon bg-teal">
-                <i class=" icon-shield"></i>
+                <i class="icon-shield"></i>
               </span>
 
               <div>
@@ -100,27 +90,18 @@
                 </p>
               </div>
             </div>
-
           </div>
 
           <p class="copyright">
             {{ 'login.copyright' | translate }}
           </p>
-
         </div>
       </div>
 
       <!-- Login Section -->
       <div class="col-md-6 lightSection">
-
-        <form
-          class="login-card"
-          [formGroup]="loginForm"
-          (ngSubmit)="onSubmit()"
-        >
-
+        <form class="login-card" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <div class="card-brand">
-
             <span class="icon-wapper-sm">
               <i class="icon-Symbol"></i>
             </span>
@@ -128,7 +109,6 @@
             <span class="brand-name">
               {{ 'login.title' | translate }}
             </span>
-
           </div>
 
           <h4 class="welcome-title">
@@ -141,12 +121,11 @@
 
           <!-- Username -->
           <div class="field">
-
             <label for="username">
               {{ 'login.username' | translate }}
             </label>
 
-            <p-iconfield>
+            <!-- <p-iconfield>
               <p-inputicon class="pi pi-user"></p-inputicon>
 
               <input
@@ -156,24 +135,28 @@
                 class="w-100"
                 [placeholder]="'login.usernamePlaceholder' | translate"
               />
-            </p-iconfield>
-
+            </p-iconfield> -->
+            <hexa-input-text
+              [placeholder]="'login.usernamePlaceholder' | translate"
+              id="username"
+              formControlName="username"
+              prefixIcon="pi pi-user"
+              class="w-100"
+            ></hexa-input-text>
             @if (isInvalid('username')) {
               <small class="text-danger">
                 {{ 'login.usernameRequired' | translate }}
               </small>
             }
-
           </div>
 
           <!-- Password -->
           <div class="field">
-
             <label for="password">
               {{ 'login.password' | translate }}
             </label>
 
-            <p-iconfield>
+            <!-- <p-iconfield>
               <p-inputicon class="pi pi-lock"></p-inputicon>
 
               <input
@@ -184,21 +167,28 @@
                 class="w-100"
                 [placeholder]="'login.passwordPlaceholder' | translate"
               />
-            </p-iconfield>
+            </p-iconfield> -->
+            <hexa-input-text
+              id="password"
+              class="w-100"
+              [placeholder]="'login.passwordPlaceholder' | translate"
+              id="username"
+              [type]="'password'"
+              formControlName="password"
+              prefixIcon="pi pi-lock"
+              class="w-100"
+            ></hexa-input-text>
 
             @if (isInvalid('password')) {
               <small class="text-danger">
                 {{ 'login.passwordRequired' | translate }}
               </small>
             }
-
           </div>
 
           <!-- Remember / Forgot -->
           <div class="field-row">
-
             <span class="remember-me">
-
               <p-checkbox
                 formControlName="rememberMe"
                 [binary]="true"
@@ -208,13 +198,11 @@
               <label for="rememberMe">
                 {{ 'login.rememberMe' | translate }}
               </label>
-
             </span>
 
             <a class="forgot-link">
               {{ 'login.forgotPassword' | translate }}
             </a>
-
           </div>
 
           <!-- Sign In -->
@@ -236,19 +224,14 @@
 
           <!-- Signup -->
           <p class="signup-text">
-
             {{ 'login.noAccount' | translate }}
 
             <a>
               {{ 'login.createAccount' | translate }}
             </a>
-
           </p>
-
         </form>
-
       </div>
-
     </div>
   </div>
 </section>

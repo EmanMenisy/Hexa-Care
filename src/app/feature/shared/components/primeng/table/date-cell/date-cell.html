@@ -1,8 +1,0 @@
-<span class="text-blue unicode-plainText d-flex {{ column.cssClass }}" [ngClass]="{ clickable: column.isClickable }">
-  {{ value | date: column.dateFormat || 'dd/MM/yyyy' }}
-  <ng-container *ngIf="column.extraColumnData">
-    <span class="font-regular-medium text-blue unicode-plainText ms-1 extraColumn">
-      {{ column.extraColumnData  }}
-    </span>
-  </ng-container>
-</span>

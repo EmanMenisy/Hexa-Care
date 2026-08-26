@@ -5,6 +5,7 @@
   [modal]="true"
   [dismissible]="false"
   [showCloseIcon]="false"
+  [blockScroll]="true"
   styleClass="sidebar"
 >
   <ng-template pTemplate="header">
@@ -14,10 +15,20 @@
           <em class="opus-icon-role header-icon"></em>
           <div>
             <p class="modal-header mb-1">
-              {{ 'configurations.role.create.header.title' | translate }}
+              {{
+              model()
+              ? ("configurations.role.update.header.title" | translate)
+              : ("configurations.role.create.header.title" | translate)
+              }}
             </p>
             <p class="sub-header mb-0">
-              {{ 'configurations.role.create.header.subtitle' | translate }}
+              {{
+              model()
+              ? ("configurations.role.update.header.subtitle"
+              | translate)
+              : ("configurations.role.create.header.subtitle"
+              | translate)
+              }}
             </p>
           </div>
         </div>
@@ -121,6 +132,7 @@
                 [options]="parentRolesOptions()"
                 optionLabel="name"
                 optionValue="id"
+                appendTo="body"
                 placeholder="{{ 'configurations.role.create.parentRole.placeholder' | translate }}"
                 [showClear]="true"
                 [filter]="false"
@@ -140,6 +152,7 @@
                 formControlName="roleCopierFeatureId"
                 [options]="roleFeaturesOptions()"
                 optionLabel="name"
+                appendTo="body"
                 optionValue="id"
                 placeholder="{{
                   'configurations.role.create.copyFeatures.placeholder' | translate
@@ -157,6 +170,8 @@
               [organizationalData]="assignService.organizationalStructure"
               [currentLevel]="assignService.roleLevel"
               [loading]="assignService.loadingStructure"
+              [isEdit]="!!model()"
+              [scopes]="model()?.getScopes"
             ></app-assign-structure>
           </ng-container>
         }

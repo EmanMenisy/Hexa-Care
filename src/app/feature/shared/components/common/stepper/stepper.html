@@ -6,7 +6,7 @@
            [class.disabled]="step() < i + 1 && !completedSteps()[i]">
 
         @if (completedSteps()[i]) {
-          <em class="opus-icon-complete-step"></em>
+          <em class="pi pi-check-circle"></em>
         } @else {
           <span class="step-number">{{ i + 1 }}</span>
         }
@@ -21,7 +21,7 @@
 
     @if (i < steps().length - 1) {
       <div class="step-arrow mx-3">
-        <img src="assets/images/next-step.svg" alt="Arrow" />
+        <!-- <img src="assets/images/next-step.svg" alt="Arrow" /> -->
       </div>
     }
   }

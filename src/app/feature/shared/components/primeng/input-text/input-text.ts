@@ -4,10 +4,12 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { InputTextModule } from 'primeng/inputtext';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { InputText } from 'primeng/inputtext';
+import { InputIcon } from "primeng/inputicon";
+import { IconField } from "primeng/iconfield";
 @Component({
   selector: 'hexa-input-text',
   standalone: true,
-  imports: [CommonModule, FormsModule, InputTextModule , InputText],
+  imports: [CommonModule, FormsModule, InputTextModule, InputText, InputIcon, IconField],
   templateUrl: './input-text.html',
   styleUrls: ['./input-text.scss'],
   providers: [
