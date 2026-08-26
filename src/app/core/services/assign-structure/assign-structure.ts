@@ -22,7 +22,7 @@ export class AssignStructure {
       this.structureCache$ = this.xhrService
         .call({
           method: HttpMethod.Get,
-          url: `/RoleScope/Get/Roleid`,
+          url: `RoleScope/Get/Roleid`,
         })
         .pipe(shareReplay(1));
     }

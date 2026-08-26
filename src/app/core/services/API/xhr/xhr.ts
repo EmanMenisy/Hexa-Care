@@ -161,7 +161,7 @@ export class XhrService {
   private handleNoConnection(observer: XhrObserver): void {
     this.toastService.addToast(
       ToastType.ERROR,
-      this.localization.instant(''),
+      this.localization.instant('No Connection'),
       '',
       undefined,
       true,

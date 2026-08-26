@@ -10,23 +10,22 @@ import { HttpParams } from '@angular/common/http';
 export class Roleservice {
   private readonly xhrService = inject(XhrService);
 
-  getAllParentRoles():Observable<any>{
-    return this.xhrService.call({
-        method: HttpMethod.Get,
-        url:'Role/GetAllParent'
-    })
-  }
-
-   getAllChildrenRoles(id:string): Observable<any> {
+  getAllParentRoles(): Observable<any> {
     return this.xhrService.call({
       method: HttpMethod.Get,
-      url: 'Role/GetChildrenRole',
-      params: new HttpParams({ fromObject: { ParentRoleId: id }}),
+      url: 'Role/GetAllParent',
     });
   }
 
-  
-   createRole(payload:string): Observable<any> {
+  getAllChildrenRoles(id: string): Observable<any> {
+    return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: 'Role/GetChildrenRole',
+      params: new HttpParams({ fromObject: { ParentRoleId: id } }),
+    });
+  }
+
+  createRole(payload: string): Observable<any> {
     return this.xhrService.call({
       method: HttpMethod.Post,
       url: 'Role/Create',
@@ -34,7 +33,15 @@ export class Roleservice {
     });
   }
 
-getAllRoles(payload:any): Observable<any> {
+  updateRole(payload: any): Observable<any> {
+    return this.xhrService.call({
+      method: HttpMethod.Put,
+      url: 'Role/Update',
+      body: payload,
+    });
+  }
+
+  getAllRoles(payload: any): Observable<any> {
     return this.xhrService.call({
       method: HttpMethod.Get,
       url: 'Role/GetAll',
@@ -42,4 +49,19 @@ getAllRoles(payload:any): Observable<any> {
     });
   }
 
+  getRoleById(id: string): Observable<any> {
+    return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: 'Role/GetById',
+      params: new HttpParams({ fromObject: { id: id } }),
+    });
+  }
+
+  deleteRole(id: string): Observable<any> {
+    return this.xhrService.call({
+      method: HttpMethod.Delete,
+      url: 'Role/Delete',
+      body: {id:id},
+    });
+  }
 }

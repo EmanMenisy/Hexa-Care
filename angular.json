@@ -30,7 +30,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss",
               {
-                "input": "src/assets/styles/ar.scss",
+                "input": "src/assets/styles/base/ar.scss",
                 "bundleName": "ar",
                 "inject": false
               }

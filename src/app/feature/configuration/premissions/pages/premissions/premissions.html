@@ -1,0 +1,48 @@
+<div class="container-fluid p-5">
+<div class="row">
+    <div class="p-5">
+        <hexa-dropdown [options]="roles()" optionLabel="name" optionValue="id" placeholder="select Role" [selectedValue]="selectedRoleId()" (dropdownChanged)="onRoleChange($event)"></hexa-dropdown>
+    </div>
+    <div>
+        @for (module of permissions(); track $index) {
+        <ng-container>
+        <!-- MODULE LEVEL -->
+                <div class="d-flex align-items-center gap-2 mt-3">
+                    <p-toggleswitch [(ngModel)]="module.isAllowed" (onChange)="toggleModule(module)"></p-toggleswitch>
+                    <label>{{ module.moduleName }}</label>
+                </div>
+          <hr class="mt-2">
+          @for (page of module.pages; track $index) {
+            <p-accordion [value]="page.isOpen ? $index : null">
+            <p-accordion-panel [value]="$index">
+                          <!-- PAGE HEADER -->
+            <p-accordion-header>
+            <div class="d-flex align-items-center">
+                <p-toggleswitch [(ngModel)]="page.isAllowed" (onChange)="togglePage(page, module)"
+                (click)="$event.stopPropagation()">
+                </p-toggleswitch>
+                <label>{{ page.pageName }}</label>
+            </div>
+           </p-accordion-header>
+           <div class="row">
+            <p-accordion-content>
+                @for (feature of page.features; track $index) {
+                <div class="col-md-3">
+                    <p-toggleswitch [(ngModel)]="feature.isAllowed" (onChange)="toggleAction(feature,  page, module)">
+                    </p-toggleswitch>
+                    <label>{{ feature.name }}</label>
+                </div>  
+                }
+             </p-accordion-content>
+           </div>
+          
+            </p-accordion-panel>
+            </p-accordion>
+          }
+        </ng-container>
+        }
+ 
+
+    </div>
+</div>
+</div>

@@ -1,0 +1,27 @@
+
+html[dir="rtl"] {
+  font-family: "Tajawal", sans-serif !important;
+}
+
+body[dir="rtl"],
+[dir="rtl"] body {
+  font-family: "Tajawal", sans-serif !important;
+}
+
+[dir="rtl"] {
+  .p-component {
+    font-family: "Tajawal", sans-serif !important;
+  }
+
+  .p-dropdown.custom-manager-dropdown .p-dropdown-clear-icon {
+    left: 40px !important;
+    right: unset;
+  }
+
+  .p-multiselect {
+    .p-multiselect-clear-icon {
+      right: auto;
+      left: 3rem;
+    }
+  }
+}

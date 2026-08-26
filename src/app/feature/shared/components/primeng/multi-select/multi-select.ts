@@ -3,11 +3,15 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   OnInit,
   forwardRef,
+  inject,
   input,
+  model,
   output
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormsModule,
   NG_VALUE_ACCESSOR
@@ -39,8 +43,21 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   // VALUE CONTROL
   // ============================================================
 
-  // Keep this as a normal property because it is managed by CVA/ngModel
-  selectedValues: any[] = [];
+  /**
+   * Used when the multi-select is consumed outside Reactive Forms.
+   *
+   * Supports:
+   *
+   * [(selectedValues)]="selectedRoleIds"
+   *
+   * or:
+   *
+   * [selectedValues]="selectedRoleIds()"
+   *
+   * Also written to by writeValue() when used inside Reactive
+   * Forms via formControlName.
+   */
+  readonly selectedValues = model<any[]>([]);
 
 
   // ============================================================
@@ -64,8 +81,6 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   readonly = input<boolean>(false);
 
   showClear = input<boolean>(false);
-
-  selectAll = input<boolean>(false);
 
   hasError = input<boolean>(false);
 
@@ -108,9 +123,14 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   // OTHER PROPERTIES
   // ============================================================
 
-  checkRtl = false;
-
   selectedItemsLabel = '{0} SelectedItems';
+
+
+  /**
+   * Used to auto-unsubscribe from the langChange
+   * subscription when the component is destroyed.
+   */
+  private readonly destroyRef = inject(DestroyRef);
 
 
   constructor(
@@ -131,11 +151,10 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
     this.translate
       .onLangChange()
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.setTranslations();
       });
-
-    this.cdr.detectChanges();
   }
 
 
@@ -152,33 +171,33 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   onMultiSelectChange(): void {
 
     this.multiSelectChanged.emit(
-      this.selectedValues
+      this.selectedValues()
     );
 
     this.onChange(
-      this.selectedValues
+      this.selectedValues()
     );
 
     this.onTouched(
-      this.selectedValues
+      this.selectedValues()
     );
   }
 
 
   onClear(): void {
 
-    this.selectedValues = [];
+    this.selectedValues.set([]);
 
     this.multiSelectChanged.emit(
-      this.selectedValues
+      this.selectedValues()
     );
 
     this.onChange(
-      this.selectedValues
+      this.selectedValues()
     );
 
     this.onTouched(
-      this.selectedValues
+      this.selectedValues()
     );
   }
 
@@ -194,7 +213,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
 
   writeValue(object: any): void {
 
-    this.selectedValues = object ?? [];
+    this.selectedValues.set(object ?? []);
   }
 
 

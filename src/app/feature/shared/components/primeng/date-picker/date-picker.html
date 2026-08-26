@@ -1,0 +1,62 @@
+<p-datepicker
+  [readonlyInput]="readonly()"
+  *ngIf="pDateSelectionMode === 'single'"
+  [showButtonBar]="showButtonBar()"
+  [todayButtonStyleClass]="'d-none'"
+  #pCalendar
+  [ngClass]="{ 'red-border': hasError() }"
+  [(ngModel)]="value"
+  [defaultDate]="defaultDate()!"
+  [placeholder]="placeholder()"
+  [timeOnly]="timeOnly()"
+  selectionMode="single"
+  [hourFormat]="timeFormat() === TimeFormat.FullDay ? '24' : '12'"
+  [dateFormat]="pDateFormat"
+  [firstDayOfWeek]="firstDayOfWeek()"
+  [disabledDates]="disabledDates()"
+  [disabledDays]="disabledDays()"
+  [minDate]="minDate()!"
+  [maxDate]="maxDate()!"
+  [disabled]="disabled"
+  [showIcon]="true"
+  [showTime]="showTime()"
+  [appendTo]="'body'"
+  [icon]="timeOnly() ? 'opus-icon-stop-watch' : 'opus-icon-calendar'"
+  (onClose)="closeCalender.emit()"
+  (ngModelChange)="onSingleChange()">
+  <ng-template pTemplate="date" let-date>
+    <span [ngClass]="{ disabledMonth: isDisabledMonth(date.month) }">{{ date.day }}</span>
+  </ng-template>
+</p-datepicker>
+
+<p-datepicker
+  #pCalendar
+  [appendTo]="'body'"
+  [readonlyInput]="readonly()"
+  *ngIf="pDateSelectionMode !== 'single'"
+  [showButtonBar]="showButtonBar()"
+  [todayButtonStyleClass]="'d-none'"
+  [ngClass]="{ 'red-border': hasError() }"
+  inputStyleClass="font-regular-medium"
+  [(ngModel)]="values!"
+  [defaultDate]="defaultDate()!"
+  [placeholder]="placeholder()"
+  [timeOnly]="false"
+  [selectionMode]="pDateSelectionMode"
+  [hourFormat]="timeFormat() === TimeFormat.FullDay ? '24' : '12'"
+  [dateFormat]="pDateFormat"
+  [firstDayOfWeek]="firstDayOfWeek()"
+  [disabledDates]="disabledDates()"
+  [disabledDays]="disabledDays()"
+  [minDate]="minDate()!"
+  [maxDate]="maxDate()!"
+  [disabled]="disabled"
+  [showIcon]="true"
+  [showTime]="showTime()"
+  [icon]="'opus-icon-calender'"
+  (onClose)="closeCalender.emit()"
+  (ngModelChange)="onMultiChange($event)">
+  <ng-template pTemplate="date" let-date>
+    <span [ngClass]="{ disabledMonth: isDisabledMonth(date.month) }">{{ date.day }}</span>
+  </ng-template>
+</p-datepicker>
