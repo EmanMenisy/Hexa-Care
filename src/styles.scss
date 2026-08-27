@@ -10,6 +10,8 @@
 html,
 body {
   font-family: "Poppins", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.35) transparent;
 }
 
 .p-component {
@@ -76,3 +78,26 @@ body {
 }
 
 .d-none { display: none !important; }
+
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 999px;
+
+  &:hover {
+    background: rgba(148, 163, 184, 0.55);
+  }
+}
