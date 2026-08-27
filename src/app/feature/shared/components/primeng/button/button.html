@@ -1,11 +1,14 @@
-<div class="hexa-button" [ngClass]="[styleType(), disabled() ? 'disabled' : '']">
+<div class="hexa-button" [ngClass]="[disabled() ? 'disabled' : '']">
   <p-button
     [styleClass]="styleClass()"
+    [severity]="severity()"
     [disabled]="disabled()"
     [loading]="loading()"
     [loadingIcon]="loadingIcon()"
     [badge]="badge()"
+    [badgeClass]="badgeClass()"
     [type]="type()"
+    [routerLink]="routerLink()"
     (click)="onClick($event)"
     [attr.aria-label]="label()"
   >
@@ -18,8 +21,17 @@
       }
     }
 
-    <span class="btn-name">{{ label() }}</span>
+     @if (icon() && iconPos() === 'center') {
+      @if (iconType() === 'icon') {
+        <em [class]="icon()" class="center-icon"></em>
+      }
 
+      @if (iconType() === 'image') {
+        <img [src]="icon()" [alt]="icon()" class="center-icon" />
+      }
+    } @else {
+      <span class="btn-name">{{ label() }}</span>
+    }
     @if (isSortingApplied()) {
       <span class="sort"></span>
     }

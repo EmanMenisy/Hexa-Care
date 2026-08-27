@@ -1,35 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output, model } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-
+import { RouterModule } from '@angular/router';
+import { ButtonModule} from 'primeng/button';
+import type { ButtonSeverity } from 'primeng/button';
 @Component({
   selector: 'hexa-button',
   standalone: true,
-  imports: [CommonModule, ButtonModule],
+  imports: [CommonModule, ButtonModule , RouterModule],
   templateUrl: './button.html',
   styleUrls: ['./button.scss'],
 })
 export class ButtonComponent {
   icon = input<string>();
   type = input<'submit' | 'button'>('button');
-  iconPos = input<'right' | 'left'>('left');
-  styleType = input<
-    | 'primary'
-    | 'secondary'
-    | 'third'
-    | 'fourth'
-    | 'teal'
-    | 'add-other'
-    | 'reset'
-    | 'cancel'
-    | 'transparent'
-    | 'sort'
-    | 'filter'
-    | 'warning'
-    | 'danger'
-    | 'exit'
-    | 'success'
-  >('primary');
+  iconPos = input<'right' | 'left' |'center'>('left');
   isSortingApplied = input<boolean>(false);
   label = input<string>();
   styleClass = input<string>();
@@ -41,7 +25,7 @@ export class ButtonComponent {
   routerLink = input<string>();
   actionIcon = input<string>();
   iconType = input<'image' | 'icon'>('icon');
-
+  severity = input<ButtonSeverity>();
   clicked = output<any>();
   actionIconClick = output<any>();
 

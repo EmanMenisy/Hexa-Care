@@ -27,7 +27,7 @@ export class InputTextComponent implements ControlValueAccessor {
   readonly required = input(false);
   readonly readonly = input(false);
   readonly hidden = input(false);
-  readonly maxlength = input<number | null>(null);
+  readonly maxLength = input<number | null>(null);
   readonly placeholder = input('');
   readonly hasError = input(false);
   readonly isSearchable = input(false);

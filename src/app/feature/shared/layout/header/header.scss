@@ -1,8 +1,3 @@
-$accent: #0d9488;
-$accent-dark: #0a6f66;
-$badge-red: #ef4444;
-$border-color: #e2e8f0;
-$text-muted: #64748b;
 
 :host {
   display: block;
@@ -13,7 +8,7 @@ $text-muted: #64748b;
 
 .header {
   height: 64px;
-  padding: 12px 24px;
+  padding: 12px 35px;
 
   display: flex;
   align-items: center;
@@ -21,131 +16,10 @@ $text-muted: #64748b;
   gap: 16px;
 
   background: linear-gradient(90deg, #eef5f6 0%, #f7fbfb 55%, #ffffff 100%);
-  border-bottom: 1px solid $border-color;
-}
-
-.search-box {
-  flex: 0 1 320px;
-  min-width: 0;
-
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: #eef2f5;
-}
-
-.icon-search {
-  flex: none;
-  font-style: normal;
-  font-size: 14px;
-  opacity: 0.6;
-}
-
-.search-input {
-  flex: 1;
-  min-width: 0;
-
-  border: none;
-  outline: none;
-  background: transparent;
-
-  font-size: 14px;
-  color: #1e293b;
-
-  &::placeholder {
-    color: $text-muted;
-  }
-}
-
-.header-actions {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.btn-create {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 9px 18px;
-  border: none;
-  border-radius: 10px;
-
-  background: linear-gradient(135deg, $accent 0%, $accent-dark 100%);
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-
-  transition: filter 0.15s ease;
-
-  i {
-    font-style: normal;
-    font-size: 15px;
-    line-height: 1;
-  }
-
-  &:hover {
-    filter: brightness(1.05);
-  }
-}
-
-.icon-btn {
-  position: relative;
-  flex: none;
-
-  width: 38px;
-  height: 38px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: none;
-  border-radius: 50%;
-  background: rgba(148, 163, 184, 0.12);
-
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.15s ease;
-
-  &:hover {
-    background: rgba(148, 163, 184, 0.22);
-  }
-}
-
-.lang-btn span {
-  font-size: 13px;
-  font-weight: 600;
-  color: #334155;
-}
-
-.notif-btn {
-  .badge {
-    position: absolute;
-    top: -2px;
-    inset-inline-end: -2px;
-
-    min-width: 18px;
-    height: 18px;
-    padding: 0 4px;
-
+  border-bottom: 1px solid #e2e8f0;
+  .header-actions{
     display: flex;
     align-items: center;
-    justify-content: center;
-
-    border-radius: 999px;
-    background: $badge-red;
-    color: white;
-
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1;
-    border: 2px solid #ffffff;
+    gap: 10px;
   }
 }

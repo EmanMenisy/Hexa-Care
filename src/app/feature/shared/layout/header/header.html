@@ -1,54 +1,15 @@
 <header class="header">
 
   <div class="search-box">
-    <i class="icon-search">🔍</i>
-    <input
-      type="text"
-      class="search-input"
- />
+    <hexa-input-text prefixIcon="pi pi-search" [placeholder]="'Quick Search'"></hexa-input-text>
   </div>
 
   <div class="header-actions">
-    <button
-      type="button"
-      class="btn-create">
+    <hexa-button label="Create" [icon]="'pi pi-plus'" [iconPos]="'left'"></hexa-button>
+    <hexa-button  [severity]="'secondary'" label="ع" [icon]="'pi pi-language'" [iconPos]="'left'"></hexa-button>
+    <hexa-button  [severity]="'secondary'" [icon]="isDarkMode ? 'pi pi-sun':'pi pi-moon'" [iconPos]="'center'"></hexa-button>
+    <hexa-button  [severity]="'secondary'" [icon]=" 'pi pi-comments'" [iconPos]="'center'"></hexa-button>
 
-      <i>+</i>
-      <span>Create</span>
-    </button>
-
-    <button
-      type="button"
-      class="icon-btn lang-btn"
-      aria-label="Toggle language">
-
-      <span>Aع</span>
-    </button>
-
-    <button
-      type="button"
-      class="icon-btn"
-
-      aria-label="Toggle theme">
-
-      <!-- <span>{{ isDarkMode() ? '☀️' : '🌙' }}</span> -->
-    </button>
-
-    <button
-      type="button"
-      class="icon-btn"
-      aria-label="Open chat">
-
-      <span>💬</span>
-    </button>
-
-    <button
-      type="button"
-      class="icon-btn notif-btn"
-      aria-label="Open notifications">
-
-      <span>🔔</span>
-    </button>
   </div>
 
 </header>

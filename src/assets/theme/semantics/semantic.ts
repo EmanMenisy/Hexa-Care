@@ -176,7 +176,7 @@ export const semantic = {
         disabledBackground: '{surface.200}',
         filledBackground: '{surface.900}',
         filledHoverBackground: '{surface.100}',
-        borderColor: '{transparent}',
+        borderColor: '{surface.300}',
         hoverBorderColor: '{border.hover}',
         focusBorderColor: '{border.focus}',
         color: '#006A61',

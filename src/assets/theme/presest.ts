@@ -6,7 +6,7 @@ import { spacing } from './primitives/spacing';
 import { semantic } from './semantics/semantic';
 import { radius } from './primitives/radius';
 // import { select } from './components/select';
-// import { button } from './components/buttons';
+ import { button } from './components/buttons';
 import { inputtext } from './components/inputText';
 // import { datepicker } from './components/datePicker';
 // import { dialog } from './components/dialog';
@@ -26,7 +26,7 @@ export const presest = definePreset(Aura, {
   components: {
     // inputtext,
     // select,
-    // button,
+     button,
     // datepicker,
     // dialog,
     // confirmdialog,
