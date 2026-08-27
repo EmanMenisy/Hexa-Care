@@ -97,7 +97,7 @@ export const SIDEBAR_MENU: ISidebarItem[] = [
     label: 'Documents',
     icon: '📎',
     code: 3,
-    standalone:true,
+    standalone: true,
     children: [
       { id: 'documents-attachments', label: 'Attachments', icon: '📎', route: '/layout/premissions', code: 100 },
     ],

@@ -18,10 +18,11 @@ export const button = {
       root: {
         primary: {
           background: `linear-gradient(120deg, #35ABC9, #0E6378)`,
-          hoverBackground: `linear-gradient(90deg, ${semantic.primary[300]} 0%, ${semantic.primary[600]} 100%)`,
+          hoverBackground: `linear-gradient(90deg, ${semantic.primary[600]} 0%, ${semantic.primary[800]} 100%)`,
           activeBackground: `linear-gradient(90deg, ${semantic.primary[500]} 0%, ${semantic.primary[800]} 100%)`,
+          hoverBorderColor : 'transparent',
           color: semantic.colorScheme.light.surface[0],
-          borderColor:`#11ABDB`
+          borderColor:'transparent'
         },
         secondary: {
           background: 'transparent',
@@ -74,4 +75,13 @@ export const button = {
       },
     },
   },
+  css: () => `
+    .p-button {
+      height: 40px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  `,
 };

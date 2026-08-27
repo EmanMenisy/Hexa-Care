@@ -6,7 +6,7 @@ import { OverlayBadgeModule } from 'primeng/overlaybadge';
 
 @Component({
   selector: 'app-header',
-  imports: [ButtonComponent, InputTextComponent, BadgeModule, Badge,OverlayBadgeModule],
+  imports: [ButtonComponent, InputTextComponent, BadgeModule,OverlayBadgeModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
