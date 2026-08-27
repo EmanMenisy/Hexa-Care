@@ -28,31 +28,13 @@
           class="menu-item"
           [class.active]="isModuleActive(item)">
 
-          @if (isSinglePage(item)) {
-            <a
-              class="menu-link"
-              [routerLink]="item.route">
-
-              <span class="icon-tile">{{ item.icon }}</span>
-
-              @if (isOpen()) {
-                <span class="label">{{ item.label }}</span>
-              }
-            </a>
-          } @else {
-            <button
-              type="button"
-              class="menu-link"
-              (click)="onItemClick(item)">
-
-              <span class="icon-tile" [class.active]="isModuleActive(item)">{{ item.icon }}</span>
-
-              @if (isOpen()) {
-                <span class="label">{{ item.label }}</span>
-                <i class="chevron pi pi-angle-down" [class.rotated]="isExpanded(item)"></i>
-              }
-            </button>
-          }
+          <app-sidebar-item
+            [item]="item"
+            [isOpen]="isOpen()"
+            [isSinglePage]="isSinglePage(item)"
+            [isExpanded]="isExpanded(item)"
+            [isActive]="isModuleActive(item)"
+            (itemClick)="onItemClick(item)" />
         </li>
 
         @if (!isSinglePage(item) && isExpanded(item) && isOpen()) {
@@ -62,10 +44,12 @@
                 class="submenu-item"
                 [class.active]="isItemActive(child)">
 
-                <a [routerLink]="child.route">
-                  <span class="icon-tile child-item">{{ child.icon }}</span>
-                  <span class="label">{{ child.label }}</span>
-                </a>
+                <app-sidebar-item
+                  [item]="child"
+                  [isOpen]="isOpen()"
+                  [isChild]="true"
+                  [isSinglePage]="true"
+                  [isActive]="isItemActive(child)" />
               </li>
             }
           </ul>

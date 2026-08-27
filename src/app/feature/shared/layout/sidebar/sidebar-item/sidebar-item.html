@@ -1,0 +1,34 @@
+@if (isSinglePage()) {
+  <a
+    class="menu-link"
+    [class.collapsed]="!isOpen()"
+    [class.child]="isChild()"
+    [class.active]="isChild() && isActive()"
+    [routerLink]="route()">
+
+    <span
+      class="icon-tile"
+      [class.active]="isActive()"
+      [class.child-item]="isChild()">
+      {{ item().icon }}
+    </span>
+
+    @if (isOpen()) {
+      <span class="label">{{ item().label }}</span>
+    }
+  </a>
+} @else {
+  <button
+    type="button"
+    class="menu-link"
+    [class.collapsed]="!isOpen()"
+    (click)="itemClick.emit()">
+
+    <span class="icon-tile" [class.active]="isActive()">{{ item().icon }}</span>
+
+    @if (isOpen()) {
+      <span class="label">{{ item().label }}</span>
+      <i class="chevron pi pi-angle-down" [class.rotated]="isExpanded()"></i>
+    }
+  </button>
+}

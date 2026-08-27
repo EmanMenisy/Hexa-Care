@@ -1,4 +1,4 @@
-export interface SidebarItem {
+export interface ISidebarItem {
   /** Unique id — used for expand/collapse state & @for tracking */
   id: string;
 
@@ -15,17 +15,29 @@ export interface SidebarItem {
   code: number;
 
   /**
-   * Page code. When `pageCode === code`, the module IS the page:
-   * clicking it navigates directly instead of expanding
-   * (e.g. "الرئيسية" in your screenshot — no chevron, single link).
+   * Optional — the backend page code this item maps to, if you need it
+   * for anything else (analytics, deep links...). No longer used to
+   * decide single-page behavior — see `standalone` below.
    */
   pageCode?: number;
 
   /**
-   * Sub-pages under this module. Ignored/hidden when the item is a
-   * "single page" (pageCode === code) even if you pass children by mistake.
+   * Explicit switch: true → this item is always rendered as a direct
+   * link (icon + label, no chevron, no dropdown), even if `children`
+   * is populated. false/undefined → normal module behavior: expands
+   * to show children when clicked.
+   *
+   * Example: a "Main"/"الرئيسية" entry that should just navigate,
+   * not expand:
+   *   { id: 'main', label: 'Main', icon: '🏠', code: 1, route: '/main', standalone: true }
    */
-  children?: SidebarItem[];
+  standalone?: boolean;
+
+  /**
+   * Sub-pages under this module. Ignored/hidden when `standalone` is true,
+   * even if you pass children by mistake.
+   */
+  children?: ISidebarItem[];
 
   /**
    * Section header shown ABOVE this item, e.g. "Facility & structure".

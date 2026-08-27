@@ -1,20 +1,21 @@
 import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
-import {  SidebarItem } from './models/sidebarItem.model';
+import { ISidebarItem } from './models/sidebarItem.model';
 import { SIDEBAR_MENU } from './models/sidebar-config.model';
+import { SidebarItemComponent } from './sidebar-item/sidebar-item';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [SidebarItemComponent],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
 export class Sidebar implements OnInit {
   isOpen = input(false);
-  items: SidebarItem[] = [];
+  items: ISidebarItem[] = [];
 
   toggle = output<void>();
 
@@ -37,31 +38,31 @@ export class Sidebar implements OnInit {
   /** which module id is currently expanded (only one open at a time) */
   private expandedId = signal<string | null>(null);
 
-  /** module === page → single clickable link, no dropdown */
-  isSinglePage(item: SidebarItem): boolean {
-    return !item.children?.length || item.pageCode === item.code;
+  /** explicit flag → single clickable link, no dropdown (falls back to "no children" too) */
+  isSinglePage(item: ISidebarItem): boolean {
+    return item.standalone === true || !item.children?.length;
   }
 
-  isExpanded(item: SidebarItem): boolean {
+  isExpanded(item: ISidebarItem): boolean {
     return this.expandedId() === item.id;
   }
 
-  isItemActive(item: SidebarItem): boolean {
+  isItemActive(item: ISidebarItem): boolean {
     return !!item.route && this.currentUrl().startsWith(item.route);
   }
 
   /** parent row lights up if it's the active page itself, or one of its children is */
-  isModuleActive(item: SidebarItem): boolean {
+  isModuleActive(item: ISidebarItem): boolean {
     if (this.isItemActive(item)) return true;
     return !!item.children?.some((child) => this.isItemActive(child));
   }
 
-  onItemClick(item: SidebarItem): void {
+  onItemClick(item: ISidebarItem): void {
     if (this.isSinglePage(item)) return; // routerLink handles navigation itself
     this.expandedId.set(this.isExpanded(item) ? null : item.id);
   }
 
-  private getAllowedSidebarModules(): SidebarItem[] {
+  private getAllowedSidebarModules(): ISidebarItem[] {
     const stored = localStorage.getItem('modules');
     if (!stored) return [];
 
@@ -72,7 +73,7 @@ export class Sidebar implements OnInit {
       return [];
     }
 
-    const result: SidebarItem[] = [];
+    const result: ISidebarItem[] = [];
 
     backendModules.forEach((backendModule) => {
       // backend sends codes as strings ("9") — cast to number to match SIDEBAR_MENU
@@ -80,9 +81,9 @@ export class Sidebar implements OnInit {
       const localModule = SIDEBAR_MENU.find((m) => m.code === backendModuleCode);
       if (!localModule) return;
 
-      // module === page → single link, nothing to filter on children,
+      // standalone module → single link, nothing to filter on children,
       // being present in backendModules is enough permission to show it.
-      if (localModule.pageCode === localModule.code) {
+      if (localModule.standalone) {
         result.push({ ...localModule });
         return;
       }

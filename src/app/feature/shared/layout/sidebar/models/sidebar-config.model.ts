@@ -1,9 +1,9 @@
-import { SidebarItem } from './sidebarItem.model';
+import { ISidebarItem } from './sidebarItem.model';
 
 // Built from the backend "modules" payload (module.code / page.code).
 // Grouped into sections for the UI — move `description` around freely
 // if you want the modules organized differently.
-export const SIDEBAR_MENU: SidebarItem[] = [
+export const SIDEBAR_MENU: ISidebarItem[] = [
   // ── Facility & structure ──────────────────────────────
   {
     id: 'organization',
@@ -12,7 +12,7 @@ export const SIDEBAR_MENU: SidebarItem[] = [
     code: 1,
     description: 'Facility & structure',
     children: [
-      { id: 'org-companies', label: 'Companies', icon: '🏬', route: '/layout/role', code: 200 },
+      { id: 'org-companies', label: 'Companies', icon: '🏬', route: '/layout/premission', code: 200 },
       { id: 'org-departments', label: 'Departments', icon: '🗂️', route: '/organization/departments', code: 1700 },
       { id: 'org-facility', label: 'Facility', icon: '🏗️', route: '/organization/facility', code: 600 },
       { id: 'org-organizations', label: 'Organizations', icon: '🏛️', route: '/organization/organizations', code: 1600 },
@@ -29,7 +29,7 @@ export const SIDEBAR_MENU: SidebarItem[] = [
     code: 9,
     description: 'Care',
     children: [
-      { id: 'patients-list', label: 'Patients', icon: '🧍', route: '/patients/list', code: 900 },
+      { id: 'patients-list', label:  'Patients', icon: '🧍', route: '/patients/list', code: 900 },
       { id: 'patients-memberships', label: 'Memberships', icon: '💳', route: '/patients/memberships', code: 2100 },
     ],
   },
@@ -97,8 +97,9 @@ export const SIDEBAR_MENU: SidebarItem[] = [
     label: 'Documents',
     icon: '📎',
     code: 3,
+    standalone:true,
     children: [
-      { id: 'documents-attachments', label: 'Attachments', icon: '📎', route: '/documents/attachments', code: 100 },
+      { id: 'documents-attachments', label: 'Attachments', icon: '📎', route: '/layout/premissions', code: 100 },
     ],
   },
   {
