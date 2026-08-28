@@ -8,6 +8,10 @@
     "loading": "loading...",
     "mainInformation": "Main Information",
     "structureAssignation": "Structure Assignation",
+    "showing":"Showing",
+    "to":"to",
+    "of":"of",
+    "actions":"Actions",
     "dropdown": {
       "select": "Please Select",
       "noItems": "No items found",

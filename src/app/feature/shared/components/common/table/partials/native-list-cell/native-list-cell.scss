@@ -1,0 +1,52 @@
+.list-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  white-space: nowrap;
+
+  .first-item {
+    display: block;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .more-badge {
+    flex-shrink: 0;
+    cursor: pointer;
+
+    font-size: 11px;
+    line-height: 1;
+    padding: 4px 8px;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+
+    background: #f5f5f5;
+    color: #555;
+
+    &:hover {
+      background: #eaeaea;
+    }
+  }
+}
+
+.list-popover {
+  min-width: 180px;
+  max-width: 260px;
+  max-height: 260px;
+  overflow-y: auto;
+
+  .popover-item {
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #555;
+    white-space: normal;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #eee;
+    }
+  }
+}

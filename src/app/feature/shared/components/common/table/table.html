@@ -1,0 +1,230 @@
+<div opusRtl class="opus-native-table" [ngClass]="{ 'd-none': loading() }">
+  <div class="native-table-wrapper" [style.maxHeight]="scrollHeight()">
+    <table class="native-table" [ngClass]="{ 'table table-bordered ': bordered() }">
+      <thead>
+        <tr>
+          <!-- Selection header -->
+          @if (canSelect()) {
+            <th class="select-col">
+              <input type="checkbox" [checked]="isAllPageSelected()"
+                (change)="onSelectAllClicked($any($event.target).checked)" />
+            </th>
+          }
+
+          @for (col of columns(); track col.field ?? $index) {
+            <th [ngClass]="{ 'd-none': col.hidden, sortable: isColumnSortable(col), 'is-sorted': isSortActive(col.field) }"
+              [style.width]="col.width" [style.minWidth]="col.width"
+              (click)="onHeaderClick(col)">
+              <div class="th-content">
+                <span>{{ col.name | translate }}</span>
+
+                @if (isColumnSortable(col)) {
+                  <span class="sort-indicator" [class.sort-indicator--active]="isSortActive(col.field)">
+                    @switch (getSortDir(col.field)) {
+                      @case ('asc') { <i class="pi pi-sort-up-fill"></i> }
+                      @case ('desc') { <i class="pi pi-sort-down-fill"></i> }
+                      @default { <i class="pi pi-sort-alt"></i> }
+                    }
+                  </span>
+                }
+              </div>
+            </th>
+          }
+
+          @if (actions().length && hasVisibleActions()) {
+            <th class="action-header">{{ 'shared.actions' | translate }}</th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (rowData of data(); track $index) {
+          <tr class="body-row" [ngClass]="{
+              expanded: rowData.isExpanded,
+              collapsed: !rowData.isExpanded,
+            }">
+            <!-- Selection cell -->
+            @if (canSelect()) {
+              <td class="select-col">
+                <input type="checkbox" [checked]="isRowSelected(rowData)" (change)="
+                    toggleRowSelection(rowData, $any($event.target).checked)
+                  " />
+              </td>
+            }
+
+            @for (col of columns(); track col.field ?? $index) {
+              <td class="body-data" [ngClass]="{ 'd-none': col.hidden }"
+                [style.width]="col.width" [style.minWidth]="col.width"
+                [pTooltip]="getCellTooltip(rowData, col)!"
+                tooltipPosition="top"
+                [tooltipDisabled]="!getCellTooltip(rowData, col)">
+                @if (!col.hidden) {
+                  <div class="f-width-large">
+
+                    <!-- Custom, per-column template supplied by the parent (highest priority) -->
+                    @if (getColumnTemplate(col.field); as customTpl) {
+                      <ng-container *ngTemplateOutlet="customTpl; context: {
+                          $implicit: rowData[col.field],
+                          value: rowData[col.field],
+                          row: rowData,
+                          column: col
+                        }"></ng-container>
+                    } @else {
+                      <!-- Built-in cell rendering (unchanged behavior) -->
+                      @if (rowData[col.field] || rowData[col.field] === 0 || rowData[col.field] === false) {
+                        <div [ngSwitch]="col.type" class="unicode-plainText">
+                          <div *ngSwitchCase="TableHeaderType.Date">
+                            <app-native-data-cell [value]="rowData[col.field]" [column]="col" (click)="onTitleClicked(rowData, col)"
+                              (keydown)="onTitleClicked(rowData, col)"></app-native-data-cell>
+                          </div>
+
+                          <div *ngSwitchCase="TableHeaderType.Enum">
+                            <app-native-enum-cell [value]="rowData[col.field]" [column]="col" (click)="onTitleClicked(rowData, col)"
+                              (keydown)="onTitleClicked(rowData, col)"></app-native-enum-cell>
+                          </div>
+
+                          <div *ngSwitchCase="TableHeaderType.ColorCircle" class="d-flex align-items-center">
+                            <div class="color-circle" [style.backgroundColor]="rowData[col.field]"
+                              [attr.title]="rowData[col.field]"></div>
+                            <span class="ml-2">
+                              <i class="pi pi-stop-circle me-2" [style.color]="rowData[col.field]"></i>
+                            </span>
+                          </div>
+                          <div *ngSwitchCase="TableHeaderType.List">
+                            <app-native-list-cell [value]="rowData[col.field]" [column]="col"></app-native-list-cell>
+                          </div>
+
+                          <div *ngSwitchDefault>
+                            <app-native-default-cell [value]="rowData[col.field]" [dynamicStyle]="
+                                col.dynamicStyle ? rowData[col.dynamicStyle] : ''
+                              " [column]="col" (click)="onTitleClicked(rowData, col)"
+                              (keydown)="onTitleClicked(rowData, col)"></app-native-default-cell>
+                          </div>
+                        </div>
+
+                        @if (rowData[col!.extraCellData!]) {
+                          <span class="font-regular-medium text-grey d-block ellipsis-large-text">
+                            {{ rowData[col!.extraCellData!] }}
+                          </span>
+                        }
+                      } @else {
+                        @if (col.nullValue) {
+                          {{ col.nullValue }}
+                        } @else {
+                          -
+                        }
+                      }
+                    }
+                  </div>
+                }
+              </td>
+            }
+
+            <!-- Actions: fully generic, config-driven -->
+            @if (hasVisibleActions()) {
+              <td class="action-column">
+                @if (actions().length) {
+                  <div class="actions-wrapper">
+                    @for (action of rowActions(rowData); track trackByKey($index, action)) {
+                      @if (meetsCondition(action, rowData)) {
+                        @switch (action.type || 'icon') {
+
+                          @case ('badge') {
+                            <span class="badge badge-permission pointer" [ngClass]="action.cssClass"
+                              (click)="onActionClick(rowData, action.key)">
+                              {{ action.label | translate }}
+                            </span>
+                          }
+
+                          @case ('link') {
+                            <a class="table-link-action pointer" [ngClass]="action.cssClass"
+                              (click)="onActionClick(rowData, action.key)">
+                              {{ action.label | translate }}
+                            </a>
+                          }
+
+                          @case ('button') {
+                            <button class="table-btn-action" [ngClass]="action.cssClass"
+                              (click)="onActionClick(rowData, action.key)">
+                              @if (action.icon) {
+                                <em [class]="action.icon"></em>
+                              }
+                              <span>{{ action.label | translate }}</span>
+                            </button>
+                          }
+
+                          @case ('toggle') {
+                            <button class="toggle-button" [ngClass]="action.cssClass"
+                              (click)="onActionClick(rowData, action.key)">
+                              @if (action.icon) {
+                                <em [class]="action.icon"></em>
+                              }
+                              <span>{{ getToggleLabel(action, rowData) }}</span>
+                            </button>
+                          }
+
+                          @case ('menu') {
+                            <em class="pi pi-ellipsis-v pointer" [ngClass]="action.cssClass"
+                              (click)="toggleGenericMenu(genericMenu, $event, rowData, action)"></em>
+                            <p-menu #genericMenu [popup]="true" [model]="genericMenuItems()" appendTo="body"></p-menu>
+                          }
+
+                          @default {
+                            <em class="pointer" [class]="action.icon!" [ngClass]="action.cssClass"
+                              (click)="onActionClick(rowData, action.key)"></em>
+                          }
+                        }
+                      } @else {
+                        @if (action.emptyPlaceholder !== '') {
+                          <span>{{ action.emptyPlaceholder || '--' }}</span>
+                        }
+                      }
+                    }
+                  </div>
+                }
+              </td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Native paginator -->
+  @if (alwaysShowPaginator() || (totalRecordsLength() ?? 0) > 0) {
+    <div class="native-paginator">
+      <div class="paginator-current">
+        {{ pageReportText() }}
+      </div>
+
+      <div class="paginator-actions">
+        <button type="button" class="pg-btn" (click)="goToFirst()" [disabled]="pageNumber() <= 1">
+          «
+        </button>
+        <button type="button" class="pg-btn" (click)="prevPage()" [disabled]="pageNumber() <= 1">
+          ‹
+        </button>
+
+        <span class="pg-pages">
+          @for (p of visiblePages(); track p) {
+            <button type="button" class="pg-page"
+              [class.active]="p === pageNumber()" (click)="goToPage(p)">
+              {{ p }}
+            </button>
+          }
+        </span>
+
+        <button type="button" class="pg-btn" (click)="nextPage()" [disabled]="pageNumber() >= totalPages()">
+          ›
+        </button>
+        <button type="button" class="pg-btn" (click)="goToLast()" [disabled]="pageNumber() >= totalPages()">
+          »
+        </button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (loading()) {
+  <app-native-table-loading></app-native-table-loading>
+}

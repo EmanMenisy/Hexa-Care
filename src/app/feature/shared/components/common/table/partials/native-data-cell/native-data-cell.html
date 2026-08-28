@@ -1,0 +1,8 @@
+<span class="text-blue unicode-plainText {{ column().cssClass }}" [ngClass]="{ clickable: column().isClickable }">
+  {{ value() | date: column().dateFormat || 'dd/MM/yyyy' }}
+  @if (column().extraColumnData) {
+    <span class="font-regular-medium text-blue unicode-plainText">
+      {{ column().extraColumnData }}
+    </span>
+  }
+</span>

@@ -1,0 +1,27 @@
+<span
+  class="list-cell text-blue unicode-plainText"
+  [class]="column().cssClass"
+>
+  <span class="first-item">
+    {{ firstItem() }}
+  </span>
+
+  @if (restItems().length > 0) {
+    <span
+      class="more-badge"
+      (click)="popover.toggle($event)"
+    >
+      +{{ restItems().length }}
+    </span>
+  }
+
+  <p-popover #popover>
+    <div class="list-popover">
+      @for (item of restItems(); track $index) {
+        <div class="popover-item">
+          {{ item }}
+        </div>
+      }
+    </div>
+  </p-popover>
+</span>

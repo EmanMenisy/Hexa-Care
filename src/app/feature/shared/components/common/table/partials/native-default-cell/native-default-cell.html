@@ -1,0 +1,11 @@
+<span
+  class="text-blue unicode-plainText {{ column().cssClass }} {{ dynamicStyle() }}"
+  [ngClass]="{ clickable: column().isClickable }"
+>
+  {{ value() }}
+  @if (column().extraColumnData) {
+    <span class="font-regular-medium text-blue unicode-plainText">
+      {{ column().extraColumnData }}
+    </span>
+  }
+</span>
