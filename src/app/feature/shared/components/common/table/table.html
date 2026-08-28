@@ -54,10 +54,7 @@
 
             @for (col of columns(); track col.field ?? $index) {
               <td class="body-data" [ngClass]="{ 'd-none': col.hidden }"
-                [style.width]="col.width" [style.minWidth]="col.width"
-                [pTooltip]="getCellTooltip(rowData, col)!"
-                tooltipPosition="top"
-                [tooltipDisabled]="!getCellTooltip(rowData, col)">
+                [style.width]="col.width" [style.minWidth]="col.width">
                 @if (!col.hidden) {
                   <div class="f-width-large">
 

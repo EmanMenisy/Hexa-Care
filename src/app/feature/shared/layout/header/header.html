@@ -6,7 +6,7 @@
 
   <div class="header-actions">
     <hexa-button label="Create" [icon]="'pi pi-plus'" [iconPos]="'left'"></hexa-button>
-    <hexa-button  [severity]="'secondary'" label="ع" [icon]="'pi pi-language'" [iconPos]="'left'"></hexa-button>
+    <hexa-button  [severity]="'secondary'" [label]="currentLang() === 'en' ? 'ع' : 'En'" [icon]="'pi pi-language'" [iconPos]="'left'" (clicked)="toggleLanguage()"></hexa-button>
     <hexa-button  [severity]="'secondary'" [icon]="isDarkMode ? 'pi pi-sun':'pi pi-moon'" [iconPos]="'center'"></hexa-button>
     <hexa-button  [severity]="'secondary'" [icon]=" 'pi pi-comments'" [iconPos]="'center'"></hexa-button>
 

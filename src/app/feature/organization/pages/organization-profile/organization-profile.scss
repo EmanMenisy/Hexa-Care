@@ -1,0 +1,218 @@
+.org-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-inline: 8px;
+
+  &__identity {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #eef4fb, #f8fbff);
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  &__logo-wrapper {
+    inline-size: 90px;
+    block-size: 90px;
+    flex-shrink: 0;
+  }
+
+  &__logo {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  &__identity-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__name {
+    margin: 0 0 4px;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  &__meta {
+    color: #6b7280;
+    font-size: 13px;
+  }
+
+  &__upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-block-start: 10px;
+    padding: 6px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    background: #fff;
+    width: fit-content;
+
+    &:hover {
+      background: #f9fafb;
+    }
+  }
+
+  &__kpis {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .org-profile__kpi-item {
+    flex: 1 1 180px;
+    min-width: 0;
+  }
+
+  &__section {
+    background: #fff;
+    border: 1px solid #eef0f2;
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+
+    &--full {
+      margin-block-end: 16px;
+    }
+
+    label {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    input {
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+
+      &:disabled {
+        background: #f9fafb;
+        color: #6b7280;
+        cursor: not-allowed;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #2563eb;
+      }
+
+      &.ng-invalid.ng-touched {
+        border-color: #dc2626;
+      }
+    }
+  }
+
+  &__error {
+    font-size: 11px;
+    color: #dc2626;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+// ===== Operational capacity table badges =====
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &--criticalCare {
+    background: #fdeaea;
+    color: #d9455f;
+  }
+
+  &--operations {
+    background: #e6f6ee;
+    color: #1f9d55;
+  }
+
+  &--clinics {
+    background: #f1f2f4;
+    color: #6b7280;
+  }
+
+  &--equipment {
+    background: #fdf1e0;
+    color: #b6791f;
+  }
+}
+
+.classification-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #e3f2fb;
+  color: #2563a6;
+
+  &--empty {
+    background: transparent;
+    color: #9ca3af;
+    padding-inline: 4px;
+    font-weight: 400;
+  }
+}
+
+.role-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &--active {
+    color: #1f9d55;
+  }
+
+  &--inactive {
+    color: #9ca3af;
+  }
+}

@@ -32,7 +32,10 @@
     "apply": "Apply",
     "cancel": "Cancel",
     "next": "Next",
-    "save": "Save"
+    "save": "Save",
+    "newItem":"New Item",
+    "edit":"Edit",
+    "delete":"Delete"
   },
   "login": {
     "language": "English",
@@ -115,7 +118,8 @@
         }
       }
     }
-  },"employee": {
+  },
+  "employee": {
     "personal_info": {
       "title": "Personal Information",
       "first_name": "First Name",
@@ -162,6 +166,74 @@
       "emergency_contact_placeholder": "contact name",
       "emergency_phone": "Emergency Phone",
       "emergency_phone_placeholder": "phone number"
+    }
+  },
+   "organization": {
+    "organizationProfile": {
+      "identity": {
+        "logoAlt": "logo",
+        "uploadLogo": "Upload / change logo"
+      },
+      "kpis": {
+        "totalBeds": "Total Beds",
+        "criticalCare": "Critical Care",
+        "operationRooms": "Operation Rooms",
+        "clinics": "Clinics",
+        "departments": "Departments",
+        "rooms": "Rooms",
+        "vsLastPeriod": "vs last period"
+      },
+      "table": {
+        "sectionTitle": "Operational capacity",
+        "headers": {
+          "rank": "rank",
+          "item": "item",
+          "category": "category",
+          "classification": "classification",
+          "count": "count",
+          "unit": "unit",
+          "status": "status"
+        },
+        "categories": {
+          "criticalCare": "Critical care",
+          "operations": "Operations",
+          "clinics": "Clinics",
+          "equipment": "Equipment"
+        },
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        }
+      },
+      "basicData": {
+        "sectionTitle": "Basic data",
+        "nameAr": "Name (Arabic)",
+        "nameEn": "Name (English)",
+        "commercialRegister": "Commercial register",
+        "taxNumber": "Tax number",
+        "licenseNumber": "License number",
+        "currency": "Currency"
+      },
+      "contactData": {
+        "sectionTitle": "Contact data",
+        "address": "Address",
+        "city": "City",
+        "country": "Country",
+        "phone1": "Phone 1",
+        "phone2": "Phone 2",
+        "fax": "Fax",
+        "email": "Email",
+        "website": "Website",
+        "invalidEmail": "Invalid email"
+      },
+      "administration": {
+        "sectionTitle": "Administration",
+        "hospitalManager": "Hospital manager",
+        "managerPhone": "Manager phone",
+        "managerEmail": "Manager email",
+        "medicalDirector": "Medical director",
+        "invalidEmail": "Invalid email"
+      }
     }
   }
 }

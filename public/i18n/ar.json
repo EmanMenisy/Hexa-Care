@@ -2,19 +2,23 @@
   "shared": {
     "sorting": "الترتيب",
     "sortBy": "ترتيب حسب",
-    "firstOnTop": "الأقدم في الأعلى",
-    "lastOnTop": "الأحدث في الأعلى",
+    "firstOnTop": "الأول المضاف في الأعلى",
+    "lastOnTop": "الأخير المضاف في الأعلى",
     "optional": "اختياري",
-    "loading": "جاري التحميل ...",
-    "mainInformation": "المعلومات الأساسية",
-    "structureAssignation": "تعيين الهيكل",
+    "loading": "جارٍ التحميل...",
+    "mainInformation": "المعلومات الرئيسية",
+    "structureAssignation": "تعيين الهيكل التنظيمي",
+    "showing": "عرض",
+    "to": "إلى",
+    "of": "من",
+    "actions": "الإجراءات",
     "dropdown": {
-      "select": "اختر",
-      "noItems": "لا توجد بيانات",
+      "select": "يرجى الاختيار",
+      "noItems": "لم يتم العثور على عناصر",
       "search": "بحث"
     },
     "assignStructure": {
-      "toggleBtn": "تعيين لهيكل تنظيمي محدد",
+      "toggleBtn": "تعيين لهيكل محدد",
       "selectCompany": "اختر الشركة",
       "selectBranch": "اختر الفرع",
       "selectDepartment": "اختر القسم",
@@ -28,34 +32,37 @@
     "apply": "تطبيق",
     "cancel": "إلغاء",
     "next": "التالي",
-    "save": "حفظ"
-  }
-  ,
+    "save": "حفظ",
+    "newItem": "عنصر جديد",
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
   "login": {
-    "language": "العربية",
+    "language": "اللغة",
     "arabic": "العربية",
     "english": "الإنجليزية",
-    "unifiedHealthcarePlatform": "منصة صحية موحدة",
-    "title": "هيكسا كير",
-    "description": "منصة لإدارة المطالبات والتعويضات بين المستشفيات وشركات التأمين — بدءًا من الموافقة وحتى التحصيل والمتابعة وإعداد التقارير، كل ذلك في مكان واحد.",
+
+    "unifiedHealthcarePlatform": "منصة رعاية صحية موحدة",
+    "title": "Hexa-Care",
+    "description": "منصة لإدارة عمليات الاسترداد والمطالبات بين المستشفيات وشركات التأمين — بدءًا من الموافقة وحتى التحصيل وإعداد التقارير، كل ذلك في مكان واحد..",
     "features": {
       "contractsCoverage": {
         "title": "العقود والتغطية",
-        "description": "عقود رقمية، تكامل محكم مع شركات التأمين، وتحديثات استباقية."
+        "description": "عقود رقمية، وتكامل محكم مع شركات التأمين، وتحديثات استباقية.."
       },
       "claimsLifecycle": {
         "title": "دورة حياة المطالبات بالكامل",
-        "description": "من طلب الموافقة وحتى التحصيل والمتابعة والملفات."
+        "description": "بدءًا من طلب الموافقة وحتى التحصيل والمتابعة والملفات..."
       },
       "realTimeAnalytics": {
-        "title": "التحليلات في الوقت الفعلي",
-        "description": "تقارير تفاعلية ولوحات مؤشرات KPI لاتخاذ قرارات أسرع وأكثر دقة."
+        "title": "التحليلات الفورية",
+        "description": "تقارير تفاعلية ولوحات مؤشرات الأداء الرئيسية لاتخاذ قرارات أكثر دقة وسرعة.."
       }
     },
 
     "copyright": "© Hexa-Care 2026 · جميع الحقوق محفوظة.",
     "welcomeBack": "مرحبًا بعودتك 👋",
-    "signInSubtitle": "سجّل الدخول للوصول إلى لوحة التحكم",
+    "signInSubtitle": "سجّل الدخول للوصول إلى لوحة التحكم الخاصة بك",
     "username": "اسم المستخدم",
     "usernamePlaceholder": "اسم المستخدم",
     "usernameRequired": "اسم المستخدم مطلوب.",
@@ -69,19 +76,19 @@
     "noAccount": "ليس لديك حساب؟",
     "createAccount": "إنشاء حساب"
   },
-   "configurations": {
+  "configurations": {
     "role": {
       "create": {
         "header": {
           "title": "إنشاء دور",
-          "subtitle": "إنشاء دور جديد وتعيين الصلاحيات الخاصة به"
+          "subtitle": "إنشاء دور جديد وتعيين صلاحياته"
         },
         "name": {
           "label": "اسم الدور",
           "placeholder": "أدخل اسم الدور",
           "errors": {
             "required": "اسم الدور مطلوب",
-            "minLength": "يجب ألا يقل اسم الدور عن 3 أحرف"
+            "minLength": "يجب أن يتكون اسم الدور من 3 أحرف على الأقل"
           }
         },
         "description": {
@@ -89,14 +96,14 @@
           "placeholder": "أدخل وصف الدور"
         },
         "roleCode": {
-          "label": "كود الدور",
-          "placeholder": "أدخل كود الدور",
+          "label": "رمز الدور",
+          "placeholder": "أدخل رمز الدور",
           "errors": {
-            "required": "كود الدور مطلوب"
+            "required": "رمز الدور مطلوب"
           }
         },
         "activeRole": {
-          "label": "الدور نشط"
+          "label": "الدور النشط"
         },
         "parentRole": {
           "label": "الدور الرئيسي",
@@ -106,14 +113,15 @@
           }
         },
         "copyFeatures": {
-          "label": "نسخ الصلاحيات من",
-          "placeholder": "اختر دورًا لنسخ الصلاحيات منه"
+          "label": "نسخ الميزات من",
+          "placeholder": "اختر دورًا لنسخ الميزات منه"
         }
       }
     }
-  }, "employee": {
+  },
+  "employee": {
     "personal_info": {
-      "title": "البيانات الشخصية",
+      "title": "المعلومات الشخصية",
       "first_name": "الاسم الأول",
       "first_name_placeholder": "أدخل الاسم الأول",
       "second_name": "الاسم الثاني",
@@ -124,12 +132,12 @@
       "last_name_placeholder": "أدخل اسم العائلة",
       "name_english": "الاسم باللغة الإنجليزية",
       "name_english_placeholder": "أدخل الاسم باللغة الإنجليزية",
-      "gender": "النوع",
-      "gender_placeholder": "اختر النوع",
+      "gender": "الجنس",
+      "gender_placeholder": "اختر الجنس",
       "date_of_birth": "تاريخ الميلاد",
       "date_of_birth_placeholder": "اختر تاريخ الميلاد",
       "age": "العمر",
-      "years": "سنة",
+      "years": "سنوات",
       "nationality": "الجنسية",
       "nationality_placeholder": "أدخل الجنسية",
       "marital_status": "الحالة الاجتماعية",
@@ -139,11 +147,11 @@
       "phone": "رقم الهاتف",
       "phone_placeholder": "أدخل رقم الهاتف",
       "email": "البريد الإلكتروني",
-      "email_placeholder": "أدخل البريد الإلكتروني"
+      "email_placeholder": "أدخل عنوان البريد الإلكتروني"
     },
 
     "contact_info": {
-      "title": "بيانات الاتصال",
+      "title": "معلومات الاتصال",
       "address": "العنوان",
       "address_placeholder": "أدخل العنوان",
       "city": "المدينة",
@@ -155,9 +163,77 @@
       "country": "الدولة",
       "country_placeholder": "أدخل الدولة",
       "emergency_contact": "جهة اتصال للطوارئ",
-      "emergency_contact_placeholder": "جهة اتصال الطوارئ",
-      "emergency_phone": "رقم هاتف الطوارئ",
-      "emergency_phone_placeholder": "هاتف الطوارئ"
+      "emergency_contact_placeholder": "اسم جهة الاتصال",
+      "emergency_phone": "هاتف الطوارئ",
+      "emergency_phone_placeholder": "رقم الهاتف"
+    }
+  },
+  "organization": {
+    "organizationProfile": {
+      "identity": {
+        "logoAlt": "الشعار",
+        "uploadLogo": "رفع / تغيير الشعار"
+      },
+      "kpis": {
+        "totalBeds": "إجمالي الأسرة",
+        "criticalCare": "الرعاية الحرجة",
+        "operationRooms": "غرف العمليات",
+        "clinics": "العيادات",
+        "departments": "الأقسام",
+        "rooms": "الغرف",
+        "vsLastPeriod": "مقارنة بالفترة السابقة"
+      },
+      "table": {
+        "sectionTitle": "القدرة التشغيلية",
+        "headers": {
+          "rank": "الترتيب",
+          "item": "العنصر",
+          "category": "الفئة",
+          "classification": "التصنيف",
+          "count": "العدد",
+          "unit": "الوحدة",
+          "status": "الحالة"
+        },
+        "categories": {
+          "criticalCare": "الرعاية الحرجة",
+          "operations": "العمليات",
+          "clinics": "العيادات",
+          "equipment": "المعدات"
+        },
+        "status": {
+          "active": "نشط",
+          "inactive": "غير نشط"
+        }
+      },
+      "basicData": {
+        "sectionTitle": "البيانات الأساسية",
+        "nameAr": "الاسم (بالعربية)",
+        "nameEn": "الاسم (بالإنجليزية)",
+        "commercialRegister": "السجل التجاري",
+        "taxNumber": "الرقم الضريبي",
+        "licenseNumber": "رقم الترخيص",
+        "currency": "العملة"
+      },
+      "contactData": {
+        "sectionTitle": "بيانات الاتصال",
+        "address": "العنوان",
+        "city": "المدينة",
+        "country": "الدولة",
+        "phone1": "الهاتف 1",
+        "phone2": "الهاتف 2",
+        "fax": "الفاكس",
+        "email": "البريد الإلكتروني",
+        "website": "الموقع الإلكتروني",
+        "invalidEmail": "البريد الإلكتروني غير صالح"
+      },
+      "administration": {
+        "sectionTitle": "الإدارة",
+        "hospitalManager": "مدير المستشفى",
+        "managerPhone": "هاتف المدير",
+        "managerEmail": "البريد الإلكتروني للمدير",
+        "medicalDirector": "المدير الطبي",
+        "invalidEmail": "البريد الإلكتروني غير صالح"
+      }
     }
   }
 }

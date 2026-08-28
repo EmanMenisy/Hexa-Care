@@ -6,19 +6,15 @@ import { Component } from '@angular/core';
 import { Role } from './feature/configuration/role/pages/role';
 import { Premissions } from './feature/configuration/premissions/pages/premissions/premissions';
 import { EmployeeCreation } from './feature/employee/partials/employee-creation/employee-creation';
+import { OrganizationProfile } from './feature/organization/pages/organization-profile/organization-profile';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo:'login',
-    pathMatch: 'full',
-  },
   {
     path: 'login',
     component: Login,
   },
   {
-    path: 'layout',
+    path: '',
     // canActivate:[authGuard],
     component: Layout,
      children:[
@@ -39,6 +35,31 @@ export const routes: Routes = [
         }
       },
       {path:'premission' , component:Premissions},
+      {path:'organizationProfile' , component:OrganizationProfile,
+        data:{
+          header:{
+            title:"Organization Profile",
+            subtitle:"Identity, basic, operational, contact and administration data",
+            buttons:[
+              {
+                label:"buttons.edit",
+                icon:'pi pi-pen-to-square',
+                action:'edit',
+              },
+               {
+                label:"buttons.cancel",
+                action:'cancel',
+                severity:'secondary'
+              },
+               {
+                label:"buttons.save",
+                icon:'pi pi-save',
+                action:'save'
+              }
+            ]
+          }
+        }
+      },
     ]
   },
 ];

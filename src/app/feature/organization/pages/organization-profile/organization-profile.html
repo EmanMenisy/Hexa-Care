@@ -1,0 +1,206 @@
+<div class="org-profile">
+  <div class="org-profile__identity">
+    <div class="org-profile__logo-wrapper">
+      <img
+        class="org-profile__logo"
+        [src]="logoUrl() ?? 'assets/images/default-org-logo.png'"
+        alt="logo"
+      />
+    </div>
+
+    <div
+  class="org-profile__identity-info"
+>
+  <h2 class="org-profile__name">
+    {{ form.get('basicData.nameEn')?.value }}
+  </h2>
+
+  <span class="org-profile__meta">
+    {{ form.get('basicData.currency')?.value }} ·
+    {{ form.get('basicData.licenseNumber')?.value }}
+  </span>
+
+  @if (isEditMode()) {
+    <label class="org-profile__upload-btn">
+      <i class="pi pi-upload"></i>
+      {{'organization.organizationProfile.identity.uploadLogo'|translate}}
+
+      <input
+        type="file"
+        accept="image/*"
+        hidden
+        (change)="onLogoSelected($event)"
+      />
+    </label>
+  }
+</div>
+  </div>
+
+  <div class=" org-profile__kpis">
+    @for (kpi of kpis(); track kpi.label) {
+      <app-kpi-card
+        class="org-profile__kpi-item"
+        [label]="kpi.label"
+        [value]="kpi.value"
+        [icon]="kpi.icon"
+        [iconBg]="kpi.iconBg"
+        [trend]="kpi.trend"
+        [trendLabel]="kpi.trendLabel"
+      />
+    }
+  </div>
+  <div class="table-card  m-0">
+    <section class="org-profile__section" >
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="org-profile__section-title">
+          <i class="pi pi-building header-icon"></i>
+           {{'organization.organizationProfile.table.sectionTitle'|translate}}
+        </h3>
+        <hexa-button [label]="'buttons.newItem'|translate" [icon]="'pi pi-plus'"></hexa-button>
+      </div>
+      <app-table
+      [data]="capacityList()"
+      [columns]="tableColumns"
+      [actions]="tableActions"
+      [loading]="pageStatus === PageStatus.Loading"
+      [sortField]="activeSortField"
+      [sortOrder]="activeSortAscending"
+      (sortChanged)="onSortChanged($event)"
+      [totalRecordsLength]="totalRecordsLength"
+      [pageSize]="capacityRequest.pageSize"
+      [pageNumber]="capacityRequest.pageNumber"
+      (pageNumberChange)="getAllCapacities($event)"
+      (actionClicked)="onTableAction($event)"
+      [canSelect]="false"
+    >
+      <ng-template hexaColumnTemplate="category" let-value>
+        <span class="category-badge" [ngClass]="'category-badge--' + value.key">
+          <i [class]="value.icon"></i>
+          {{ value.label }}
+        </span>
+      </ng-template>
+      <ng-template hexaColumnTemplate="classification" let-value>
+        @if (value) {
+          <span class="classification-badge">{{ value }}</span>
+        } @else {
+          <span class="classification-badge classification-badge--empty">–</span>
+        }
+      </ng-template>
+      <ng-template hexaColumnTemplate="isActive" let-value let-row="row">
+        <span class="role-status" [class.role-status--active]="value" [class.role-status--inactive]="!value">
+          {{ value ? 'Active' : 'Inactive' }}
+        </span>
+      </ng-template>
+    </app-table>
+    </section>
+  </div>
+  <form [formGroup]="form" class="org-profile__form">
+    <section class="org-profile__section" formGroupName="basicData">
+      <h3 class="org-profile__section-title">
+        <i class="pi pi-building header-icon"></i>
+        {{'organization.organizationProfile.basicData.sectionTitle'|translate}}
+      </h3>
+      <div class="org-profile__grid">
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.basicData.nameAr'|translate}}</label>
+          <input type="text" formControlName="nameAr" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.basicData.nameEn'|translate}}</label>
+          <input type="text" formControlName="nameEn" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.basicData.commercialRegister'|translate}}</label>
+          <input type="text" formControlName="commercialRegister" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.basicData.taxNumber'|translate}}</label>
+          <input type="text" formControlName="taxNumber" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.basicData.licenseNumber'|translate}}</label>
+          <input type="text" formControlName="licenseNumber" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.basicData.currency'|translate}}</label>
+          <input type="text" formControlName="currency" />
+        </div>
+      </div>
+    </section>
+
+    <section class="org-profile__section" formGroupName="contactData">
+      <h3 class="org-profile__section-title">
+        <i class="pi pi-phone header-icon"></i>
+        {{'organization.organizationProfile.contactData.sectionTitle'|translate}}
+      </h3>
+      <div class="org-profile__field org-profile__field--full">
+        <label>{{'organization.organizationProfile.contactData.address'|translate}}</label>
+        <input type="text" formControlName="address" />
+      </div>
+      <div class="org-profile__grid">
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.city'|translate}}</label>
+          <input type="text" formControlName="city" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.country'|translate}}</label>
+          <input type="text" formControlName="country" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.phone1'|translate}}</label>
+          <input type="text" formControlName="phone1" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.phone2'|translate}}</label>
+          <input type="text" formControlName="phone2" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.fax'|translate}}</label>
+          <input type="text" formControlName="fax" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.email'|translate}}</label>
+          <input type="email" formControlName="email" />
+          @if (  form.get('contactData.email')?.errors?.['email'] && form.get('contactData.email')?.touched) {
+            <span class="org-profile__error">{{'organization.organizationProfile.contactData.invalidEmail'|translate}}</span>
+          }
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.website'|translate}}</label>
+          <input type="text" formControlName="website" />
+        </div>
+      </div>
+    </section>
+
+    <section class="org-profile__section" formGroupName="administration">
+      <h3 class="org-profile__section-title">
+        <i class="pi pi-briefcase header-icon"></i>
+        {{'organization.organizationProfile.administration.sectionTitle'|translate}}
+      </h3>
+      <div class="org-profile__grid">
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.hospitalManager'|translate}}</label>
+          <input type="text" formControlName="hospitalManager" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.managerPhone'|translate}}</label>
+          <input type="text" formControlName="managerPhone" />
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.managerEmail'|translate}}</label>
+          <input type="email" formControlName="managerEmail" />
+                @if (
+            form.get('administration.managerEmail')?.errors?.['email'] &&
+            form.get('administration.managerEmail')?.touched
+            ) {
+            <span class="org-profile__error">{{'organization.organizationProfile.administration.invalidEmail'|translate}}</span>
+            }
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.medicalDirector'|translate}}</label>
+          <input type="text" formControlName="medicalDirector" />
+        </div>
+      </div>
+    </section>
+  </form>
+</div>

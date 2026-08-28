@@ -236,8 +236,6 @@ export class Role implements OnInit {
       pageNumber: pageNumber
     };
     const request = this.filterService.cleanRequest(this.roleRequest);
-    console.log(request);
-
     this.roleservice.getAllRoles(request).subscribe({
       next: (res) => {
         this.roleList.set(

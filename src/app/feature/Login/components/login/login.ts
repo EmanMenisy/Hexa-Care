@@ -109,7 +109,7 @@ export class Login{
       .subscribe({
         next: (res) => {
            console.log(res);
-          
+
           // Initialize user's access and permissions
           this.userAccessService.initialize(res.modules);
 
@@ -126,7 +126,7 @@ export class Login{
 
           // Navigate to the first accessible page
           // this.navigateAfterLogin();
-          this.router.navigate(['layout'])
+          this.router.navigate([''])
         },
 
         error: (err) => {
