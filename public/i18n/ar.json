@@ -111,5 +111,53 @@
         }
       }
     }
+  }, "employee": {
+    "personal_info": {
+      "title": "البيانات الشخصية",
+      "first_name": "الاسم الأول",
+      "first_name_placeholder": "أدخل الاسم الأول",
+      "second_name": "الاسم الثاني",
+      "second_name_placeholder": "أدخل الاسم الثاني",
+      "third_name": "الاسم الثالث",
+      "third_name_placeholder": "أدخل الاسم الثالث",
+      "last_name": "اسم العائلة",
+      "last_name_placeholder": "أدخل اسم العائلة",
+      "name_english": "الاسم باللغة الإنجليزية",
+      "name_english_placeholder": "أدخل الاسم باللغة الإنجليزية",
+      "gender": "النوع",
+      "gender_placeholder": "اختر النوع",
+      "date_of_birth": "تاريخ الميلاد",
+      "date_of_birth_placeholder": "اختر تاريخ الميلاد",
+      "age": "العمر",
+      "years": "سنة",
+      "nationality": "الجنسية",
+      "nationality_placeholder": "أدخل الجنسية",
+      "marital_status": "الحالة الاجتماعية",
+      "marital_status_placeholder": "اختر الحالة الاجتماعية",
+      "blood_group": "فصيلة الدم",
+      "blood_group_placeholder": "اختر فصيلة الدم",
+      "phone": "رقم الهاتف",
+      "phone_placeholder": "أدخل رقم الهاتف",
+      "email": "البريد الإلكتروني",
+      "email_placeholder": "أدخل البريد الإلكتروني"
+    },
+
+    "contact_info": {
+      "title": "بيانات الاتصال",
+      "address": "العنوان",
+      "address_placeholder": "أدخل العنوان",
+      "city": "المدينة",
+      "city_placeholder": "أدخل المدينة",
+      "governorate": "المحافظة",
+      "governorate_placeholder": "أدخل المحافظة",
+      "postal_code": "الرمز البريدي",
+      "postal_code_placeholder": "أدخل الرمز البريدي",
+      "country": "الدولة",
+      "country_placeholder": "أدخل الدولة",
+      "emergency_contact": "جهة اتصال للطوارئ",
+      "emergency_contact_placeholder": "جهة اتصال الطوارئ",
+      "emergency_phone": "رقم هاتف الطوارئ",
+      "emergency_phone_placeholder": "هاتف الطوارئ"
+    }
   }
 }

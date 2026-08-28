@@ -1,1 +1,277 @@
-<p>personal-information works!</p>
+
+
+<div class="container-fluid">
+  <form [formGroup]="formGroup()" class="personal-info">
+
+  <!-- Personal Information -->
+  <section class="card">
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <span class="icon-wrapper"><i class="pi pi-user"></i> </span>
+      <h3 class="section-title">{{ 'employee.personal_info.title' | translate }}</h3>
+    </div>
+
+    <div class="row g-3">
+
+      <!-- First Name -->
+      <div class="col-md-3">
+        <label class="field-label">
+          {{ 'employee.personal_info.first_name' | translate }}
+          <span class="text-danger">*</span>
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.first_name_placeholder' | translate"
+          formControlName="firstName"
+        />
+      </div>
+
+      <!-- Second Name -->
+      <div class="col-md-3">
+        <label class="field-label">
+          {{ 'employee.personal_info.second_name' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.second_name_placeholder' | translate"
+          formControlName="secondName"
+        />
+      </div>
+
+      <!-- Third Name -->
+      <div class="col-md-3">
+        <label class="field-label">
+          {{ 'employee.personal_info.third_name' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.third_name_placeholder' | translate"
+          formControlName="thirdName"
+        />
+      </div>
+
+      <!-- Last Name -->
+      <div class="col-md-3">
+        <label class="field-label">
+          {{ 'employee.personal_info.last_name' | translate }}
+          <span class="text-danger">*</span>
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.last_name_placeholder' | translate"
+          formControlName="lastName"
+        />
+      </div>
+
+      <!-- English Name -->
+      <div class="col-12">
+        <label class="field-label">
+          {{ 'employee.personal_info.name_english' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.name_english_placeholder' | translate"
+          formControlName="nameEnglish"
+        />
+      </div>
+
+      <!-- Gender -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.personal_info.gender' | translate }}
+        </label>
+
+        <hexa-dropdown
+          [placeholder]="'employee.personal_info.gender_placeholder' | translate"
+          [options]="genderOptions"
+          formControlName="gender"
+        />
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.personal_info.date_of_birth' | translate }}
+        </label>
+
+        <hexa-calender
+          [placeholder]="'employee.personal_info.date_of_birth_placeholder' | translate"
+          formControlName="dateOfBirth"
+        />
+      </div>
+
+      <!-- Age -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.personal_info.age' | translate }}
+        </label>
+        <hexa-input-text
+        [valueInput]="age() !== null? age() + ' ' + ('employee.personal_info.years' | translate)
+        : '-'"
+        [disabled]="true"
+        prefixIcon="pi pi-gift"
+        />
+      </div>
+
+      <!-- Nationality -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.personal_info.nationality' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.nationality_placeholder' | translate"
+          formControlName="nationality"
+        />
+      </div>
+
+      <!-- Marital Status -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.personal_info.marital_status' | translate }}
+        </label>
+
+        <hexa-dropdown
+          [placeholder]="'employee.personal_info.marital_status_placeholder' | translate"
+          [options]="maritalStatusOptions"
+          formControlName="maritalStatus"
+        />
+      </div>
+
+      <!-- Blood Group -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.personal_info.blood_group' | translate }}
+        </label>
+
+        <hexa-dropdown
+          [placeholder]="'employee.personal_info.blood_group_placeholder' | translate"
+          [options]="bloodGroupOptions"
+          formControlName="bloodGroup"
+        />
+      </div>
+
+      <!-- Phone -->
+      <div class="col-md-6">
+        <label class="field-label">
+          {{ 'employee.personal_info.phone' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.phone_placeholder' | translate"
+          formControlName="phone"
+        />
+      </div>
+
+      <!-- Email -->
+      <div class="col-md-6">
+        <label class="field-label">
+          {{ 'employee.personal_info.email' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.personal_info.email_placeholder' | translate"
+          type="email"
+          formControlName="email"
+        />
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- Contact Information -->
+  <section class="card">
+    <div class="d-flex align-items-center gap-2 mb-3">
+      <span class="icon-wrapper"><i class=" pi pi-map-marker"></i> </span>
+      <h3 class="section-title">{{ 'employee.contact_info.title' | translate }}</h3>
+    </div>
+    <div class="row g-3">
+
+      <!-- Address -->
+      <div class="col-12">
+        <label class="field-label">
+          {{ 'employee.contact_info.address' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.contact_info.address_placeholder' | translate"
+          formControlName="address"
+        />
+      </div>
+
+      <!-- City -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.contact_info.city' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.contact_info.city_placeholder' | translate"
+          formControlName="city"
+        />
+      </div>
+
+      <!-- Governorate -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.contact_info.governorate' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.contact_info.governorate_placeholder' | translate"
+          formControlName="governorate"
+        />
+      </div>
+
+      <!-- Postal Code -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.contact_info.postal_code' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.contact_info.postal_code_placeholder' | translate"
+          formControlName="postalCode"
+        />
+      </div>
+
+      <!-- Country -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.contact_info.country' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.contact_info.country_placeholder' | translate"
+          formControlName="country"
+        />
+      </div>
+
+      <!-- Emergency Contact -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.contact_info.emergency_contact' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.contact_info.emergency_contact_placeholder' | translate"
+          formControlName="emergencyContactName"
+        />
+      </div>
+
+      <!-- Emergency Phone -->
+      <div class="col-lg-2 col-md-4 col-12">
+        <label class="field-label">
+          {{ 'employee.contact_info.emergency_phone' | translate }}
+        </label>
+
+        <hexa-input-text
+          [placeholder]="'employee.contact_info.emergency_phone_placeholder' | translate"
+          formControlName="emergencyContactPhone"
+        />
+      </div>
+
+    </div>
+  </section>
+</form>
+</div>

@@ -131,6 +131,7 @@
               formControlName="username"
               prefixIcon="pi pi-user"
               class="w-100"
+              [hasError]="isInvalid('username')"
             ></hexa-input-text>
             @if (isInvalid('username')) {
               <small class="text-danger">
@@ -149,11 +150,11 @@
               id="password"
               class="w-100"
               [placeholder]="'login.passwordPlaceholder' | translate"
-              id="username"
               [type]="'password'"
               formControlName="password"
               prefixIcon="pi pi-lock"
               class="w-100"
+              [hasError]="isInvalid('password')"
             ></hexa-input-text>
 
             @if (isInvalid('password')) {

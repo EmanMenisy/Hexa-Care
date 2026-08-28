@@ -1,75 +1,85 @@
-<div class="hexa-input-text" [class.hasError]="hasError()" hexaRtl>
+<div>
   @if (prefixIcon() || prefixText()) {
     <p-iconfield>
       @if (prefixIcon()) {
-        <p-inputicon [ngClass]="prefixIcon()" (click)="prefixMethod()()"></p-inputicon>
+        <p-inputicon
+          [ngClass]="prefixIcon()"
+          (click)="prefixMethod()()"
+        />
       }
 
       @if (prefixText()) {
         <p-inputicon>
-          <span (click)="prefixMethod()()">{{ prefixText() }}</span>
+          <span (click)="prefixMethod()()">
+            {{ prefixText() }}
+          </span>
         </p-inputicon>
       }
 
-      <input
-        pInputText
-        [type]="type()"
-        [id]="inputId()"
-        [name]="inputName()"
-        [(ngModel)]="value"
-        [placeholder]="placeholder()"
-        [required]="required()"
-        [autocomplete]="autoComplete() ? 'on' : 'new-password'"
-        [disabled]="disabled"
-        [readonly]="readonly()"
-        [hidden]="hidden()"
-        [maxlength]="maxLength()"
-        [class.noBorder]="withoutBorder()"
-        [class.hasError]="hasError()"
-        [class.paddingEnd]="suffixIcon() || suffixText() || (canClear() && value)"
-        class="w-100"
-        (input)="emitInputTextValue($event)"
-        (blur)="onBlur()"
-        (keydown.enter)="onEnter()"
-      />
+      <ng-container *ngTemplateOutlet="inputTemplate"></ng-container>
+
     </p-iconfield>
   } @else {
-    <input
-      pInputText
-      [type]="type()"
-      [id]="inputId()"
-      [name]="inputName()"
-      [(ngModel)]="value"
-      [placeholder]="placeholder()"
-      [required]="required()"
-      [autocomplete]="autoComplete() ? 'on' : 'new-password'"
-      [disabled]="disabled"
-      [readonly]="readonly()"
-      [hidden]="hidden()"
-      [maxlength]="maxLength()"
-      [class.noBorder]="withoutBorder()"
-      [class.hasError]="hasError()"
-      [class.paddingEnd]="suffixIcon() || suffixText() || (canClear() && value)"
-      class="w-100"
-      (input)="emitInputTextValue($event)"
-      (blur)="onBlur()"
-      (keydown.enter)="onEnter()"
-    />
+    <ng-container *ngTemplateOutlet="inputTemplate"></ng-container>
   }
 
-  @if (canClear() && value) {
-    <em class="pi pi-times mb-0 px-4 suffix-icon" (click)="removeText()"></em>
+  @if (canClear() && displayValue && !disabledState) {
+    <em
+      class="pi pi-times mb-0 px-4 suffix-icon"
+      (click)="removeText()"
+    ></em>
   }
 
   @if (suffixIcon() && iconType() === 'icon') {
-    <em [ngClass]="suffixIcon()" class="mb-0 px-4 suffix-icon" (click)="onSuffixIconClicked()"></em>
+    <em
+      [ngClass]="suffixIcon()"
+      class="mb-0 px-4 suffix-icon"
+      (click)="onSuffixIconClicked()"
+    ></em>
   }
 
   @if (suffixIcon() && iconType() === 'image') {
-    <img [src]="suffixIcon()" class="mb-0 px-4 suffix-icon" (click)="onSuffixIconClicked()" />
+    <img
+      [src]="suffixIcon()"
+      class="mb-0 px-4 suffix-icon"
+      (click)="onSuffixIconClicked()"
+    />
   }
 
   @if (suffixText()) {
-    <p class="text-nowrap mb-0 pe-2" (click)="suffixMethod()()">{{ suffixText() }}</p>
+    <p
+      class="text-nowrap mb-0 pe-2"
+      (click)="suffixMethod()()"
+    >
+      {{ suffixText() }}
+    </p>
   }
 </div>
+
+<ng-template #inputTemplate>
+  <input
+    pInputText
+    [type]="type()"
+    [id]="inputId()"
+    [name]="inputName()"
+    [value]="displayValue"
+    [placeholder]="placeholder()"
+    [required]="required()"
+    [autocomplete]="autoComplete() ? 'on' : 'new-password'"
+    [disabled]="disabledState"
+    [readonly]="readonly()"
+    [hidden]="hidden()"
+    [attr.maxlength]="maxLength()"
+    [class.noBorder]="withoutBorder()"
+    [invalid]="hasError()"
+    [class.paddingEnd]="
+      suffixIcon() ||
+      suffixText() ||
+      (canClear() && displayValue)
+    "
+    class="w-100"
+    (input)="emitInputTextValue($event)"
+    (blur)="onBlur()"
+    (keydown.enter)="onEnter()"
+  />
+</ng-template>

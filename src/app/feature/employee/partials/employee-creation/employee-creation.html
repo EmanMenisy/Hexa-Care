@@ -1,17 +1,11 @@
 <div class="creation-page">
-
   <div class="creation-page__stepper">
-    <hexa-creation-stepper
-      [steps]="steps()"
-      [(step)]="step"
-      [completedSteps]="completedSteps()"
-    />
+    <hexa-creation-stepper [steps]="steps()" [(step)]="step" [completedSteps]="completedSteps()" />
   </div>
-
   <div class="creation-page__content">
     @switch (step()) {
       @case (1) {
-        <!-- <hexa-personal-info /> -->
+        <hexa-personal-info [formGroup]="form.controls.personal"></hexa-personal-info>
       }
       @case (2) {
         <!-- <hexa-professional-info /> -->
@@ -25,28 +19,45 @@
     }
   </div>
 
-  <div class="creation-page__footer">
-    <div class="creation-page__footer-note">
-      <em class="pi pi-info-circle"></em>
-      <span>Fields marked * are required; the doctor code is generated automatically.</span>
-    </div>
+ <div
+  class="creation-page__footer
+         d-flex
+         flex-column flex-md-row
+         align-items-start align-items-md-center
+         justify-content-between
+         gap-3"
+>
+  <div class="creation-page__footer-note">
+    <em class="pi pi-info-circle"></em>
 
-    <div class="creation-page__footer-actions">
-      <button type="button" class="btn btn-outline" (click)="onCancel()">
-        Cancel
-      </button>
-
-      @if (!isLastStep) {
-        <button type="button" class="btn btn-primary" (click)="onNext()">
-          Next
-        </button>
-      } @else {
-        <button type="button" class="btn btn-primary" (click)="onSave()">
-          <em class="pi pi-save"></em>
-          Save doctor
-        </button>
-      }
-    </div>
+    <span>
+      Fields marked * are required; the doctor code is generated automatically.
+    </span>
   </div>
 
+  <div class="creation-page__footer-actions d-flex align-items-center gap-2">
+    <hexa-button
+      label="Cancel"
+      severity="secondary"
+      (clicked)="onCancel()"
+    ></hexa-button>
+
+    @if (!isLastStep) {
+      <hexa-button
+        label="Next"
+        severity="primary"
+        (clicked)="onNext()"
+      ></hexa-button>
+    } @else {
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="onSave()"
+      >
+        <em class="pi pi-save"></em>
+        Save doctor
+      </button>
+    }
+  </div>
+</div>
 </div>

@@ -1,10 +1,7 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   DestroyRef,
-  OnInit,
   TemplateRef,
   forwardRef,
   inject,
@@ -12,6 +9,7 @@ import {
   model,
   output,
 } from '@angular/core';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import {
@@ -43,29 +41,22 @@ import { Localization } from '../../../../../core/services/localization/localiza
     },
   ],
 })
-export class DropdownComponent
-  implements ControlValueAccessor, OnInit, AfterViewInit {
+export class DropdownComponent implements ControlValueAccessor {
 
   // =========================================================
   // VALUE
   // =========================================================
 
   /**
-   * Used when the dropdown is consumed outside Reactive Forms.
+   * Used when the dropdown is used without Reactive Forms.
    *
-   * Supports:
+   * Example:
    *
    * [(selectedValue)]="selectedRoleId"
    *
    * or:
    *
    * [selectedValue]="selectedRoleId()"
-   *
-   * The model() allows the child to update the parent's value
-   * ONLY when the parent binds it with [(selectedValue)].
-   * With one-way [selectedValue], the child updates its own
-   * copy only, and (dropdownChanged) stays the parent's
-   * independent notification channel.
    */
   readonly selectedValue = model<any>(null);
 
@@ -79,6 +70,13 @@ export class DropdownComponent
 
   readonly optionValue = input('value');
 
+  /**
+   * Placeholder comes directly from the parent.
+   *
+   * Example:
+   *
+   * [placeholder]="'employee.personal_info.gender_placeholder' | translate"
+   */
   readonly placeholder = input('');
 
   readonly showClear = input(false);
@@ -108,19 +106,13 @@ export class DropdownComponent
   // =========================================================
 
   /**
-   * Disabled state coming from Angular Forms.
-   *
-   * Example:
-   *
-   * formControl.disable()
+   * Disabled state coming from Angular Reactive Forms.
    */
   cvaDisabled = false;
 
   // =========================================================
   // TRANSLATIONS
   // =========================================================
-
-  placeholderText = '';
 
   emptyMessageText = '';
 
@@ -149,18 +141,7 @@ export class DropdownComponent
   // =========================================================
 
   /**
-   * Emits when the user changes the dropdown value.
-   *
-   * Useful for:
-   *
-   * - API calls
-   * - loading dependent dropdowns
-   * - resetting other fields
-   * - any custom business logic
-   *
-   * Example:
-   *
-   * (dropdownChanged)="onRoleChange($event)"
+   * Emits whenever the user changes the dropdown value.
    */
   readonly dropdownChanged = output<any>();
 
@@ -174,29 +155,17 @@ export class DropdownComponent
   // CONTROL VALUE ACCESSOR
   // =========================================================
 
-  /**
-   * Angular Forms calls this function when
-   * the user changes the value.
-   */
   private onChange: (value: any) => void = () => {};
 
-  /**
-   * Angular Forms calls this when the control is touched.
-   */
   private onTouched: () => void = () => {};
 
-  /**
-   * Used to auto-unsubscribe from the langChange
-   * subscription when the component is destroyed.
-   */
+  // =========================================================
+  // SERVICES
+  // =========================================================
+
   private readonly destroyRef = inject(DestroyRef);
 
-  // =========================================================
-  // CONSTRUCTOR
-  // =========================================================
-
   constructor(
-    private readonly cdr: ChangeDetectorRef,
     private readonly translate: Localization
   ) {}
 
@@ -207,68 +176,31 @@ export class DropdownComponent
   ngOnInit(): void {
     this.setTranslations();
 
-    this.translate.onLangChange()
+    this.translate
+      .onLangChange()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         this.setTranslations();
       });
   }
 
-  ngAfterViewInit(): void {
-    this.cdr.detectChanges();
-  }
-
   // =========================================================
   // DROPDOWN CHANGE
   // =========================================================
 
-  /**
-   * Called only when the PrimeNG dropdown value changes
-   * through user interaction.
-   *
-   * This method supports ALL usage scenarios:
-   *
-   * 1. Outside Reactive Forms
-   * 2. Inside Reactive Forms
-   * 3. Outside Forms + custom change event
-   * 4. Inside Forms + custom change event
-   */
   onDropdownChange(event: any): void {
     const value = event?.value;
 
-    // -------------------------------------------------------
-    // 1. Update model()
-    // -------------------------------------------------------
-    //
-    // This supports:
-    //
-    // [(selectedValue)]="selectedRoleId"
-    //
+    // Update model()
     this.selectedValue.set(value);
 
-    // -------------------------------------------------------
-    // 2. Notify Angular Reactive Forms
-    // -------------------------------------------------------
-    //
-    // This supports:
-    //
-    // formControlName="parentRoleId"
-    //
+    // Notify Reactive Forms
     this.onChange(value);
 
-    // -------------------------------------------------------
-    // 3. Mark control as touched
-    // -------------------------------------------------------
+    // Mark as touched
     this.onTouched();
 
-    // -------------------------------------------------------
-    // 4. Notify Parent about USER CHANGE
-    // -------------------------------------------------------
-    //
-    // This supports:
-    //
-    // (dropdownChanged)="onRoleChange($event)"
-    //
+    // Notify parent
     this.dropdownChanged.emit(value);
   }
 
@@ -293,32 +225,22 @@ export class DropdownComponent
   // =========================================================
 
   /**
-   * Called by Angular Forms when the FormControl value changes
-   * from outside the component.
-   *
-   * Examples:
-   *
-   * formControl.setValue(5)
-   *
-   * formControl.patchValue(5)
-   *
-   * form.reset()
+   * Called by Angular Forms when the value
+   * changes from outside the component.
    */
   writeValue(value: any): void {
     this.selectedValue.set(value);
   }
 
   /**
-   * Angular Forms gives us a callback that must be called
-   * whenever the user changes the value.
+   * Register Angular Forms change callback.
    */
   registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
   /**
-   * Angular Forms gives us a callback that must be called
-   * when the control becomes touched.
+   * Register Angular Forms touched callback.
    */
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
@@ -342,25 +264,16 @@ export class DropdownComponent
   // =========================================================
 
   setTranslations(): void {
-    this.placeholderText =
-      this.placeholder() || ' ';
-
     this.emptyMessageText =
       this.emptyMessage() ||
-      this.translate.instant(
-        'shared.dropdown.noItems'
-      );
+      this.translate.instant('shared.dropdown.noItems');
 
     this.emptyFilterMessageText =
       this.emptyFilterMessage() ||
-      this.translate.instant(
-        'shared.dropdown.noItems'
-      );
+      this.translate.instant('shared.dropdown.noItems');
 
     this.filterPlaceholderText =
       this.filterPlaceholder() ||
-      this.translate.instant(
-        'shared.dropdown.search'
-      );
+      this.translate.instant('shared.dropdown.search');
   }
 }
