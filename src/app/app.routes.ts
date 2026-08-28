@@ -22,7 +22,7 @@ export const routes: Routes = [
     // canActivate:[authGuard],
     component: Layout,
      children:[
-      {path:'' , component:EmployeeCreation},
+      {path:'creation' , component:EmployeeCreation},
       {path:'role' , component:Role,
         data:{
           header:{

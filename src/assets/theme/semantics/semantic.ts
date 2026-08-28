@@ -17,10 +17,10 @@ export const semantic = {
   },
 
   list: {
-    padding: spacing[10],
+    padding: spacing[12],
     gap: '2px',
     header: {
-      padding: spacing[4],
+      padding: spacing[6],
     },
     option: {
       padding: spacing[8],
@@ -172,7 +172,7 @@ export const semantic = {
       },
 
      formField: {
-        background: '{surface.100}',
+        background: '{surface.0}',
         disabledBackground: '{surface.200}',
         filledBackground: '{surface.900}',
         filledHoverBackground: '{surface.100}',
@@ -180,9 +180,9 @@ export const semantic = {
         hoverBorderColor: '{border.hover}',
         focusBorderColor: '{border.focus}',
         color: '#006A61',
-        disabledColor: '{surface.5 00}',
+        disabledColor: '{surface.5}',
         placeholderColor: '{surface.400}',
-        invalidPlaceholderColor: '{danger.600}',
+        invalidPlaceholderColor:'{danger.600}',
         invalidBorderColor:'{border.danger}',
         iconColor: '{surface.400}',
         focusRing: {

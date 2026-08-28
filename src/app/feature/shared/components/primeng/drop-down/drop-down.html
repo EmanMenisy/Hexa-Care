@@ -5,7 +5,7 @@
   [options]="options()"
   [optionLabel]="optionLabel()"
   [optionValue]="optionValue()"
-  [placeholder]="placeholderText"
+  [placeholder]="placeholder()"
   [showClear]="showClear()"
   [disabled]="disabled() || cvaDisabled"
   [readonly]="readonly()"
@@ -13,17 +13,21 @@
   [virtualScrollItemSize]="itemSize()"
   [emptyMessage]="emptyMessageText"
   [emptyFilterMessage]="emptyFilterMessageText"
-  inputId="dropdownInputId"
   [filterPlaceholder]="filterPlaceholderText"
   [filter]="filter()"
+
+  inputId="dropdownInputId"
+
   (onChange)="onDropdownChange($event)"
   (onShow)="onDropdownShow()"
   (onHide)="onDropdownHide()"
+
   [resetFilterOnHide]="true"
   [dropdownIcon]="dropdownIcon"
   appendTo="body"
 >
   @if (useTemplate()) {
+
     <ng-template let-option pTemplate="item">
       <ng-container
         [ngTemplateOutlet]="OptionTemplateOutlet!"
@@ -32,6 +36,7 @@
         }"
       />
     </ng-template>
+
     <ng-template let-selectedOption pTemplate="selectedItem">
       <ng-container
         [ngTemplateOutlet]="SelectedOptionTemplateOutlet!"
@@ -40,5 +45,6 @@
         }"
       />
     </ng-template>
+
   }
 </p-select>
