@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+}
+
+.empty-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 3rem 1rem;
+  text-align: center;
+
+  p {
+    font-weight: 500;
+    font-size: 16px;
+    font-family: 'inter';
+  }
+}
+
+.empty-state-image {
+  width: 15rem;
+  aspect-ratio: 3/2;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state-title {
+  color: #111928;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}

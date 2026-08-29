@@ -1,0 +1,37 @@
+@if(
+list().length === 0 &&
+!isFilterApplied() &&
+pageStatus !== PageStatus.Loading
+){
+<div class="card">
+    <app-empty-state></app-empty-state>
+</div>
+}@else {
+<div class="content-wrapper card">
+    <div class="filter-wrapper">
+        <div class="search-Input">
+            <hexa-input-text (enterPressed)="getAllList()" [valueInput]="payload.name"
+                (inputTextChanged)="payload.name = $event" [placeholder]="'shared.search'|translate"></hexa-input-text>
+            <hexa-button [icon]="'pi pi-search'" [iconPos]="'center'" (clicked)="getAllList()"></hexa-button>
+        </div>
+        <div class="filter-buttons">
+            <hexa-button [label]="'Filter'" [icon]="'pi pi-filter'" [iconPos]="'left'"
+                [severity]="'secondary'"></hexa-button>
+        </div>
+    </div>
+    @if(
+    list().length === 0 &&
+    isFilterApplied() &&
+    pageStatus !== PageStatus.Loading
+    ){
+    <app-not-found></app-not-found>
+    }@else {
+    <app-table [data]="list()" [columns]="tableColumns" [actions]="tableActions"
+        [loading]="pageStatus === PageStatus.Loading" [canSelect]="false" [sortField]="activeSortField"
+        [sortOrder]="activeSortAscending" (sortChanged)="onSortChanged($event)"
+        [totalRecordsLength]="totalRecordsLength" [pageSize]="payload.pageSize" [pageNumber]="payload.pageNumber"
+        (pageNumberChange)="getAllList($event)" (actionClicked)="onTableAction($event)">
+    </app-table>
+    }
+</div>
+}
