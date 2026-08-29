@@ -12,10 +12,13 @@ import { ApiStatus } from '../../../../core/models/enums/api-status';
 import { FilterService } from '../../../../core/services/filter/filter';
 import { EmptyState } from '../../../shared/components/common/empty-state/empty-state';
 import { NotFound } from '../../../shared/components/common/not-found/not-found';
+import { OrganizationLogic } from '../../services/organization-logic';
+import { HierarchySteps } from '../../models/organization-creation.model';
+import { OrganizationManual } from '../../partials/organization-manual/organization-manual';
 
 @Component({
   selector: 'app-company',
-  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound],
+  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound,OrganizationManual],
   templateUrl: './company.html',
   styleUrl: './company.scss',
 })
@@ -45,6 +48,7 @@ export class Company implements OnInit{
     private readonly HeaderActionService:HeaderActionService,
     private readonly organizationService:Organization,
     private readonly filterService:FilterService,
+    private readonly organizationLogicService:OrganizationLogic,
   ){}
    ngOnInit(): void {
     this.HeaderActionService.action$.subscribe((res)=>{
@@ -159,22 +163,22 @@ export class Company implements OnInit{
   }
   //====================Manual
   openManualSideBar(){
+    this.organizationLogicService.setId(null);
+    this.organizationLogicService.setStart(HierarchySteps.Company);
     this.isManualSidebarVisible.set(true);
   }
   closeManual(){
     this.isManualSidebarVisible.set(false);
   }
-  onSave(){
+  onSaveItem(){
     this.isManualSidebarVisible.set(false);
+    this.getAllList(this.payload.pageNumber);
   }
   //====================edit
   onEdit(id: string) {
-    this.organizationService.getCompanyById(id).subscribe({
-      next: (res) => {
-        this.selectedItem = res;
-        this.isManualSidebarVisible.set(true);
-      },
-    });
+     this.organizationLogicService.setId(id);
+    this.organizationLogicService.setStart(HierarchySteps.Company);
+    this.isManualSidebarVisible.set(true);
   }
   //====================Delete
   onDelete(roleId: string) {

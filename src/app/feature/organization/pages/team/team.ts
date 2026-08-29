@@ -12,10 +12,13 @@ import { ApiStatus } from '../../../../core/models/enums/api-status';
 import { FilterService } from '../../../../core/services/filter/filter';
 import { EmptyState } from '../../../shared/components/common/empty-state/empty-state';
 import { NotFound } from '../../../shared/components/common/not-found/not-found';
+import { OrganizationManual } from '../../partials/organization-manual/organization-manual';
+import { OrganizationLogic } from '../../services/organization-logic';
+import { HierarchySteps } from '../../models/organization-creation.model';
 
 @Component({
   selector: 'app-team',
-  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound],
+  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound,OrganizationManual],
   templateUrl: './team.html',
   styleUrl: './team.scss',
 })
@@ -45,6 +48,7 @@ export class Team {
     private readonly HeaderActionService:HeaderActionService,
     private readonly organizationService:Organization,
     private readonly filterService:FilterService,
+    private readonly organizationLogicService:OrganizationLogic,
   ){}
    ngOnInit(): void {
     this.HeaderActionService.action$.subscribe((res)=>{
@@ -158,15 +162,18 @@ export class Team {
     );
   }
   //====================Manual
-  openManualSideBar(){
-    this.isManualSidebarVisible.set(true);
-  }
-  closeManual(){
-    this.isManualSidebarVisible.set(false);
-  }
-  onSave(){
-    this.isManualSidebarVisible.set(false);
-  }
+    openManualSideBar(){
+      this.organizationLogicService.setId(null);
+      this.organizationLogicService.setStart(HierarchySteps.Team);
+      this.isManualSidebarVisible.set(true);
+    }
+     closeManual(){
+       this.isManualSidebarVisible.set(false);
+     }
+     onSaveItem(){
+       this.isManualSidebarVisible.set(false);
+       this.getAllList(this.payload.pageNumber);
+     }
   //====================edit
   onEdit(id: string) {
     this.organizationService.getTeamById(id).subscribe({

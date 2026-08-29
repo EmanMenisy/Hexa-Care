@@ -67,9 +67,8 @@ export class Table {
   isExpanded = input<boolean>(false);
   bordered = input<boolean>(false);
 
-  /** Backend-driven sort: الجدول بس بيبعت *النية* — الـ parent هو اللي مالك الـ state الفعلي. */
   sortField = input<string>();
-  sortOrder = input<boolean | null>(null); // true = ascending, false = descending, null = مفيش sort دلوقتي
+  sortOrder = input<boolean | null>(null);
 
   // ===== Two-way (banana-in-a-box: [(pageNumber)]) =====
   pageNumber = model<number>(1);
@@ -79,7 +78,7 @@ export class Table {
   sortChanged = output<ISortEvent>();
   recordClicked = output<any>();
   actionToggle = output<any>();
-  /** بيتطلق مع أي row action (icon/button/badge/link/toggle/menu-child). */
+
   actionClicked = output<{ action: string; row: any }>();
 
   // ===== Content projection: custom per-column templates =====
@@ -105,11 +104,9 @@ export class Table {
 
   TableHeaderType = TableHeaderType;
 
-  /** Shared popup model — مافيش غير menu واحدة مفتوحة في نفس الوقت. */
   genericMenuItems = signal<any[]>([]);
 
   constructor() {
-    // مرآة لسلوك ngOnChanges القديم: يعلّم الصفوف كـ expanded لما isExpanded يبقى true
     effect(() => {
       if (this.isExpanded()) {
         this.data()?.forEach((row) => (row.isExpanded = true));
@@ -169,7 +166,7 @@ export class Table {
 
   // ===== Sorting (single column, backend-driven, boolean) =====
   isColumnSortable(col: INativeTableColumn): boolean {
-    return !col.hidden && col.sortable !== false && !!col.field;
+    return !col.hidden && col.sortable === true && !!col.field;
   }
 
   onHeaderClick(col: INativeTableColumn): void {
@@ -178,19 +175,16 @@ export class Table {
     const currentField = this.sortField();
     const currentAscending = this.sortOrder();
 
-    // عمود جديد -> نبدأ بـ ascending (true). نفس العمود -> نعكس القيمة الحالية.
     const nextAscending = currentField !== field ? true : !currentAscending;
 
     this.sortChanged.emit({ field, isAscending: nextAscending });
   }
 
-  /** بيرجع الاتجاه المرئي بس عشان اختيار شكل الأيقونة. */
   getSortDir(field?: string): SortOrder {
     if (!field || this.sortField() !== field) return null;
     return this.sortOrder() ? 'asc' : 'desc';
   }
 
-  /** هل العمود ده هو المستخدم في الـ sort دلوقتي؟ بتتحدد منها الـ highlight البصري. */
   isSortActive(field?: string): boolean {
     return !!field && this.sortField() === field;
   }
@@ -288,7 +282,6 @@ export class Table {
     return !action.condition || action.condition(row);
   }
 
-  /** بيتشال الـ header + التعمود بتاع الـ action كليًا لو مفيش أي حاجة هتظهر فعليًا. */
   hasVisibleActions(): boolean {
     const actions = this.actions();
     const rows = this.data();
@@ -304,7 +297,6 @@ export class Table {
     return key ? this.localizationService.instant(key) : (action.label ?? '');
   }
 
-  /** بيدور جوه الـ actions وأي children بتاعتها (menu items) recursively. */
   private findAction(actionKey: string, actions: ITableAction[] = this.actions()): ITableAction | undefined {
     for (const action of actions) {
       if (action.key === actionKey) return action;

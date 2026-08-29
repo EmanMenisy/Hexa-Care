@@ -1,0 +1,77 @@
+<form [formGroup]="departmentForm" class="flex flex-column justify-content-between h-100">
+  <div>
+    <div class="field">
+      <label for="name">{{ 'organization.department.create.departmentName.label' | translate }}</label>
+      <hexa-input-text [emitOnBlur]="false" formControlName="name" [placeholder]="'organization.department.create.departmentName.placeholder' | translate" />
+      @if (departmentForm.get('name')?.touched && departmentForm.get('name')?.invalid) {
+        @if (departmentForm.get('name')?.hasError('required')) {
+          <label class="text-danger">{{ 'organization.department.create.departmentName.errors.required' | translate }}</label>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="nameArabic">{{ 'organization.department.create.departmentNameArabic.label' | translate }}</label>
+      <hexa-input-text [emitOnBlur]="false" formControlName="nameArabic" [placeholder]="'organization.department.create.departmentNameArabic.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="branch">{{ 'organization.department.create.branch.label' | translate }}</label>
+      <hexa-multi-select [disabled]="branch() !== null" formControlName="branchIds" [options]="branchList()"
+        optionLabel="label" optionValue="value" [placeholder]="'organization.department.create.branch.placeholder' | translate" [showClear]="true"></hexa-multi-select>
+      @if (departmentForm.get('branchIds')?.touched && departmentForm.get('branchIds')?.invalid) {
+        @if (departmentForm.get('branchIds')?.hasError('required')) {
+          <label class="text-danger">{{ 'organization.department.create.branch.errors.required' | translate }}</label>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="description">{{ 'organization.department.create.description.label' | translate }}</label>
+      <hexa-input-text formControlName="description" [placeholder]="'organization.department.create.description.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="descriptionArabic">{{ 'organization.department.create.descriptionArabic.label' | translate }}</label>
+      <hexa-input-text formControlName="descriptionArabic" [placeholder]="'organization.department.create.descriptionArabic.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="managerName">{{ 'organization.department.create.managerName.label' | translate }}</label>
+      <hexa-input-text formControlName="managerName" [placeholder]="'organization.department.create.managerName.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="managerPhone">{{ 'organization.department.create.managerPhone.label' | translate }}</label>
+      <hexa-input-text formControlName="managerPhone" [placeholder]="'organization.department.create.managerPhone.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="managerEmail">{{ 'organization.department.create.managerEmail.label' | translate }}</label>
+      <hexa-input-text formControlName="managerEmail" [placeholder]="'organization.department.create.managerEmail.placeholder' | translate" />
+      @if (departmentForm.get('managerEmail')?.touched && departmentForm.get('managerEmail')?.invalid) {
+        @if (departmentForm.get('managerEmail')?.hasError('email')) {
+          <label class="text-danger">{{ 'organization.department.create.managerEmail.errors.invalid' | translate }}</label>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="extension">{{ 'organization.department.create.extension.label' | translate }}</label>
+      <hexa-input-text formControlName="extension" [placeholder]="'organization.department.create.extension.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="location">{{ 'organization.department.create.location.label' | translate }}</label>
+      <hexa-input-text formControlName="location" [placeholder]="'organization.department.create.location.placeholder' | translate" />
+    </div>
+  </div>
+  <div class="d-flex justify-content-end gap-2 align-items-end bottom-0 mt-auto position-sticky">
+    <hexa-button type="button" styleType="cancel" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
+    @if (!isFirstStep() && id() === null) {
+      <hexa-button type="button" [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()" styleType="transparent" />
+    }
+    <hexa-button [disabled]="disabledForm()" type="button" styleType="primary"
+      (clicked)="id() === null ? goNext() : editDepartment()" [label]="id() === null ? ('buttons.next' | translate) : ('buttons.edit' | translate)" />
+  </div>
+</form>

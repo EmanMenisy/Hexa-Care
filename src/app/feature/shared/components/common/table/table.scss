@@ -7,12 +7,14 @@
 
   .native-table-wrapper {
     max-height: 80vh !important;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     scrollbar-width: auto;
 
     &::-webkit-scrollbar {
       display: block;
       width: 8px;
+      height: 8px;
       background: #f1f1f1;
     }
 
@@ -23,17 +25,20 @@
   }
 
   .native-table {
-    width: 100%;
+    width: max-content;
     min-width: 100%;
-    table-layout: fixed; // columns without an explicit width share the remaining space equally
+    table-layout: auto;
     border-collapse: separate;
     border-spacing: 0;
     margin-bottom: 0;
     background: #ffffff;
 
-    // header
+    // header — sticky
     > thead > tr > * {
       background-color: #f7f8fc;
+      position: sticky;
+      top: 0;
+      z-index: 4;
     }
 
     // zebra striping
@@ -56,7 +61,7 @@
       border-right: 1px solid #e5e7eb;
       border-bottom: 1px solid #e5e7eb;
       color: #111928;
-      max-width: 0;
+      min-width: 140px; // default لأي عمود من غير width محدد من الـ parent
     }
 
     th {
@@ -73,7 +78,8 @@
       left: 0;
     }
     thead .select-col {
-      z-index: 3;
+      z-index: 5; // فوق الـ header العادي وفوق body select-col
+      top: 0;
     }
     tbody .select-col {
       z-index: 2;

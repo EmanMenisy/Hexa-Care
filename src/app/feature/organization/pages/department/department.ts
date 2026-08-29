@@ -12,10 +12,13 @@ import { ApiStatus } from '../../../../core/models/enums/api-status';
 import { FilterService } from '../../../../core/services/filter/filter';
 import { EmptyState } from '../../../shared/components/common/empty-state/empty-state';
 import { NotFound } from '../../../shared/components/common/not-found/not-found';
+import { OrganizationManual } from '../../partials/organization-manual/organization-manual';
+import { OrganizationLogic } from '../../services/organization-logic';
+import { HierarchySteps } from '../../models/organization-creation.model';
 
 @Component({
   selector: 'app-department',
-  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound],
+  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound,OrganizationManual],
   templateUrl: './department.html',
   styleUrl: './department.scss',
 })
@@ -45,6 +48,7 @@ export class Department {
     private readonly HeaderActionService:HeaderActionService,
     private readonly organizationService:Organization,
     private readonly filterService:FilterService,
+    private readonly organizationLogicService:OrganizationLogic,
   ){}
    ngOnInit(): void {
     this.HeaderActionService.action$.subscribe((res)=>{
@@ -153,15 +157,18 @@ export class Department {
     );
   }
   //====================Manual
-  openManualSideBar(){
-    this.isManualSidebarVisible.set(true);
-  }
-  closeManual(){
-    this.isManualSidebarVisible.set(false);
-  }
-  onSave(){
-    this.isManualSidebarVisible.set(false);
-  }
+   openManualSideBar(){
+      this.organizationLogicService.setId(null);
+      this.organizationLogicService.setStart(HierarchySteps.Department);
+      this.isManualSidebarVisible.set(true);
+    }
+    closeManual(){
+      this.isManualSidebarVisible.set(false);
+    }
+    onSaveItem(){
+      this.isManualSidebarVisible.set(false);
+      this.getAllList(this.payload.pageNumber);
+    }
   //====================edit
   onEdit(id: string) {
     this.organizationService.getDepartmentById(id).subscribe({

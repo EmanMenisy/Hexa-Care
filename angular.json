@@ -28,6 +28,8 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/leaflet-geosearch/dist/geosearch.css",
               "src/styles.scss",
               {
                 "input": "src/assets/styles/base/ar.scss",
@@ -90,7 +92,7 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              } 
+              }
             ],
             "styles": [
               "src/styles.scss"

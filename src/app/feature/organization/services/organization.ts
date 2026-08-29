@@ -29,6 +29,21 @@ export class Organization {
       params: stateId ? new HttpParams().set('stateId', stateId) : new HttpParams()
     });
   }
+   getCitiesByCompanyIds(companyIds: string[]): Observable<any> {
+    let params = new HttpParams();
+    companyIds.forEach((id: string) => params = params.append('Ids', id));
+    return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: 'City/GetByCompanyId',
+      params
+    })
+  }
+   getStructureBasedOnRoleScope(): Observable<any> {
+    return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: '/RoleScope/Get/Roleid'
+    })
+  }
   //==============Company
   getCompanies(getCompaniesRequest: any): Observable<any> {
     return this.xhrService.call({
@@ -148,5 +163,14 @@ export class Organization {
       url: 'Team/GetById',
       params: new HttpParams().set('ID', id),
     })
+  }
+
+  //=============Bulk Create Organization
+  saveOrganizationData(data: any): Observable<any> {
+    return this.xhrService.call({
+      method: HttpMethod.Post,
+      url: `/Hierarchy/PostOnboarding`,
+      body: data
+    });
   }
 }

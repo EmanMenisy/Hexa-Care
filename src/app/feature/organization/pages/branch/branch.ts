@@ -12,10 +12,13 @@ import { ApiStatus } from '../../../../core/models/enums/api-status';
 import { FilterService } from '../../../../core/services/filter/filter';
 import { EmptyState } from '../../../shared/components/common/empty-state/empty-state';
 import { NotFound } from '../../../shared/components/common/not-found/not-found';
+import { HierarchySteps } from '../../models/organization-creation.model';
+import { OrganizationLogic } from '../../services/organization-logic';
+import { OrganizationManual } from '../../partials/organization-manual/organization-manual';
 
 @Component({
   selector: 'app-branch',
-  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound],
+  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound,OrganizationManual],
   templateUrl: './branch.html',
   styleUrl: './branch.scss',
 })
@@ -45,6 +48,7 @@ export class Branch {
     private readonly HeaderActionService:HeaderActionService,
     private readonly organizationService:Organization,
     private readonly filterService:FilterService,
+    private readonly organizationLogicService:OrganizationLogic,
   ){}
    ngOnInit(): void {
     this.HeaderActionService.action$.subscribe((res)=>{
@@ -154,14 +158,17 @@ export class Branch {
   }
   //====================Manual
   openManualSideBar(){
-    this.isManualSidebarVisible.set(true);
-  }
-  closeManual(){
-    this.isManualSidebarVisible.set(false);
-  }
-  onSave(){
-    this.isManualSidebarVisible.set(false);
-  }
+     this.organizationLogicService.setId(null);
+     this.organizationLogicService.setStart(HierarchySteps.Branch);
+     this.isManualSidebarVisible.set(true);
+   }
+   closeManual(){
+     this.isManualSidebarVisible.set(false);
+   }
+   onSaveItem(){
+     this.isManualSidebarVisible.set(false);
+     this.getAllList(this.payload.pageNumber);
+   }
   //====================edit
   onEdit(id: string) {
     this.organizationService.getBranchById(id).subscribe({
@@ -175,13 +182,10 @@ export class Branch {
   onDelete(roleId: string) {
     this.organizationService.deleteBranch(roleId).subscribe({
       next: (res) => {
-        console.log(res);
+        this.getAllList();
       },
       error: (err) => {
 
-      },
-      complete: () => {
-        this.getAllList();
       }
     });
   }

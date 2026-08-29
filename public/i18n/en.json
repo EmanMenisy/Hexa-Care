@@ -8,10 +8,10 @@
     "loading": "loading...",
     "mainInformation": "Main Information",
     "structureAssignation": "Structure Assignation",
-    "showing":"Showing",
-    "to":"to",
-    "of":"of",
-    "actions":"Actions",
+    "showing": "Showing",
+    "to": "to",
+    "of": "of",
+    "actions": "Actions",
     "dropdown": {
       "select": "Please Select",
       "noItems": "No items found",
@@ -25,8 +25,8 @@
       "selectTeam": "Select team",
       "selectEmployee": "Select employee"
     },
-    "search":"Search",
-    "company":"Company",
+    "search": "Search",
+    "company": "Company",
     "notFound": {
       "title": "No Matching Results",
       "subtitle": "We couldn't find any results matching your current filters."
@@ -34,7 +34,8 @@
     "emptyState": {
       "title": "No Data Yet",
       "message": "There is no data available yet. Create a new item to get started."
-    }
+    },
+    "congratulations": "Congratulations"
   },
   "buttons": {
     "back": "Back",
@@ -43,10 +44,11 @@
     "cancel": "Cancel",
     "next": "Next",
     "save": "Save",
-    "newItem":"New Item",
-    "edit":"Edit",
-    "delete":"Delete",
-    "create":"Create"
+    "newItem": "New Item",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create",
+    "skipAndSave":"Skip & Save"
   },
   "login": {
     "language": "English",
@@ -179,7 +181,9 @@
       "emergency_phone_placeholder": "phone number"
     }
   },
-   "organization": {
+  "organization": {
+    "creationMessage": "You’ve created successfully",
+    "updateMessage": "Your changes have been saved successfully.",
     "organizationProfile": {
       "identity": {
         "logoAlt": "logo",
@@ -263,25 +267,121 @@
       "create": {
         "companyName": {
           "label": "Company Name",
-          "placeholder": "Enter Company Name",
+          "placeholder": "Enter company name",
           "errors": {
             "required": "Company name is required"
           }
         },
+        "companyNameArabic": {
+          "label": "Company Name (Arabic)",
+          "placeholder": "Enter company name in Arabic"
+        },
+        "companyCode": {
+          "label": "Company Code",
+          "placeholder": "Enter company code"
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Select country",
+          "emptyFilterMessage": "No countries found",
+          "errors": {
+            "required": "Country is required"
+          }
+        },
+        "state": {
+          "label": "State",
+          "placeholder": "Select state",
+          "emptyFilterMessage": "No states found",
+          "errors": {
+            "required": "State is required"
+          }
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Select city",
+          "emptyFilterMessage": "No cities found",
+          "errors": {
+            "required": "City is required"
+          }
+        },
+        "otherCity": {
+          "label": "Other City",
+          "placeholder": "Enter other city"
+        },
         "companyAddress": {
           "label": "Company Address",
-          "placeholder": "Enter Company Address",
+          "placeholder": "Enter company address",
           "errors": {
             "required": "Company address is required"
           }
+        },
+        "commercialRegisterNo": {
+          "label": "Commercial Register Number",
+          "placeholder": "Enter commercial register number"
+        },
+        "taxNumber": {
+          "label": "Tax Number",
+          "placeholder": "Enter tax number"
+        },
+        "licenseNumber": {
+          "label": "License Number",
+          "placeholder": "Enter license number"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter company description"
+        },
+        "descriptionArabic": {
+          "label": "Description (Arabic)",
+          "placeholder": "Enter company description in Arabic"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Enter phone number"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter email address",
+          "errors": {
+            "invalid": "Please enter a valid email address"
+          }
+        },
+        "website": {
+          "label": "Website",
+          "placeholder": "Enter company website"
+        },
+        "managerName": {
+          "label": "Manager Name",
+          "placeholder": "Enter manager name"
+        },
+        "managerPhone": {
+          "label": "Manager Phone",
+          "placeholder": "Enter manager phone number"
+        },
+        "managerEmail": {
+          "label": "Manager Email",
+          "placeholder": "Enter manager email address"
+        },
+        "medicalDirector": {
+          "label": "Medical Director",
+          "placeholder": "Enter medical director name"
+        },
+        "medicalDirectorPhone": {
+          "label": "Medical Director Phone",
+          "placeholder": "Enter medical director phone number"
+        },
+        "medicalDirectorEmail": {
+          "label": "Medical Director Email",
+          "placeholder": "Enter medical director email address"
         }
       },
-      "table":{
-        "name":"Name",
-        "countryName":"Country",
-        "cityName":"City",
-        "stateName":"State",
-        "address":"Address"
+
+      "table": {
+        "name": "Name",
+        "countryName": "Country",
+        "cityName": "City",
+        "stateName": "State",
+        "address": "Address"
       }
     },
     "branch": {
@@ -298,20 +398,92 @@
         "createdMessage": "Branch created successfully",
         "updatedMessage": "Branch updated successfully"
       },
-      "create": {
+       "create": {
         "branchName": {
           "label": "Branch Name",
-          "placeholder": "Enter Branch Name",
+          "placeholder": "Enter branch name",
           "errors": {
             "required": "Branch name is required"
           }
-        }
+        },
+        "branchNameArabic": {
+          "label": "Branch Name (Arabic)",
+          "placeholder": "Enter branch name in Arabic"
+        },
+        "company": {
+          "label": "Company",
+          "placeholder": "Select company",
+          "errors": {
+            "required": "Company is required"
+          }
+        },
+        "country": {
+          "label": "Country",
+          "placeholder": "Select country",
+          "errors": {
+            "required": "Country is required"
+          }
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Select city",
+          "errors": {
+            "required": "City is required"
+          }
+        },
+        "state": {
+          "label": "State",
+          "placeholder": "Select state",
+          "errors": {
+            "required": "State is required"
+          }
+        },
+        "otherCity": "Other City",
+        "address": {
+          "label": "Address",
+          "placeholder": "Enter address"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "Enter phone number"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter email address",
+          "errors": {
+            "invalid": "Please enter a valid email address"
+          }
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description"
+        },
+        "descriptionArabic": {
+          "label": "Description (Arabic)",
+          "placeholder": "Enter description in Arabic"
+        },
+        "managerName": {
+          "label": "Manager Name",
+          "placeholder": "Enter manager name"
+        },
+        "managerPhone": {
+          "label": "Manager Phone",
+          "placeholder": "Enter manager phone number"
+        },
+        "managerEmail": {
+          "label": "Manager Email",
+          "placeholder": "Enter manager email address"
+        },
+        "enableGeoLocation": {
+          "label": "Enable Geo-Location"
+        },
+        "setLocation": "Set Location"
       },
-      "table":{
-        "name":"Name",
-        "cityName":"City",
-        "companyName":"Company",
-        "createdAt":"Created Date"
+      "table": {
+        "name": "Name",
+        "cityName": "City",
+        "companyName": "Company",
+        "createdAt": "Created Date"
       }
     },
     "department": {
@@ -331,17 +503,59 @@
       "create": {
         "departmentName": {
           "label": "Department Name",
-          "placeholder": "Enter Department Name",
+          "placeholder": "Enter department name",
           "errors": {
             "required": "Department name is required"
           }
+        },
+        "departmentNameArabic": {
+          "label": "Department Name (Arabic)",
+          "placeholder": "Enter department name in Arabic"
+        },
+        "branch": {
+          "label": "Branch",
+          "placeholder": "Select branch",
+          "errors": {
+            "required": "Branch is required"
+          }
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description"
+        },
+        "descriptionArabic": {
+          "label": "Description (Arabic)",
+          "placeholder": "Enter description in Arabic"
+        },
+        "managerName": {
+          "label": "Manager Name",
+          "placeholder": "Enter manager name"
+        },
+        "managerPhone": {
+          "label": "Manager Phone",
+          "placeholder": "Enter manager phone number"
+        },
+        "managerEmail": {
+          "label": "Manager Email",
+          "placeholder": "Enter manager email address",
+          "errors": {
+            "invalid": "Please enter a valid email address"
+          }
+        },
+        "extension": {
+          "label": "Extension",
+          "placeholder": "Enter extension"
+        },
+        "location": {
+          "label": "Location",
+          "placeholder": "Enter location"
         }
       },
-      "table":{
-        "name":"Name",
-        "branchName":"Branch",
-        "companyName":"Company",
-        "createdAt":"Created Date"
+      "table": {
+        "name": "Name",
+        "branchName": "Branch",
+        "companyName": "Company",
+        "createdAt": "Created Date"
       }
     },
     "team": {
@@ -361,18 +575,25 @@
       "create": {
         "teamName": {
           "label": "Team Name",
-          "placeholder": "Enter Team Name",
+          "placeholder": "Enter team name",
           "errors": {
             "required": "Team name is required"
           }
+        },
+        "department": {
+          "label": "Department",
+          "placeholder": "Select department",
+          "errors": {
+            "required": "Department is required"
+          }
         }
       },
-      "table":{
-        "name":"Name",
-        "companyName":"Company",
-        "branchName":"Branch",
-        "departmentName":"Department",
-        "createdAt":"Created Date"
+      "table": {
+        "name": "Name",
+        "companyName": "Company",
+        "branchName": "Branch",
+        "departmentName": "Department",
+        "createdAt": "Created Date"
       }
     }
   }
