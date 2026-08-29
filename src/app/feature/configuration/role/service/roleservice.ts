@@ -45,7 +45,7 @@ export class Roleservice {
     return this.xhrService.call({
       method: HttpMethod.Get,
       url: 'Role/GetAll',
-      body: payload,
+      params:new HttpParams({fromObject:payload})
     });
   }
 

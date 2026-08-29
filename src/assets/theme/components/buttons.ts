@@ -25,7 +25,7 @@ export const button = {
           borderColor:'transparent'
         },
         secondary: {
-          background: 'transparent',
+          background: '{surface.50}',
           borderColor: semantic.colorScheme.light.surface[300],
           color: semantic.colorScheme.light.surface[950],
           hoverBackground: semantic.colorScheme.light.surface[100],

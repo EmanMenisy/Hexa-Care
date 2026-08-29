@@ -1,0 +1,34 @@
+<p-dialog
+  [visible]="visible()"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="false"
+  [closeOnEscape]="false"
+  [closable]="false"
+  [style]="{ width: '600px', height: '550px' }"
+  appendTo="body"
+>
+  <ng-template pTemplate="content">
+    <div class="map-frame">
+      <div class="close-icon" (click)="closeModal()">
+        <em class="pi pi-times"></em>
+      </div>
+    <div id="map"></div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="footer">
+      <div class="radius">
+          <label>Radius</label>
+          <hexa-input-text [ngModel]="selectedLocation()?.radiusInMeters" placeholder="0" [emitOnBlur]="false" (inputNumberChanged)="updateRadius($event)"/>
+      </div>
+      <div class="actions">
+        <!-- <hexa-button [severity]="'secondary'" label="{{'buttons.cancel'|translate}}" (clicked)="removeLocation(selectedLocation())"
+          [disabled]="selectedLocation() === null"/> -->
+          <hexa-button  label="{{'buttons.save'|translate}}" (clicked)="saveData()"
+          [disabled]="locations().length === 0"/>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>

@@ -1,68 +1,27 @@
-      <!-- <hexa-sort-sidebar  (closeDialog)="closeSortSidebar()" [visible]="sortVisible()"></hexa-sort-sidebar> -->
-     
-     <app-manual-role (closeDialog)="closeManualSidebar()" [visible]="isManualSidebarVisible()" [model]="selectedRole"></app-manual-role>
-      <p-button label="Sort" icon="pi pi-sort-alt" (onClick)="openSortSidebar()"></p-button>
-      <p-button label="add" icon="pi pi-sort-alt" (onClick)="openManualSideBar()"></p-button>
-      <p-button label="logOut" icon="pi pi-sort-alt" (onClick)="logOut()"></p-button>
-  <div>
-    
-    <div class="p-5">
-       <p-table [value]="roleList()" [tableStyle]="{ 'min-width': '50rem' }">
-            <ng-template #header>
-                <tr>
-                    <th>name</th>
-                    <th>description</th>
-                    <th>roleCode</th>
-                    <th>usersCount</th>
-                    <th>Status</th>
-                    <th>parentRole</th>
-                    <th>Action</th>
-                </tr>
-            </ng-template>
-            <ng-template #body let-role>
-                <tr>
-                    <td>
-                        <div class="flex items-center gap-3">
-                            <div class="flex flex-col">
-                                <span class="font-medium">{{ role.name }}</span>
-                                <span class="text-xs text-surface-500 dark:text-surface-400">{{ role.code }}</span>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="font-semibold">{{ role.description }}</span>
-                    </td>
-                    <td>
-                         <span class="font-semibold">{{ role.roleCode }}</span>
-                    </td>
-                    <td>
-                         <span class="font-semibold">{{ role.usersCount }}</span>
-                    </td>
-                    <td>
-                       <span class="font-semibold">{{ role.isActive ? 'Active' : 'Inactive' }}</span>
-                    </td>
-                      <td>
-                       <span class="font-semibold">{{ role.parentViewModels[0]?.name }}</span>
-                    </td>
-                     <td>
-                       <div class="d-flex gap-3">
-                          <hexa-button label="Edit" (clicked)="onEditRole(role)"></hexa-button>
-                          <hexa-button label="delete" (clicked)="deleteRole(role.id)"></hexa-button>
-                          <hexa-button label="add premission" (clicked)="addPermission(role.id)"></hexa-button>
-                       </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+<app-manual-role (closeDialog)="closeManualSidebar()" [visible]="isManualSidebarVisible()" [model]="selectedRole"></app-manual-role>
 
-      <!-- table -->
-      <!-- <hexa-native-table *ngIf="roleList.length > 0||pageStatus === PageStatus.Loading" [columns]="tableColumns"
-        [data]="roleList" [actions]="tableActions" [loading]="pageStatus === PageStatus.Success" [canSelect]="false"
-        paginationModuleTitle="{{'configurations.role.home.paginationTitle'|translate}}"
-        [totalRecordsLength]="totalRecordsLength" [pageSize]="roleRequest.pageSize"
-        [pageNumber]="roleRequest.pageNumber" (pageNumberChange)="getAllRoles($event)">
-      </hexa-native-table> -->
-  </div>
-
-
+<div class="p-2">
+    <app-table
+      [data]="roleList()"
+      [columns]="tableColumns"
+      [actions]="tableActions"
+      [loading]="pageStatus === PageStatus.Loading"
+      [canSelect]="false"
+      [selectedRecords]="selectedRoles()"
+      (selectedRecordsChanged)="onSelectedRolesChanged($event)"
+      [sortField]="activeSortField"
+      [sortOrder]="activeSortAscending"
+      (sortChanged)="onSortChanged($event)"
+      [totalRecordsLength]="totalRecordsLength"
+      [pageSize]="roleRequest.pageSize"
+      [pageNumber]="roleRequest.pageNumber"
+      (pageNumberChange)="getAllRoles($event)"
+      (actionClicked)="onTableAction($event)"
+    >
+      <ng-template hexaColumnTemplate="isActive" let-value let-row="row">
+        <span class="role-status" [class.role-status--active]="value" [class.role-status--inactive]="!value">
+          {{ value ? 'Active' : 'Inactive' }}
+        </span>
+      </ng-template>
+    </app-table>
+</div>

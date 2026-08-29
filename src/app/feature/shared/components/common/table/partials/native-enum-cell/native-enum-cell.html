@@ -1,0 +1,13 @@
+<span
+  class="unicode-plainText text-blue {{ column().cssClass }} {{
+    column().field + '-' + value()
+  }} "
+  [ngClass]="{ clickable: column().isClickable }"
+>
+  {{ 'customComponents.table.enum.' + value() | translate }}
+  @if (column().extraColumnData) {
+    <span class="font-regular-medium text-blue unicode-plainText">
+      {{ column().extraColumnData }}
+    </span>
+  }
+</span>

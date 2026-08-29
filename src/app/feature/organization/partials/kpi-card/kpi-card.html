@@ -1,0 +1,32 @@
+<div class="kpi-card">
+  <div class="kpi-card__header">
+    <span class="kpi-card__label">{{ label() |translate}}</span>
+
+    <span class="kpi-card__icon" [style.background]="iconBg()">
+      <i [class]="icon()"></i>
+    </span>
+  </div>
+
+  <div class="kpi-card__value">
+    {{ value() }}
+  </div>
+
+ @if (trend()) {
+  <div class="kpi-card__trend">
+    <span class="kpi-card__trend-badge">
+      <i class="pi pi-arrow-up-right"></i>
+      {{ trend() }}
+    </span>
+
+    @if (trendLabel()) {
+      <span class="kpi-card__trend-label">
+        {{ trendLabel() |translate }}
+      </span>
+    }
+  </div>
+} @else {
+  <div class="kpi-card__trend kpi-card__trend--empty" aria-hidden="true">
+    &nbsp;
+  </div>
+}
+</div>

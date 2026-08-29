@@ -1,0 +1,156 @@
+<form [formGroup]="branchForm" class="flex flex-column justify-content-between h-100">
+  <div>
+    <div class="field">
+      <label for="branchName">{{ 'organization.branch.create.branchName.label' | translate }}</label>
+      <hexa-input-text id="branchName" [emitOnBlur]="false" formControlName="name"
+        [placeholder]="'organization.branch.create.branchName.placeholder' | translate" />
+
+      @if (branchForm.get('name')?.touched && branchForm.get('name')?.invalid) {
+        @if (branchForm.get('name')?.hasError('required')) {
+          <label class="text-danger">{{ 'organization.branch.create.branchName.errors.required' | translate }}</label>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="branchNameArabic">{{ 'organization.branch.create.branchNameArabic.label' | translate }}</label>
+      <hexa-input-text id="branchNameArabic" [emitOnBlur]="false" formControlName="nameArabic"
+        [placeholder]="'organization.branch.create.branchNameArabic.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="company">{{ 'organization.branch.create.company.label' | translate }}</label>
+      <hexa-multi-select [disabled]="company() !== null" id="company" [options]="companies()" formControlName="companyIds"
+        [placeholder]="'organization.branch.create.company.placeholder' | translate" optionLabel="label" optionValue="value"
+        [showClear]="true" emptyFilterMessage="No companies found" hexaendTo="body">
+      </hexa-multi-select>
+      @if (branchForm.get('companyIds')?.touched && branchForm.get('companyIds')?.invalid) {
+        @if (branchForm.get('companyIds')?.hasError('required')) {
+          <label class="text-danger">{{ 'organization.branch.create.company.errors.required' | translate }}</label>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="branchCountry">{{ 'organization.branch.create.country.label' | translate }}</label>
+      <hexa-dropdown id="branchCountry" [options]="countries()" formControlName="countryId"
+        [placeholder]="'organization.branch.create.country.placeholder' | translate" optionLabel="label" optionValue="value" [filter]="true"
+        [showClear]="true" emptyFilterMessage="No countries found" hexaendTo="body">
+      </hexa-dropdown>
+      @if (branchForm.get('countryId')?.touched && branchForm.get('countryId')?.invalid) {
+        @if (branchForm.get('countryId')?.hasError('required')) {
+          <label class="text-danger">{{ 'organization.branch.create.country.errors.required' | translate }}</label>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="city">{{ 'organization.branch.create.city.label' | translate }}</label>
+      <hexa-dropdown #cityDropdown id="city" [options]="cities()" formControlName="cityId"
+        [placeholder]="'organization.branch.create.city.placeholder' | translate" [disabled]="isCityDisabled()" optionLabel="label"
+        optionValue="value" [showClear]="true" [filter]="true" emptyFilterMessage="No cities found" hexaendTo="body"
+        (dropdownChanged)="onCityChange($event)">
+      </hexa-dropdown>
+      @if (branchForm.get('cityId')?.touched && branchForm.get('cityId')?.invalid) {
+        @if (branchForm.get('cityId')?.hasError('required')) {
+          <label class="text-danger">{{ 'organization.branch.create.city.errors.required' | translate }}</label>
+        }
+      }
+    </div>
+
+    @if (isOtherCity() && isFirstStep()) {
+      <div class="field">
+        <label for="state">{{ 'organization.branch.create.state.label' | translate }}</label>
+        <hexa-dropdown id="state" formControlName="stateId" [options]="states()"
+          [placeholder]="'organization.branch.create.state.placeholder' | translate" optionLabel="label" optionValue="value"
+          [filter]="true" [showClear]="true" emptyFilterMessage="No states found" hexaendTo="body">
+        </hexa-dropdown>
+        @if (branchForm.get('stateId')?.touched && branchForm.get('stateId')?.invalid) {
+          @if (branchForm.get('stateId')?.hasError('required')) {
+            <label class="text-danger">{{ 'organization.branch.create.state.errors.required' | translate }}</label>
+          }
+        }
+      </div>
+    }
+
+    @if (isOtherCity()) {
+      <div class="field">
+        <label for="OtherCity">{{ 'organization.branch.create.otherCity' | translate }}</label>
+        <hexa-input-text formControlName="otherCityName" [placeholder]="'organization.branch.create.otherCity' | translate" />
+      </div>
+    }
+
+    <div class="field">
+      <label for="branchAddress">{{ 'organization.branch.create.address.label' | translate }}</label>
+      <hexa-input-text id="branchAddress" formControlName="address" [placeholder]="'organization.branch.create.address.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="branchPhone">{{ 'organization.branch.create.phone.label' | translate }}</label>
+      <hexa-input-text id="branchPhone" formControlName="phone" [placeholder]="'organization.branch.create.phone.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="branchEmail">{{ 'organization.branch.create.email.label' | translate }}</label>
+      <hexa-input-text id="branchEmail" formControlName="email" [placeholder]="'organization.branch.create.email.placeholder' | translate" />
+      @if (branchForm.get('email')?.touched && branchForm.get('email')?.invalid) {
+        @if (branchForm.get('email')?.hasError('email')) {
+          <label class="text-danger">{{ 'organization.branch.create.email.errors.invalid' | translate }}</label>
+        }
+      }
+    </div>
+
+    <div class="field">
+      <label for="branchDescription">{{ 'organization.branch.create.description.label' | translate }}</label>
+      <hexa-input-text id="branchDescription" formControlName="description" [placeholder]="'organization.branch.create.description.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="branchDescriptionArabic">{{ 'organization.branch.create.descriptionArabic.label' | translate }}</label>
+      <hexa-input-text id="branchDescriptionArabic" formControlName="descriptionArabic" [placeholder]="'organization.branch.create.descriptionArabic.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="branchManagerName">{{ 'organization.branch.create.managerName.label' | translate }}</label>
+      <hexa-input-text id="branchManagerName" formControlName="managerName" [placeholder]="'organization.branch.create.managerName.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="branchManagerPhone">{{ 'organization.branch.create.managerPhone.label' | translate }}</label>
+      <hexa-input-text id="branchManagerPhone" formControlName="managerPhone" [placeholder]="'organization.branch.create.managerPhone.placeholder' | translate" />
+    </div>
+
+    <div class="field">
+      <label for="branchManagerEmail">{{ 'organization.branch.create.managerEmail.label' | translate }}</label>
+      <hexa-input-text id="branchManagerEmail" formControlName="managerEmail" [placeholder]="'organization.branch.create.managerEmail.placeholder' | translate" />
+    </div>
+
+    <div class="field toggle-switch">
+      <p-toggleswitch formControlName="isGeoLocationEnabled" inputId="branchIsGeoLocationEnabled" />
+      <label for="branchIsGeoLocationEnabled" class="mb-0">{{ 'organization.branch.create.enableGeoLocation.label' | translate }}</label>
+      <!-- @if (branchForm.get('isGeoLocationEnabled')?.value) {
+        <hexa-button type="button" styleType="transparent"
+          [label]="'organization.branch.create.setLocation' | translate" (clicked)="openMapModal()" />
+      } -->
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2 align-items-end bottom-0 mt-auto position-sticky">
+    <hexa-button type="button" styleType="cancel" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
+
+    @if (!isFirstStep() && id() === null) {
+      <hexa-button type="button" [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()" styleType="transparent" />
+    }
+
+    <hexa-button [disabled]="disabledForm()" type="button" styleType="primary"
+      (clicked)="id() === null ? goNext() : editBranch()"
+      [label]="id() === null ? ('buttons.next' | translate) : ('buttons.edit' | translate)" />
+  </div>
+</form>
+
+<app-location-modal
+  [visible]="showMapModal()"
+  [data]="mapData()"
+  (close)="onLocationModalClose()"
+  (saveLocation)="onLocationSelected($event)">
+</app-location-modal>

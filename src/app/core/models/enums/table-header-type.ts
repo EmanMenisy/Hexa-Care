@@ -7,6 +7,7 @@ export enum TableHeaderType {
   Country = 'Country',
   TimeDuration = 'TimeDuration',
   ColorCircle = 'ColorCircle',
-  AvatarWithText = 'AvatarWithText',  
-  FileWithIcon = 'FileWithIcon'
+  AvatarWithText = 'AvatarWithText',
+  FileWithIcon = 'FileWithIcon',
+  List="List"
 }

@@ -1,0 +1,19 @@
+// role.scss
+
+.role-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+
+  &--active {
+    background-color: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
+  }
+
+  &--inactive {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+  }
+}
