@@ -168,20 +168,12 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   // MULTI SELECT EVENTS
   // ============================================================
 
-  onMultiSelectChange(): void {
-
-    this.multiSelectChanged.emit(
-      this.selectedValues()
-    );
-
-    this.onChange(
-      this.selectedValues()
-    );
-
-    this.onTouched(
-      this.selectedValues()
-    );
-  }
+ onMultiSelectChange(value: any[]): void {
+  this.selectedValues.set(value);
+  this.multiSelectChanged.emit(value);
+  this.onChange(value);
+  this.onTouched(value);
+}
 
 
   onClear(): void {

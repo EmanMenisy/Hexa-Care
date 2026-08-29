@@ -29,8 +29,7 @@
     "cancel": "إلغاء",
     "next": "التالي",
     "save": "حفظ"
-  }
-  ,
+  },
   "login": {
     "language": "العربية",
     "arabic": "العربية",
@@ -69,7 +68,7 @@
     "noAccount": "ليس لديك حساب؟",
     "createAccount": "إنشاء حساب"
   },
-   "configurations": {
+  "configurations": {
     "role": {
       "create": {
         "header": {
@@ -111,9 +110,10 @@
         }
       }
     }
-  }, "employee": {
+  },
+  "employee": {
     "personal_info": {
-      "title": "البيانات الشخصية",
+      "title": "المعلومات الشخصية",
       "first_name": "الاسم الأول",
       "first_name_placeholder": "أدخل الاسم الأول",
       "second_name": "الاسم الثاني",
@@ -122,16 +122,20 @@
       "third_name_placeholder": "أدخل الاسم الثالث",
       "last_name": "اسم العائلة",
       "last_name_placeholder": "أدخل اسم العائلة",
-      "name_english": "الاسم باللغة الإنجليزية",
-      "name_english_placeholder": "أدخل الاسم باللغة الإنجليزية",
-      "gender": "النوع",
-      "gender_placeholder": "اختر النوع",
+      "name": "الاسم",
+      "name_placeholder": "أدخل الاسم",
+      "name_arabic": "الاسم بالعربية",
+      "name_arabic_placeholder": "أدخل الاسم بالعربية",
+      "gender": "الجنس",
+      "gender_placeholder": "اختر الجنس",
       "date_of_birth": "تاريخ الميلاد",
       "date_of_birth_placeholder": "اختر تاريخ الميلاد",
       "age": "العمر",
       "years": "سنة",
       "nationality": "الجنسية",
       "nationality_placeholder": "أدخل الجنسية",
+      "national_id": "الرقم القومي",
+      "national_id_placeholder": "أدخل الرقم القومي",
       "marital_status": "الحالة الاجتماعية",
       "marital_status_placeholder": "اختر الحالة الاجتماعية",
       "blood_group": "فصيلة الدم",
@@ -143,7 +147,7 @@
     },
 
     "contact_info": {
-      "title": "بيانات الاتصال",
+      "title": "معلومات الاتصال",
       "address": "العنوان",
       "address_placeholder": "أدخل العنوان",
       "city": "المدينة",
@@ -154,10 +158,75 @@
       "postal_code_placeholder": "أدخل الرمز البريدي",
       "country": "الدولة",
       "country_placeholder": "أدخل الدولة",
-      "emergency_contact": "جهة اتصال للطوارئ",
-      "emergency_contact_placeholder": "جهة اتصال الطوارئ",
-      "emergency_phone": "رقم هاتف الطوارئ",
-      "emergency_phone_placeholder": "هاتف الطوارئ"
+      "emergency_contact": "جهة اتصال الطوارئ",
+      "emergency_contact_placeholder": " جهة اتصال الطوارئ",
+      "emergency_phone": "هاتف الطوارئ",
+      "emergency_phone_placeholder": "رقم هاتف الطوارئ"
+    },
+    "login_info": {
+      "title": "معلومات الحساب",
+      "username": "اسم المستخدم",
+      "username_placeholder": "أدخل اسم المستخدم",
+      "password": "كلمة المرور",
+      "password_placeholder": "أدخل كلمة المرور"
+    },
+    "professional_info": {
+      "title": "المعلومات المهنية",
+      "specialty": "التخصص",
+      "specialty_placeholder": "أدخل التخصص",
+      "qualification": "المؤهل",
+      "qualification_placeholder": "أدخل المؤهل",
+      "years_of_experience": "سنوات الخبرة",
+      "years_of_experience_placeholder": "أدخل سنوات الخبرة",
+      "registration_number": "رقم التسجيل",
+      "registration_number_placeholder": "أدخل رقم التسجيل",
+      "joining_date": "تاريخ الانضمام",
+      "joining_date_placeholder": "اختر تاريخ الانضمام",
+      "languages": "اللغات",
+      "languages_placeholder": "أدخل اللغات",
+      "experience_summary": "ملخص الخبرة",
+      "experience_summary_placeholder": "أدخل ملخص الخبرة",
+      "bio": "نبذة تعريفية",
+      "bio_placeholder": "أدخل نبذة تعريفية",
+      "commission_percent": "نسبة العمولة",
+      "commission_percent_placeholder": "أدخل نسبة العمولة",
+      "commission_details":"تفاصيل العمولة",
+      "medical_details": "التفاصيل الطبية",
+      "sub_specialty": "التخصص الفرعي",
+      "sub_specialty_placeholder": "أدخل التخصص الفرعي",
+      "rank": "الرتبة",
+      "rank_placeholder": "أدخل الرتبة",
+      "license_number": "رقم الترخيص",
+      "license_number_placeholder": "أدخل رقم الترخيص",
+      "medical_council": "المجلس الطبي",
+      "medical_council_placeholder": "أدخل المجلس الطبي",
+      "academic_rank": "الرتبة الأكاديمية",
+      "academic_rank_placeholder": "أدخل الرتبة الأكاديمية",
+      "areas_of_expertise": "مجالات الخبرة",
+      "areas_of_expertise_placeholder": "أدخل مجالات الخبرة",
+      "cash_commission_percent": "نسبة العمولة النقدية",
+      "cash_commission_percent_placeholder": "أدخل نسبة العمولة النقدية",
+      "contract_commission_percent": "نسبة عمولة التعاقد",
+      "contract_commission_percent_placeholder": "أدخل نسبة عمولة التعاقد",
+      "photo_url": "رابط الصورة",
+      "photo_url_placeholder": "أدخل رابط الصورة",
+      "employment_details": "تفاصيل التوظيف",
+      "job_title": "المسمى الوظيفي",
+      "job_title_placeholder": "أدخل المسمى الوظيفي",
+      "employment_type": "نوع التوظيف",
+      "employment_type_placeholder": "اختر نوع التوظيف",
+      "contract_end_date": "تاريخ انتهاء العقد",
+      "contract_end_date_placeholder": "اختر تاريخ انتهاء العقد",
+      "base_salary": "الراتب الأساسي",
+      "base_salary_placeholder": "أدخل الراتب الأساسي",
+      "insurance_number": "رقم التأمين",
+      "insurance_number_placeholder": "أدخل رقم التأمين",
+      "licensing_authority": "جهة الترخيص",
+      "licensing_authority_placeholder": "أدخل جهة الترخيص",
+      "skills": "المهارات",
+      "skills_placeholder": "أدخل المهارات",
+      "certifications": "الشهادات",
+      "certifications_placeholder": "أدخل الشهادات"
     }
   }
 }

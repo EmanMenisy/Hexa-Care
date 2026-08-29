@@ -1,0 +1,49 @@
+<!-- @if (selectedSector() === null) {
+  <div class="sector-grid">
+    <div class="sector-card" (click)="selectSector(false)">
+      <i class="pi pi-heart-fill sector-icon medical"></i>
+      <h3>Medical Sector</h3>
+    </div>
+    <div class="sector-card" (click)="selectSector(true)">
+      <i class="pi pi-briefcase sector-icon admin"></i>
+      <h3>Administrative Sector</h3>
+    </div>
+  </div>
+} 
+@else{
+  <button class="back-btn" (click)="goBack()">
+    <i class="pi pi-arrow-right"></i> Back
+  </button>
+  <div class="staff-type-grid">
+    @for (type of filteredTypes(); track type.id) {
+      <div class="staff-type-card" (click)="selectType(type)">
+        <h4>{{ type.nameArabic }}</h4>
+        <p>{{ type.description }}</p>
+      </div>
+    }
+  </div>
+} -->
+
+
+<div class="container-fluid">
+  <div class="card">
+    <div class="row">
+      @for (staff of staffTypes(); track staff.id) {
+        <div class="col-md-4">
+          <div
+            class="card staff-card"
+            (click)="selectStaffType(staff.id)"
+            >
+            <div class="d-flex align-items-center gap-2">
+              <p>{{ staff.name }}</p>
+            </div>
+          </div>
+        </div>
+      }
+      <div (click)="doctor()">
+        <p>doctor</p>
+      </div>
+    </div>
+  </div>
+</div>
+

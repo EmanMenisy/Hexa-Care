@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 import { Role } from './feature/configuration/role/pages/role';
 import { Premissions } from './feature/configuration/premissions/pages/premissions/premissions';
 import { EmployeeCreation } from './feature/employee/partials/employee-creation/employee-creation';
+import { HomeEmployeeCreation } from './feature/employee/pages/home-employee-creationon/home-employee-creation';
 
 export const routes: Routes = [
   {
@@ -23,6 +24,7 @@ export const routes: Routes = [
     component: Layout, children:[
       {path:'creation' , component:EmployeeCreation},
       {path:'premission' , component:Premissions},
+      {path:'home' , component:HomeEmployeeCreation},
     ]
   },
 ];

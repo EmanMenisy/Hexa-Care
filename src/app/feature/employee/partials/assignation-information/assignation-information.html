@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <form [formGroup]="assignationForm()" class="assignation-form">
+    <div class="card">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="icon-wrapper">
+          <i class="pi pi-user"></i>
+        </span>
+        <h3 class="section-title">Assignation</h3>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="field">
+            <label>Company <span class="text-danger">*</span></label>
+            <hexa-multi-select
+              [options]="companiesOptions"
+              optionLabel="name"
+              optionValue="companyId"
+              formControlName="company"
+              placeholder="Select company"
+              (multiSelectChanged)="onCompanyChange($event)"
+            >
+            </hexa-multi-select>
+            @if (
+              assignationForm().get('company')?.invalid && assignationForm().get('company')?.touched
+            ) {
+              <div class="text-danger">Company is required.</div>
+            }
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="field">
+            <label>Branch <span class="text-danger">*</span></label>
+            <hexa-multi-select
+              [options]="branchsFilteredOptions"
+              optionLabel="name"
+              optionValue="branchId"
+              formControlName="branch"
+              placeholder="Select branch"
+              (multiSelectChanged)="onBranchChange($event)"
+            >
+            </hexa-multi-select>
+            @if (
+              assignationForm().get('branch')?.invalid && assignationForm().get('branch')?.touched
+            ) {
+              <div class="text-danger">Branch is required.</div>
+            }
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="field">
+            <label>Department <span class="text-danger">*</span></label>
+            <hexa-multi-select
+              [options]="departmentFilteredOptions"
+              optionLabel="name"
+              optionValue="departmentId"
+              formControlName="department"
+              placeholder="Select department"
+              (multiSelectChanged)="onDepartmentChange($event)"
+            >
+            </hexa-multi-select>
+            @if (
+              assignationForm().get('department')?.invalid &&
+              assignationForm().get('department')?.touched
+            ) {
+              <div class="text-danger">Department is required.</div>
+            }
+          </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="field">
+            <label>Team <span class="text-danger">*</span></label>
+            <hexa-multi-select
+              [options]="teamFilteredOptions"
+              optionLabel="name"
+              optionValue="teamId"
+              formControlName="team"
+              placeholder="Select team"
+              (multiSelectChanged)="onTeamChange($event)"
+            >
+            </hexa-multi-select>
+            @if (assignationForm().get('team')?.invalid && assignationForm().get('team')?.touched) {
+              <div class="text-danger">Team is required.</div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="icon-wrapper">
+          <i class="pi pi-user"></i>
+        </span>
+        <h3 class="section-title">Role And Permission</h3>
+      </div>
+      <div class="row">
+      <div formArrayName="roles" class="roles-section mt-4">
+      @for (role of rolesArray.controls; track $index; let i = $index) {
+      <div [formGroupName]="i" class="row role-row">
+      <div class="col-sm-12 col-md-4">
+        <div class="field">
+          <label>Role Type <span class="text-danger">*</span></label>
+          <hexa-dropdown
+            [options]="roleTypes"
+            optionLabel="label"
+            optionValue="value"
+            formControlName="isSystemRole"
+            placeholder="Select type"
+            (dropdownChanged)="onRoleTypeChanged($event, i)">
+          </hexa-dropdown>
+        </div>
+      </div>
+
+      <div class="col-sm-12 col-md-4">
+        <div class="field">
+          <label>Role & Permission Name <span class="text-danger">*</span></label>
+          <hexa-dropdown
+            [options]="role.get('roleOptions')?.value"
+            optionLabel="name"
+            optionValue="id"
+            formControlName="roleId"
+            placeholder="Select permission"
+            (dropdownChanged)="onRoleChanged($event, i)">
+            >
+         </hexa-dropdown>
+        </div>
+      </div>
+
+      <div class="col-sm-12 col-md-4">
+        <div class="field">
+        <label>Main Head Hierarchy<span class="text-danger">*</span></label>
+            <hexa-dropdown
+            [options]="role.get('headOptions')?.value"
+            optionLabel="name"
+            [optionValue]="role.get('headValueField')?.value"
+            formControlName="mainHeadHierarchy"
+            placeholder="Select hierarchy">
+            </hexa-dropdown>
+        </div>
+      </div>
+
+    </div>
+  }
+</div>
+      </div>
+    </div>
+  </form>
+</div>

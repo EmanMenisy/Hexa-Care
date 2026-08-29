@@ -13,7 +13,7 @@ export const SIDEBAR_MENU: ISidebarItem[] = [
     description: 'Facility & structure',
     children: [
       { id: 'org-companies', label: 'Companies', icon: '🏬', route: '/layout/creation', code: 200 },
-      { id: 'org-departments', label: 'Departments', icon: '🗂️', route: '/organization/departments', code: 1700 },
+      { id: 'org-departments', label: 'Departments', icon: '🗂️', route: '/layout/home', code: 1700 },
       { id: 'org-facility', label: 'Facility', icon: '🏗️', route: '/organization/facility', code: 600 },
       { id: 'org-organizations', label: 'Organizations', icon: '🏛️', route: '/organization/organizations', code: 1600 },
       { id: 'org-teams', label: 'Teams', icon: '👥', route: '/organization/teams', code: 500 },

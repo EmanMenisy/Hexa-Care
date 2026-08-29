@@ -7,6 +7,7 @@ import { DropdownComponent } from '../../../shared/components/primeng/drop-down/
 import { CalenderComponent } from '../../../shared/components/primeng/date-picker/date-picker';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SelectModule } from 'primeng/select';
+import { EmployeeCreationMode } from '../../model/enums/employee-Creation-enums';
 
 @Component({
   selector: 'hexa-personal-info',
@@ -16,7 +17,9 @@ import { SelectModule } from 'primeng/select';
   styleUrl: './personal-information.scss',
 })
 export class PersonalInfo {
-  formGroup = input.required<FormGroup>();
+  personalForm = input.required<FormGroup>();
+  staffMode = input.required<EmployeeCreationMode>();
+  readonly EmployeeCreationMode = EmployeeCreationMode;
 
   genderOptions = [
     { label: 'Male', value: 1 },
@@ -39,7 +42,7 @@ export class PersonalInfo {
 
   constructor() {
     effect((onCleanup) => {
-      const dobControl = this.formGroup().get('dateOfBirth');
+      const dobControl = this.personalForm().get('dateOfBirth');
       if (!dobControl) return;
 
       const sub = dobControl.valueChanges

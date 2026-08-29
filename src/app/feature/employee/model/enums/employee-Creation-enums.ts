@@ -32,3 +32,9 @@ export enum BloodGroup {
   OPositive = 'O+',
   ONegative = 'O-',
 }
+
+
+export enum EmployeeCreationMode {
+  Doctor = 1,
+  StaffMember = 2,
+}

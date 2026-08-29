@@ -20,7 +20,7 @@
   [resetFilterOnHide]="!serverSideFiltering()"
   inputId="multiSelectInputId"
   appendTo="body"
-  (ngModelChange)="onMultiSelectChange()"
+  (ngModelChange)="onMultiSelectChange($event)"
   (onClear)="onClear()"
   (onPanelShow)="multiSelectShown.emit()"
   (onPanelHide)="multiSelectHidden.emit()"

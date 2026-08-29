@@ -1,17 +1,21 @@
 <div class="creation-page">
   <div class="creation-page__stepper">
-    <hexa-creation-stepper [steps]="steps()" [(step)]="step" [completedSteps]="completedSteps()" />
-  </div>
+  <hexa-creation-stepper
+  [steps]="steps()"
+  [(step)]="step"
+  [maxStep]="maxStep()"
+/>  
+</div>
   <div class="creation-page__content">
     @switch (step()) {
       @case (1) {
-        <hexa-personal-info [formGroup]="form.controls.personal"></hexa-personal-info>
+        <hexa-personal-info [personalForm]="form.controls.personal"  [staffMode]="staffMode()"></hexa-personal-info>
       }
       @case (2) {
-        <!-- <hexa-professional-info /> -->
+        <hexa-professional-information [professionalForm]="form.controls.professional"  [staffMode]="staffMode()"></hexa-professional-information>
       }
       @case (3) {
-        <!-- <hexa-schedule-info /> -->
+        <hexa-assignation-information [assignationForm]="form.controls.assignment"></hexa-assignation-information>
       }
       @case (4) {
         <!-- <hexa-documents-info /> -->
@@ -47,6 +51,7 @@
         label="Next"
         severity="primary"
         (clicked)="onNext()"
+        [disabled]="!canGoNext()" 
       ></hexa-button>
     } @else {
       <button
@@ -61,3 +66,4 @@
   </div>
 </div>
 </div>
+

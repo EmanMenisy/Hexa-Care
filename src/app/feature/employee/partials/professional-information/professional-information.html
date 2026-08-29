@@ -1,1 +1,384 @@
-<p>professional-information works!</p>
+<div class="container-fluid">
+  <form [formGroup]="professionalForm()" class="professional-info">
+
+    <!-- Shared -->
+    <section class="card">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="icon-wrapper"><i class="pi pi-briefcase"></i></span>
+        <h3 class="section-title">
+          {{ 'employee.professional_info.title' | translate }}
+        </h3>
+      </div>
+
+      <div class="row g-3">
+
+        <div class="col-md-4">
+          <label class="field-label">
+            {{ 'employee.professional_info.specialty' | translate }}
+          </label>
+
+          <hexa-input-text
+            formControlName="specialty"
+            [placeholder]="'employee.professional_info.specialty_placeholder' | translate"
+          />
+        </div>
+
+        @if (staffMode() === EmployeeCreationMode.Doctor) {
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.sub_specialty' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="subSpecialty"
+              [placeholder]="'employee.professional_info.sub_specialty_placeholder' | translate"
+            />
+          </div>
+        }
+
+        <div class="col-md-4">
+          <label class="field-label">
+            {{ 'employee.professional_info.qualification' | translate }}
+          </label>
+
+          <hexa-input-text
+            formControlName="qualification"
+            [placeholder]="'employee.professional_info.qualification_placeholder' | translate"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label">
+            {{ 'employee.professional_info.years_of_experience' | translate }}
+          </label>
+
+          <hexa-input-text
+            type="text"
+            formControlName="yearsOfExperience"
+            [placeholder]="'employee.professional_info.years_of_experience_placeholder' | translate"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="field-label">
+            {{ 'employee.professional_info.registration_number' | translate }}
+          </label>
+
+          <hexa-input-text
+            formControlName="registrationNumber"
+            [placeholder]="'employee.professional_info.registration_number_placeholder' | translate"
+          />
+        </div>
+
+        <!-- Joining Date -->
+        <div class="col-md-4">
+          <label class="field-label">
+            {{ 'employee.professional_info.joining_date' | translate }}
+          </label>
+
+          <hexa-calender
+            formControlName="joiningDate"
+            [placeholder]="'employee.professional_info.joining_date_placeholder' | translate"
+          />
+        </div>
+
+        <!-- Contract End Date (Staff Member only) -->
+        @if (staffMode() === EmployeeCreationMode.StaffMember) {
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.contract_end_date' | translate }}
+            </label>
+
+            <hexa-calender
+              formControlName="contractEndDate"
+              [placeholder]="'employee.professional_info.contract_end_date_placeholder' | translate"
+            />
+          </div>
+        }
+
+        <div class="col-md-4">
+          <label class="field-label">
+            {{ 'employee.professional_info.languages' | translate }}
+          </label>
+
+          <hexa-input-text
+            formControlName="languages"
+            [placeholder]="'employee.professional_info.languages_placeholder' | translate"
+          />
+        </div>
+
+        <div class="col-12">
+          <label class="field-label">
+            {{ 'employee.professional_info.experience_summary' | translate }}
+          </label>
+
+          <textarea
+            class="w-100"
+            formControlName="experienceSummary"
+            pTextarea
+            [placeholder]="'employee.professional_info.experience_summary_placeholder' | translate"
+          ></textarea>
+        </div>
+
+        <div class="col-12">
+          <label class="field-label">
+            {{ 'employee.professional_info.bio' | translate }}
+          </label>
+
+          <textarea
+            class="w-100"
+            formControlName="bio"
+            pTextarea
+            [placeholder]="'employee.professional_info.bio_placeholder' | translate"
+          ></textarea>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- Doctor only -->
+    @if (staffMode() === EmployeeCreationMode.Doctor) {
+      <section class="card">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="icon-wrapper">
+            <i class="pi pi-heart-fill"></i>
+          </span>
+
+          <h3 class="section-title">
+            {{ 'employee.professional_info.medical_details' | translate }}
+          </h3>
+        </div>
+
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.rank' | translate }}
+            </label>
+
+            <hexa-input-text
+              type="text"
+              formControlName="rank"
+              [placeholder]="'employee.professional_info.rank_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.license_number' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="licenseNumber"
+              [placeholder]="'employee.professional_info.license_number_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.medical_council' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="medicalCouncil"
+              [placeholder]="'employee.professional_info.medical_council_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.academic_rank' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="academicRank"
+              [placeholder]="'employee.professional_info.academic_rank_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.areas_of_expertise' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="areasOfExpertise"
+              [placeholder]="'employee.professional_info.areas_of_expertise_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.photo_url' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="photoUrl"
+              [placeholder]="'employee.professional_info.photo_url_placeholder' | translate"
+            />
+          </div>
+
+        </div>
+      </section>
+    }
+
+
+    <!-- Staff Member only -->
+    @if (staffMode() === EmployeeCreationMode.StaffMember) {
+      <section class="card">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="icon-wrapper">
+            <i class="pi pi-id-card"></i>
+          </span>
+
+          <h3 class="section-title">
+            {{ 'employee.professional_info.employment_details' | translate }}
+          </h3>
+        </div>
+
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.job_title' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="jobTitle"
+              [placeholder]="'employee.professional_info.job_title_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.employment_type' | translate }}
+            </label>
+
+            <hexa-dropdown
+              formControlName="employmentType"
+              [options]="employmentTypeOptions"
+              [placeholder]="'employee.professional_info.employment_type_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.base_salary' | translate }}
+            </label>
+
+            <hexa-input-text
+              type="text"
+              formControlName="baseSalary"
+              [placeholder]="'employee.professional_info.base_salary_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.insurance_number' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="insuranceNumber"
+              [placeholder]="'employee.professional_info.insurance_number_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.licensing_authority' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="licensingAuthority"
+              [placeholder]="'employee.professional_info.licensing_authority_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-12">
+            <label class="field-label">
+              {{ 'employee.professional_info.skills' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="skills"
+              [placeholder]="'employee.professional_info.skills_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-12">
+            <label class="field-label">
+              {{ 'employee.professional_info.certifications' | translate }}
+            </label>
+
+            <hexa-input-text
+              formControlName="certifications"
+              [placeholder]="'employee.professional_info.certifications_placeholder' | translate"
+            />
+          </div>
+
+        </div>
+      </section>
+    }
+
+
+    <!-- Commission -->
+    <section class="card">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="icon-wrapper">
+          <i class="pi pi-percentage"></i>
+        </span>
+
+        <h3 class="section-title">
+          {{ 'employee.professional_info.commission_details' | translate }}
+        </h3>
+      </div>
+
+      <div class="row g-3">
+
+        <div class="col-md-4">
+          <label class="field-label">
+            {{ 'employee.professional_info.commission_percent' | translate }}
+          </label>
+
+          <hexa-input-text
+            type="text"
+            formControlName="commissionPercent"
+            [placeholder]="'employee.professional_info.commission_percent_placeholder' | translate"
+          />
+        </div>
+
+        @if (staffMode() === EmployeeCreationMode.Doctor) {
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.cash_commission_percent' | translate }}
+            </label>
+
+            <hexa-input-text
+              type="text"
+              formControlName="cashCommissionPercent"
+              [placeholder]="'employee.professional_info.cash_commission_percent_placeholder' | translate"
+            />
+          </div>
+
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.contract_commission_percent' | translate }}
+            </label>
+
+            <hexa-input-text
+              type="text"
+              formControlName="contractCommissionPercent"
+              [placeholder]="'employee.professional_info.contract_commission_percent_placeholder' | translate"
+            />
+          </div>
+
+        }
+
+      </div>
+    </section>
+
+  </form>
+</div>
