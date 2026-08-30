@@ -18,8 +18,6 @@ import {
   Validators
 } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { EMPTY, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { DropdownComponent } from '../../../shared/components/primeng/drop-down/drop-down';
 import { InputTextComponent } from '../../../shared/components/primeng/input-text/input-text';
 import { MultiSelectComponent } from '../../../shared/components/primeng/multi-select/multi-select';
 import { ButtonComponent } from '../../../shared/components/primeng/button/button';
@@ -35,6 +33,14 @@ import {
 } from '../../models/organization-creation.model';
 import { LocationModal } from '../location-modal/location-modal';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { StepperComponent } from '../../../shared/components/common/stepper/stepper';
+
+/* -------------------- internal wizard steps -------------------- */
+const STEP_FIELDS: string[][] = [
+  ['name', 'nameArabic','companyIds', 'description', 'descriptionArabic'],
+  ['address', 'phone', 'email', 'country', 'state', 'city'],
+  ['managerName', 'managerPhone', 'managerEmail' ]
+];
 
 @Component({
   selector: 'app-branch-manual',
@@ -43,12 +49,12 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
     CommonModule,
     ReactiveFormsModule,
     InputTextComponent,
-    DropdownComponent,
     MultiSelectComponent,
     ButtonComponent,
     LocationModal,
     TranslatePipe,
-    ToggleSwitchModule
+    ToggleSwitchModule,
+    StepperComponent
   ],
   templateUrl: './branch-manual.html',
   styleUrl: './branch-manual.scss',
@@ -74,10 +80,9 @@ export class BranchManual implements OnInit {
       address: [''],
       phone: [''],
       email: ['', [Validators.email]],
-      countryId: ['', [Validators.required]],
-      stateId: [null as string | null],
-      cityId: ['', [Validators.required]],
-      otherCityName: [null as string | null],
+      country: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      city: ['', [Validators.required]],
       managerName: [''],
       managerPhone: [''],
       managerEmail: ['', [Validators.email]],
@@ -99,28 +104,28 @@ export class BranchManual implements OnInit {
 
   /* -------------------- state (signals) -------------------- */
   companies = signal<any[]>([]);
-  countries = signal<any[]>([]);
-  cities = signal<any[]>([]);
-  states = signal<any[]>([]);
   id = signal<string | null>(null);
   isFirstStep = signal<boolean>(false);
-  isCityDisabled = signal<boolean>(true);
-  isOtherCity = signal<boolean>(false);
   showMapModal = signal<boolean>(false);
   geoLocation = signal<GeoLocation | null>(null);
 
   mapData = computed(() => (this.geoLocation() ? [this.geoLocation()!] : []));
 
+  /* -------------------- internal wizard (stepper) -------------------- */
+  totalSteps = STEP_FIELDS.length;
+  currentStep = signal<number>(1);
+  completedSteps = signal<boolean[]>(new Array(this.totalSteps).fill(false));
+  stepperSteps = [
+    { label: 'organization.branch.steps.basicInformation' },
+    { label: 'organization.branch.steps.contactAndLocation' },
+    { label: 'organization.branch.steps.managementInformation' }
+  ];
+  isLastStep = computed(() => this.currentStep() === this.totalSteps);
+
   ngOnInit(): void {
     this.initBranchId();
     this.initStepListener();
     this.getCompanies();
-    this.getCountries();
-    this.initCompanyIdsListener();
-
-    this.branchForm.get('countryId')?.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((countryId) => this.getStatesByCountryId(countryId!));
 
     this.branchForm.get('isGeoLocationEnabled')?.valueChanges
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -149,86 +154,48 @@ export class BranchManual implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((step) => {
         this.isFirstStep.set(step === HierarchySteps.Branch);
-        this.isCityDisabled.set(this.isFirstStep());
       });
   }
 
-  private initCompanyIdsListener(): void {
-    const companyIdsControl = this.branchForm.get('companyIds');
-    if (!companyIdsControl) return;
+  /* -------------------- wizard navigation -------------------- */
+  onStepChange(step: number): void {
+    if (step <= this.currentStep() || this.completedSteps()[step - 2]) {
+      this.currentStep.set(step);
+    }
+  }
 
-    companyIdsControl.valueChanges
-      .pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        takeUntilDestroyed(this.destroyRef),
-        switchMap((companyIds: string[]) => this.handleCompanyIdsChange(companyIds))
-      )
-      .subscribe({
-        next: (cities) => this.handleCitiesResponse(cities),
-        error: (err) => this.handleCitiesError(err)
+  goBack(): void {
+    if (this.currentStep() > 1) {
+      this.currentStep.update((s) => s - 1);
+    }
+  }
+
+  private isStepValid(step: number): boolean {
+    const fields = STEP_FIELDS[step - 1] ?? [];
+    return fields.every((field) => this.branchForm.get(field)?.valid ?? true);
+  }
+
+  private touchStep(step: number): void {
+    const fields = STEP_FIELDS[step - 1] ?? [];
+    fields.forEach((field) => this.branchForm.get(field)?.markAsTouched());
+  }
+
+  onPrimaryAction(): void {
+    if (!this.isLastStep()) {
+      if (!this.isStepValid(this.currentStep())) {
+        this.touchStep(this.currentStep());
+        return;
+      }
+      this.completedSteps.update((steps) => {
+        const copy = [...steps];
+        copy[this.currentStep() - 1] = true;
+        return copy;
       });
-  }
-
-  private handleCitiesError(err: unknown): void {
-    console.error(err);
-    this.resetCities();
-  }
-
-  private resetCities(): void {
-    this.cities.set([]);
-    this.states.set([]);
-    this.isCityDisabled.set(true);
-    this.isOtherCity.set(false);
-  }
-
-  private handleCitiesResponse(res: any): void {
-    if (!res?.length) {
-      this.resetCities();
+      this.currentStep.update((s) => s + 1);
       return;
     }
-    this.states.set(res.map((state: any) => ({ label: state.name, value: state.id })));
 
-    this.cities.set([
-      { label: 'other', value: 'other' },
-      ...res.flatMap((state: any) =>
-        state.cityResponseDtos.map((city: any) => ({
-          label: city.name,
-          value: city.id
-        }))
-      )
-    ]);
-
-    this.isCityDisabled.set(false);
-  }
-
-  private handleCompanyIdsChange(companyIds: string[]) {
-    if (!companyIds?.length) {
-      this.resetCities();
-      return EMPTY;
-    }
-
-    this.isCityDisabled.set(true);
-    return this.organizationService.getCitiesByCompanyIds(companyIds);
-  }
-
-  private getStatesByCountryId(countryId: string): void {
-    if (!countryId) {
-      this.states.set([]);
-      return;
-    }
-    this.organizationService.getStatesByCountryId(countryId).subscribe((res: any) => {
-      this.states.set(res.map((state: any) => ({ label: state.name, value: state.id })));
-    });
-  }
-
-  getCountries(): void {
-    this.organizationService.getCountries().subscribe((res: any) => {
-      this.countries.set(res.map((country: any) => ({
-        label: country.name,
-        value: country.id
-      })));
-    });
+    this.id() === null ? this.goNext() : this.editBranch();
   }
 
   goNext() {
@@ -252,13 +219,9 @@ export class BranchManual implements OnInit {
 
   private buildFormData() {
     const raw = this.branchForm.getRawValue();
-    const isOther = raw.cityId === 'other';
 
     return {
       ...raw,
-      cityId: isOther ? null : raw.cityId,
-      stateId: isOther ? raw.stateId : null,
-      otherCityName: isOther ? raw.otherCityName : null,
       location: this.geoLocation()
     };
   }
@@ -266,19 +229,8 @@ export class BranchManual implements OnInit {
   resetForm() {
     this.branchForm.reset({}, { emitEvent: false });
     this.geoLocation.set(null);
-    this.isOtherCity.set(false);
-  }
-
-  getCitiesByStateId(): void {
-    const company = this.company();
-    if (company && company.stateId) {
-      this.organizationService.getCitiesByStateId(company.stateId).subscribe((res: any) => {
-        this.cities.set([
-          { label: 'other', value: 'other' },
-          ...res.map((city: any) => ({ label: city.name, value: city.id }))
-        ]);
-      });
-    }
+    this.currentStep.set(1);
+    this.completedSteps.set(new Array(this.totalSteps).fill(false));
   }
 
   getCompanies(): void {
@@ -304,10 +256,6 @@ export class BranchManual implements OnInit {
     const companyIdsControl = this.branchForm.get('companyIds');
     companyIdsControl?.setValue([company.name]);
     companyIdsControl?.disable();
-
-    if (company.stateId) {
-      this.getCitiesByStateId();
-    }
   }
 
   getBranchById(id: string) {
@@ -320,10 +268,9 @@ export class BranchManual implements OnInit {
         address: res.address,
         phone: res.phone,
         email: res.email,
-        countryId: res.countryID ?? res.countryId,
-        stateId: res.stateID ?? res.stateId,
-        cityId: res.cityID ?? res.cityId,
-        otherCityName: res.otherCityName,
+        country: res.country,
+        state: res.state,
+        city: res.city,
         managerName: res.managerName,
         managerPhone: res.managerPhone,
         managerEmail: res.managerEmail,
@@ -360,28 +307,6 @@ export class BranchManual implements OnInit {
         this.update.emit(true);
       }
     });
-  }
-
-  onCityChange(event: any) {
-    const otherCityControl = this.branchForm.get('otherCityName');
-    const stateControl = this.branchForm.get('stateId');
-
-    if (event === 'other') {
-      this.isOtherCity.set(true);
-      otherCityControl?.setValidators([Validators.required]);
-      if (this.isFirstStep()) {
-        stateControl?.setValidators([Validators.required]);
-      }
-    } else {
-      this.isOtherCity.set(false);
-      otherCityControl?.setValue(null);
-      stateControl?.setValue(null);
-      otherCityControl?.clearValidators();
-      stateControl?.clearValidators();
-    }
-
-    otherCityControl?.updateValueAndValidity();
-    stateControl?.updateValueAndValidity();
   }
 
   /* -------------------- geolocation modal -------------------- */

@@ -55,8 +55,7 @@ export class TeamManual implements OnInit {
     private readonly destroyRef: DestroyRef,
     private readonly fb: FormBuilder
   ) {
-    // بنبنيها هنا (بعد ما this.fb اتحط) مش كـ field initializer،
-    // عشان منعتمدش على ترتيب تنفيذ الـ native class fields مع الـ parameter properties
+
     this.teamForm = this.fb.group({
       name: ['', [Validators.required]],
       departmentIds: [[] as string[], Validators.required]
@@ -107,7 +106,6 @@ export class TeamManual implements OnInit {
       this.teamForm.get('departmentIds')?.setValue([department.name]);
       this.teamForm.get('departmentIds')?.disable();
     } else {
-      // TODO(Mohamed): confirm method name on Organization service (was LookupsService.getStructureBasedOnRoleScope)
       this.organizationService.getStructureBasedOnRoleScope().subscribe((res: any) => {
         this.departmentList.set(res.departments.map((d: any) => ({
           label: d.name,
@@ -118,7 +116,6 @@ export class TeamManual implements OnInit {
   }
 
   getTeamById(id: string) {
-    // TODO(Mohamed): confirm method name on Organization service (was TeamService.getTeamById)
     this.organizationService.getTeamById(id).subscribe({
       next: (res: any) => {
         this.teamForm.patchValue({

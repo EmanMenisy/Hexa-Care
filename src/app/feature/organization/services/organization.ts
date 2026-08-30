@@ -41,7 +41,7 @@ export class Organization {
    getStructureBasedOnRoleScope(): Observable<any> {
     return this.xhrService.call({
       method: HttpMethod.Get,
-      url: '/RoleScope/Get/Roleid'
+      url: 'RoleScope/Get/Roleid'
     })
   }
   //==============Company
@@ -169,7 +169,7 @@ export class Organization {
   saveOrganizationData(data: any): Observable<any> {
     return this.xhrService.call({
       method: HttpMethod.Post,
-      url: `/Hierarchy/PostOnboarding`,
+      url: `Hierarchy/PostOnboarding`,
       body: data
     });
   }

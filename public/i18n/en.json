@@ -319,6 +319,11 @@
       }
     },
     "company": {
+      "steps":{
+          "mainInformation": "Main Information",
+          "contactAndLocation": "Contact & Location",
+          "legalAndManagement": "Management"
+      },
       "home": {
         "title": "Company",
         "subtitle": "Starting your company",
@@ -453,6 +458,11 @@
       }
     },
     "branch": {
+      "steps": {
+        "basicInformation": "Basic Information",
+        "contactAndLocation": "Contact & Location",
+        "managementInformation": "Management"
+      },
       "home": {
         "title": "Branch",
         "subtitle": "Starting your branch",
@@ -555,6 +565,10 @@
       }
     },
     "department": {
+      "steps": {
+        "basicInformation": "Basic Information",
+        "managementInformation": "Management & Contact Information"
+      },
       "home": {
         "title": "Department",
         "subtitle": "Starting your department",

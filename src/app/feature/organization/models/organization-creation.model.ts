@@ -31,10 +31,9 @@ export class CompanyCreate {
 
   address: string = '';
 
-  countryId: string | null = null;
-  cityId: string | null = null;
-  stateId: string | null = null;
-  otherCityName: string | null = null;
+  country: string = '';
+  city: string = '';
+  state: string = '';
 
   commercialRegisterNo: string = '';
   taxNumber: string = '';
@@ -77,10 +76,9 @@ export class BranchCreate {
   phone: string = '';
   email: string = '';
 
-  countryId: string | null = null;
-  cityId: string | null = null;
-  stateId: string | null = null;
-  otherCityName: string | null = null;
+  country: string = '';
+  city: string = '';
+  state: string = '';
 
   managerName: string = '';
   managerPhone: string = '';
