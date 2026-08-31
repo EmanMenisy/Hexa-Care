@@ -173,4 +173,21 @@ export class Organization {
       body: data
     });
   }
+
+  //============== organization
+
+  getOrganizationData(id:string):Observable<any>{
+    return this.xhrService.call({
+      url:'Organization/GetById',
+      method:HttpMethod.Get,
+      params:new HttpParams().set('id',id)
+    })
+  }
+   updateOrganizationData(form:FormData):Observable<any>{
+    return this.xhrService.call({
+      url:'Organization/Update',
+      method:HttpMethod.Put,
+      body:form
+    })
+  }
 }

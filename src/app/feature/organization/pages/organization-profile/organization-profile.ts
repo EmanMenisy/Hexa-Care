@@ -6,7 +6,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import {
   KpiItem,
   MOCK_CAPACITY_DATA,
-  MOCK_PROFILE_DATA,
   ORG_PROFILE_ACTIONS,
   OrganizationProfileData,
   ProfileMode,
@@ -192,18 +191,20 @@ export class OrganizationProfile {
   }
 
   private loadProfile(): void {
-    of(MOCK_PROFILE_DATA)
-      .pipe(delay(500), takeUntilDestroyed(this.destroyRef))
-      .subscribe((data: OrganizationProfileData) => {
-        const { id, logo, ...formValue } = data as any;
+    const id = localStorage.getItem('orgID');
+    this.organizationService
+      .getOrganizationData(id!)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data: any) => {
 
-        this.organizationId.set(id ?? null);
-        this.form.patchValue(formValue);
+        // form only owns the DTO fields, ignores extra read-only fields
+        // (createdDate, updatedDate, isOnBoardingOperationCompleted, ownerRoleId)
+        this.form.patchValue(data);
 
-        if (logo) {
-          // initial value coming from the server is a URL used only for preview
-          this.logoUrl.set(logo);
-        }
+        // if (logoUrl) {
+        //   // server value is a URL used only for preview, never sent back on save
+        //   this.logoUrl.set(logoUrl);
+        // }
         this.captureSnapshot();
       });
   }
@@ -233,14 +234,36 @@ export class OrganizationProfile {
       return;
     }
 
-    const payload = {
-      id: this.organizationId(),
-      ...this.form.getRawValue(),
-      logo: this.selectedLogo(),
-    };
+    const formData = this.buildUpdateFormData();
 
-    this.captureSnapshot();
-    this.mode.set('view');
+    this.organizationService
+      .updateOrganizationData(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.captureSnapshot();
+        this.mode.set('view');
+      });
+  }
+
+
+  private buildUpdateFormData(): FormData {
+    const raw = this.form.getRawValue();
+    const formData = new FormData();
+    const id = localStorage.getItem('orgID');
+    formData.append('Id', id ?? '');
+
+    Object.entries(raw).forEach(([key, value]) => {
+      if (value === null || value === undefined) return;
+      const pascalKey = key.charAt(0).toUpperCase() + key.slice(1);
+      formData.append(pascalKey, String(value));
+    });
+
+    const logo = this.selectedLogo();
+    if (logo) {
+      formData.append('Logo', logo, logo.name);
+    }
+
+    return formData;
   }
 
   onLogoSelected(event: Event): void {
@@ -373,7 +396,7 @@ export class OrganizationProfile {
     const isEdit = this.isEditMode();
     return [
       {
-        icon: 'pi pi-arrow-right',
+        icon: 'pi pi-pen-to-square',
         severity: 'primary',
         action: ORG_PROFILE_ACTIONS.EDIT,
         label: 'Update',
