@@ -79,14 +79,15 @@
   </div>
 </form>
 <div class="actions">
-  <hexa-button type="button" styleType="cancel" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
-  @if (!isFirstStep() && id() === null) {
-    <hexa-button type="button" [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()" styleType="transparent" />
-  }
+  <hexa-button [severity]="'secondary'"  [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
   @if (currentStep() > 1) {
-    <hexa-button type="button" styleType="transparent" [label]="'buttons.back' | translate" (clicked)="goBack()" />
+    <hexa-button   [label]="'buttons.back' | translate" (clicked)="goBack()" />
   }
-  <hexa-button [disabled]="!isLastStep() ? false : disabledForm()" type="button" styleType="primary"
+  @if (!isFirstStep() && id() === null) {
+    <hexa-button  [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()"  />
+  }
+
+  <hexa-button [disabled]="!isLastStep() ? false : disabledForm()"
     (clicked)="onPrimaryAction()"
     [label]="!isLastStep() ? ('buttons.next' | translate) : (id() === null ? ('buttons.next' | translate) : ('buttons.edit' | translate))" />
 </div>

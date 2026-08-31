@@ -77,7 +77,7 @@ export class BranchManual implements OnInit {
       nameArabic: [''],
       description: [''],
       descriptionArabic: [''],
-      address: [''],
+      address: ['',[Validators.required]],
       phone: [''],
       email: ['', [Validators.email]],
       country: ['', [Validators.required]],
@@ -121,6 +121,12 @@ export class BranchManual implements OnInit {
     { label: 'organization.branch.steps.managementInformation' }
   ];
   isLastStep = computed(() => this.currentStep() === this.totalSteps);
+
+  /* -------------------- code generation -------------------- */
+  private generateCode(name: string): string {
+    const randomNum = Math.floor(Math.random() * 1001); // 0 -> 1000 inclusive
+    return `${name}-${randomNum}`;
+  }
 
   ngOnInit(): void {
     this.initBranchId();
@@ -172,7 +178,11 @@ export class BranchManual implements OnInit {
 
   private isStepValid(step: number): boolean {
     const fields = STEP_FIELDS[step - 1] ?? [];
-    return fields.every((field) => this.branchForm.get(field)?.valid ?? true);
+    return fields.every((field) => {
+      const control = this.branchForm.get(field);
+      if (!control) return true;
+      return control.disabled || control.valid;
+    });
   }
 
   private touchStep(step: number): void {
@@ -222,6 +232,7 @@ export class BranchManual implements OnInit {
 
     return {
       ...raw,
+      code: this.generateCode(raw.name),
       location: this.geoLocation()
     };
   }

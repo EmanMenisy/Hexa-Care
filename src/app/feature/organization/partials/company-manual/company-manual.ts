@@ -76,7 +76,6 @@ export class CompanyManual implements OnInit {
     this.companyForm = this.fb.group({
       name: ['', [Validators.required]],
       nameArabic: [''],
-      code: [''],
       country: ['', [Validators.required]],
       state: ['', [Validators.required]],
       city: ['', [Validators.required]],
@@ -123,6 +122,12 @@ export class CompanyManual implements OnInit {
   ];
   isLastStep = computed(() => this.currentStep() === this.totalSteps);
 
+  /* -------------------- code generation -------------------- */
+  private generateCode(name: string): string {
+    const randomNum = Math.floor(Math.random() * 1001); // 0 -> 1000 inclusive
+    return `${name}-${randomNum}`;
+  }
+
   ngOnInit(): void {
     this.organizationLogicService.id$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -142,7 +147,7 @@ export class CompanyManual implements OnInit {
 
   getCompanyById(id: string) {
     this.organizationService.getCompanyById(id).subscribe((res: any) => {
-      this.patchForm(res);
+      this.patchForm(res.company);
     });
   }
 
@@ -151,7 +156,6 @@ export class CompanyManual implements OnInit {
     this.companyForm.patchValue({
       name: record.name,
       nameArabic: record.nameArabic,
-      code: record.code,
       country: record.country,
       state: record.state,
       city: record.city,
@@ -220,8 +224,12 @@ export class CompanyManual implements OnInit {
     if (!this.companyForm.valid) return;
 
     const raw = this.companyForm.getRawValue();
+    const payload = {
+      ...raw,
+      code: this.generateCode(raw.name)
+    };
 
-    this.next.emit(raw);
+    this.next.emit(payload);
     this.resetForm();
   }
 

@@ -1,0 +1,125 @@
+<div>
+
+  <div class="header d-flex align-items-center justify-content-between rounded">
+
+    <!-- Left section -->
+    <div class="d-flex align-items-center gap-3">
+      @if (icon()) {
+        <em [class]="icon() + ' header-icon'"></em>
+      }
+
+      <div class="d-flex flex-column">
+        <div class="d-flex align-items-center gap-2">
+
+          <p class="modal-header mb-1">
+            {{ title() | translate }}
+          </p>
+
+          @if (tabs().length) {
+            <div class="tabs-container">
+              @for (tab of tabs(); track tab.route) {
+                @if (isTabVisible(tab)) {
+                  <a [routerLink]="tab.route" routerLinkActive="active" class="badge">
+                    {{ tab.label | translate }}
+                  </a>
+                }
+              }
+            </div>
+          }
+
+        </div>
+
+        <p class="sub-header mb-0">
+          {{ subtitle() | translate }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Right section -->
+    @if (buttons().length) {
+      <div class="d-flex gap-2 align-items-center">
+        @for (btn of buttons(); track $index) {
+
+          <!-- Menu trigger: icon-only button that opens a p-menu without a background -->
+          @if (btn.menuItems?.length) {
+            @if (isButtonVisible(btn)) {
+              <div class="menu-trigger-wrapper">
+                <hexa-button
+                  [icon]="btn.icon || 'pi pi-ellipsis-v'"
+                  [styleClass]="'menu-trigger-btn'"
+                  [disabled]="isButtonDisabled(btn)"
+                  (clicked)="menu.toggle($event)">
+                </hexa-button>
+
+                <p-menu #menu [popup]="true" [model]="getVisibleMenuItems(btn.menuItems)" appendTo="body">
+                  <ng-template pTemplate="item" let-item>
+                    <a class="p-menuitem-link" [class.disabled]="item.disabled" (click)="handleMenuItemClick(item)">
+                      @if (item.icon) {
+                        <em [class]="item.icon"></em>
+                      }
+                      <span>{{ item.label | translate }}</span>
+                    </a>
+                  </ng-template>
+                </p-menu>
+              </div>
+            }
+          }
+
+          <!-- Tabs inside the button area -->
+          @else if (btn.tabs?.length) {
+            <div class="tabs-container" style="padding:6px !important;">
+              @for (tab of btn.tabs; track tab.route) {
+                @if (isTabVisible(tab)) {
+                  <a [routerLink]="tab.route" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: false }" class="badge">
+                    <em [class]="tab.label" style="font-size:1rem"></em>
+                  </a>
+                }
+              }
+            </div>
+          }
+
+          <!-- Toggle button -->
+          @else if (btn.type === 'toggle' && isButtonVisible(btn)) {
+            <button (click)="toggleButton(btn)"
+                    class="opus-button toggle-btn"
+                    [disabled]="isButtonDisabled(btn)"
+                    [class.active]="btn.currentState?.value === btn.toggleStates?.[0]?.value">
+              <em [class]="btn.currentState?.icon || btn.icon"></em>
+            </button>
+          }
+
+          <!-- Normal button -->
+          @else if (btn.type !== 'group' && isButtonVisible(btn)) {
+            <hexa-button
+              (clicked)="handleAction(btn)"
+              [severity]="btn.severity"
+              [icon]="btn.icon"
+              [label]="(btn.label ?? '') | translate"
+              [routerLink]="btn.route"
+              [disabled]="isButtonDisabled(btn)"
+              [class.back-button]="btn.type === 'back'">
+            </hexa-button>
+          }
+
+        }
+      </div>
+    }
+
+  </div>
+
+  <!-- Bottom Tabs -->
+  @if (subTabs().length) {
+    <div class="sub-tabs-container">
+      @for (tab of subTabs(); track tab.route) {
+        @if (isTabVisible(tab)) {
+          <a [routerLink]="tab.route" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }" class="sub-tab">
+            {{ tab.label | translate }}
+          </a>
+        }
+      }
+    </div>
+  }
+
+</div>

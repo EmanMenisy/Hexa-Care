@@ -16,7 +16,6 @@ import { HeaderButtonStateService } from './services/header-button-state.service
   styleUrl: './sub-header.scss',
 })
 export class SubHeader {
-  // 🆕 signal-based inputs/outputs بدل @Input/@Output
   config = input<PageHeaderConfig | null>(null);
   action = output<string>();
 
@@ -44,7 +43,6 @@ export class SubHeader {
     return this.router.url.includes(routePath);
   }
 
-  // 🆕 هل الزرار يظهر: مش hidden من الـ state service + معاه permission + على الـ route الصح
   isButtonVisible(btn: any): boolean {
     if (btn.feature && !this.featureService.hasFeature(btn.feature)) return false;
     if (this.headerButtonStateService.isHidden(btn.action)) return false;
@@ -56,7 +54,6 @@ export class SubHeader {
     return this.headerButtonStateService.isDisabled(btn.action);
   }
 
-  // 🆕 بيرجع الـ menu items بعد فلترتها حسب الـ feature permission + hidden state
   getVisibleMenuItems(items: HeaderMenuItem[] | undefined): HeaderMenuItem[] {
     if (!items) return [];
     return items
@@ -68,7 +65,6 @@ export class SubHeader {
       }));
   }
 
-  // 🆕 هاندلر لضغطة أي item جوه المنيو
   handleMenuItemClick(item: HeaderMenuItem): void {
     if (item.feature && !this.featureService.hasFeature(item.feature)) return;
     if (this.headerButtonStateService.isDisabled(item.action)) return;

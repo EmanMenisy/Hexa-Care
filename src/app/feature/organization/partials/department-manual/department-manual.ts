@@ -201,10 +201,14 @@ export class DepartmentManual implements OnInit {
     }
   }
 
-  private isStepValid(step: number): boolean {
-    const fields = STEP_FIELDS[step - 1] ?? [];
-    return fields.every((field) => this.departmentForm.get(field)?.valid ?? true);
-  }
+ private isStepValid(step: number): boolean {
+  const fields = STEP_FIELDS[step - 1] ?? [];
+  return fields.every((field) => {
+    const control = this.departmentForm.get(field);
+    if (!control) return true;
+    return control.disabled || control.valid;
+  });
+}
 
   private touchStep(step: number): void {
     const fields = STEP_FIELDS[step - 1] ?? [];

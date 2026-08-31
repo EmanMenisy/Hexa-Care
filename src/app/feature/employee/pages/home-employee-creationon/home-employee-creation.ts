@@ -44,7 +44,7 @@ export class HomeEmployeeCreation {
 
   ngOnInit() {
     this.HeaderActionService.action$.subscribe((res) => {
-      if (res == 'create') {
+      if (res == 'createStaff') {
         this.routeToSectorPage();
       }
     });

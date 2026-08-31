@@ -1,156 +1,157 @@
-<form [formGroup]="branchForm" >
+<form [formGroup]="branchForm">
   <div>
-    <app-stepper
-      [steps]="stepperSteps"
-      [step]="currentStep()"
-      [completedSteps]="completedSteps()"
-      (stepChange)="onStepChange($event)"
-    >
+    <app-stepper [steps]="stepperSteps" [step]="currentStep()" [completedSteps]="completedSteps()"
+      (stepChange)="onStepChange($event)">
     </app-stepper>
     @if (currentStep() === 1) {
-      <div class="field">
-        <label for="branchName">{{ 'organization.branch.create.branchName.label' | translate }}</label>
-        <hexa-input-text id="branchName" [emitOnBlur]="false" formControlName="name"
-          [placeholder]="'organization.branch.create.branchName.placeholder' | translate" />
+    <div class="field">
+      <label for="branchName">{{ 'organization.branch.create.branchName.label' | translate }}</label>
+      <hexa-input-text id="branchName" [emitOnBlur]="false" formControlName="name"
+        [placeholder]="'organization.branch.create.branchName.placeholder' | translate" />
 
-        @if (branchForm.get('name')?.touched && branchForm.get('name')?.invalid) {
-          @if (branchForm.get('name')?.hasError('required')) {
-            <label class="text-danger">{{ 'organization.branch.create.branchName.errors.required' | translate }}</label>
-          }
-        }
-      </div>
+      @if (branchForm.get('name')?.touched && branchForm.get('name')?.invalid) {
+      @if (branchForm.get('name')?.hasError('required')) {
+      <label class="text-danger">{{ 'organization.branch.create.branchName.errors.required' | translate }}</label>
+      }
+      }
+    </div>
+    <div class="field">
+      <label for="branchNameArabic">{{ 'organization.branch.create.branchNameArabic.label' | translate }}</label>
+      <hexa-input-text id="branchNameArabic" [emitOnBlur]="false" formControlName="nameArabic"
+        [placeholder]="'organization.branch.create.branchNameArabic.placeholder' | translate" />
+    </div>
+    <div class="field">
+      <label for="company">{{ 'organization.branch.create.company.label' | translate }}</label>
+      <hexa-multi-select [disabled]="company() !== null" id="company" [options]="companies()"
+        formControlName="companyIds" [placeholder]="'organization.branch.create.company.placeholder' | translate"
+        optionLabel="label" optionValue="value" [showClear]="true" emptyFilterMessage="No companies found"
+        hexaendTo="body">
+      </hexa-multi-select>
+      @if (branchForm.get('companyIds')?.touched && branchForm.get('companyIds')?.invalid) {
+      @if (branchForm.get('companyIds')?.hasError('required')) {
+      <label class="text-danger">{{ 'organization.branch.create.company.errors.required' | translate }}</label>
+      }
+      }
+    </div>
+    <div class="field">
+      <label for="branchDescription">{{ 'organization.branch.create.description.label' | translate }}</label>
+      <hexa-input-text id="branchDescription" formControlName="description"
+        [placeholder]="'organization.branch.create.description.placeholder' | translate" />
+    </div>
 
-      <div class="field">
-        <label for="branchNameArabic">{{ 'organization.branch.create.branchNameArabic.label' | translate }}</label>
-        <hexa-input-text id="branchNameArabic" [emitOnBlur]="false" formControlName="nameArabic"
-          [placeholder]="'organization.branch.create.branchNameArabic.placeholder' | translate" />
-      </div>
-      <div class="field">
-        <label for="company">{{ 'organization.branch.create.company.label' | translate }}</label>
-        <hexa-multi-select [disabled]="company() !== null" id="company" [options]="companies()" formControlName="companyIds"
-          [placeholder]="'organization.branch.create.company.placeholder' | translate" optionLabel="label" optionValue="value"
-          [showClear]="true" emptyFilterMessage="No companies found" hexaendTo="body">
-        </hexa-multi-select>
-        @if (branchForm.get('companyIds')?.touched && branchForm.get('companyIds')?.invalid) {
-          @if (branchForm.get('companyIds')?.hasError('required')) {
-            <label class="text-danger">{{ 'organization.branch.create.company.errors.required' | translate }}</label>
-          }
-        }
-      </div>
-      <div class="field">
-        <label for="branchDescription">{{ 'organization.branch.create.description.label' | translate }}</label>
-        <hexa-input-text id="branchDescription" formControlName="description" [placeholder]="'organization.branch.create.description.placeholder' | translate" />
-      </div>
-
-      <div class="field">
-        <label for="branchDescriptionArabic">{{ 'organization.branch.create.descriptionArabic.label' | translate }}</label>
-        <hexa-input-text id="branchDescriptionArabic" formControlName="descriptionArabic" [placeholder]="'organization.branch.create.descriptionArabic.placeholder' | translate" />
-      </div>
+    <div class="field">
+      <label for="branchDescriptionArabic">{{ 'organization.branch.create.descriptionArabic.label' | translate
+        }}</label>
+      <hexa-input-text id="branchDescriptionArabic" formControlName="descriptionArabic"
+        [placeholder]="'organization.branch.create.descriptionArabic.placeholder' | translate" />
+    </div>
 
 
     }
 
     @if (currentStep() === 2) {
+    <div class="field">
+      <label for="branchCountry">{{ 'organization.branch.create.country.label' | translate }}</label>
+      <hexa-input-text id="branchCountry" [emitOnBlur]="false" formControlName="country"
+        [placeholder]="'organization.branch.create.country.placeholder' | translate" />
+      @if (branchForm.get('country')?.touched && branchForm.get('country')?.invalid) {
+      @if (branchForm.get('country')?.hasError('required')) {
+      <label class="text-danger">{{ 'organization.branch.create.country.errors.required' | translate }}</label>
+      }
+      }
+    </div>
 
-        <div class="field">
-        <label for="branchAddress">{{ 'organization.branch.create.address.label' | translate }}</label>
-        <hexa-input-text id="branchAddress" formControlName="address" [placeholder]="'organization.branch.create.address.placeholder' | translate" />
-      </div>
+    <div class="field">
+      <label for="branchState">{{ 'organization.branch.create.state.label' | translate }}</label>
+      <hexa-input-text id="branchState" [emitOnBlur]="false" formControlName="state"
+        [placeholder]="'organization.branch.create.state.placeholder' | translate" />
+      @if (branchForm.get('state')?.touched && branchForm.get('state')?.invalid) {
+      @if (branchForm.get('state')?.hasError('required')) {
+      <label class="text-danger">{{ 'organization.branch.create.state.errors.required' | translate }}</label>
+      }
+      }
+    </div>
 
-      <div class="field">
-        <label for="branchPhone">{{ 'organization.branch.create.phone.label' | translate }}</label>
-        <hexa-input-text id="branchPhone" formControlName="phone" [placeholder]="'organization.branch.create.phone.placeholder' | translate" />
-      </div>
+    <div class="field">
+      <label for="city">{{ 'organization.branch.create.city.label' | translate }}</label>
+      <hexa-input-text id="city" [emitOnBlur]="false" formControlName="city"
+        [placeholder]="'organization.branch.create.city.placeholder' | translate" />
+      @if (branchForm.get('city')?.touched && branchForm.get('city')?.invalid) {
+      @if (branchForm.get('city')?.hasError('required')) {
+      <label class="text-danger">{{ 'organization.branch.create.city.errors.required' | translate }}</label>
+      }
+      }
+    </div>
+    <div class="field">
+      <label for="branchAddress">{{ 'organization.branch.create.address.label' | translate }}</label>
+      <hexa-input-text id="branchAddress" formControlName="address"
+        [placeholder]="'organization.branch.create.address.placeholder' | translate" />
+      @if (branchForm.get('address')?.touched && branchForm.get('address')?.invalid) {
+      @if (branchForm.get('address')?.hasError('required')) {
+      <label class="text-danger">{{ 'organization.branch.create.address.errors.required' | translate }}</label>
+      }
+      }
+    </div>
 
-      <div class="field">
-        <label for="branchEmail">{{ 'organization.branch.create.email.label' | translate }}</label>
-        <hexa-input-text id="branchEmail" formControlName="email" [placeholder]="'organization.branch.create.email.placeholder' | translate" />
-        @if (branchForm.get('email')?.touched && branchForm.get('email')?.invalid) {
-          @if (branchForm.get('email')?.hasError('email')) {
-            <label class="text-danger">{{ 'organization.branch.create.email.errors.invalid' | translate }}</label>
-          }
-        }
-      </div>
-      <div class="field">
-        <label for="branchCountry">{{ 'organization.branch.create.country.label' | translate }}</label>
-        <hexa-input-text id="branchCountry" [emitOnBlur]="false" formControlName="country"
-          [placeholder]="'organization.branch.create.country.placeholder' | translate" />
-        @if (branchForm.get('country')?.touched && branchForm.get('country')?.invalid) {
-          @if (branchForm.get('country')?.hasError('required')) {
-            <label class="text-danger">{{ 'organization.branch.create.country.errors.required' | translate }}</label>
-          }
-        }
-      </div>
+    <div class="field">
+      <label for="branchPhone">{{ 'organization.branch.create.phone.label' | translate }}</label>
+      <hexa-input-text id="branchPhone" formControlName="phone"
+        [placeholder]="'organization.branch.create.phone.placeholder' | translate" />
+    </div>
 
-      <div class="field">
-        <label for="branchState">{{ 'organization.branch.create.state.label' | translate }}</label>
-        <hexa-input-text id="branchState" [emitOnBlur]="false" formControlName="state"
-          [placeholder]="'organization.branch.create.state.placeholder' | translate" />
-        @if (branchForm.get('state')?.touched && branchForm.get('state')?.invalid) {
-          @if (branchForm.get('state')?.hasError('required')) {
-            <label class="text-danger">{{ 'organization.branch.create.state.errors.required' | translate }}</label>
-          }
-        }
-      </div>
+    <div class="field">
+      <label for="branchEmail">{{ 'organization.branch.create.email.label' | translate }}</label>
+      <hexa-input-text id="branchEmail" formControlName="email"
+        [placeholder]="'organization.branch.create.email.placeholder' | translate" />
+      @if (branchForm.get('email')?.touched && branchForm.get('email')?.invalid) {
+      @if (branchForm.get('email')?.hasError('email')) {
+      <label class="text-danger">{{ 'organization.branch.create.email.errors.invalid' | translate }}</label>
+      }
+      }
+    </div>
 
-      <div class="field">
-        <label for="city">{{ 'organization.branch.create.city.label' | translate }}</label>
-        <hexa-input-text id="city" [emitOnBlur]="false" formControlName="city"
-          [placeholder]="'organization.branch.create.city.placeholder' | translate" />
-        @if (branchForm.get('city')?.touched && branchForm.get('city')?.invalid) {
-          @if (branchForm.get('city')?.hasError('required')) {
-            <label class="text-danger">{{ 'organization.branch.create.city.errors.required' | translate }}</label>
-          }
-        }
-      </div>
-
-      <div class="field toggle-switch">
-        <p-toggleswitch formControlName="isGeoLocationEnabled" inputId="branchIsGeoLocationEnabled" />
-        <label for="branchIsGeoLocationEnabled" class="mb-0">{{ 'organization.branch.create.enableGeoLocation.label' | translate }}</label>
-      </div>
     }
     @if (currentStep() === 3) {
-      <div class="field">
-        <label for="branchManagerName">{{ 'organization.branch.create.managerName.label' | translate }}</label>
-        <hexa-input-text id="branchManagerName" formControlName="managerName" [placeholder]="'organization.branch.create.managerName.placeholder' | translate" />
-      </div>
+    <div class="field">
+      <label for="branchManagerName">{{ 'organization.branch.create.managerName.label' | translate }}</label>
+      <hexa-input-text id="branchManagerName" formControlName="managerName"
+        [placeholder]="'organization.branch.create.managerName.placeholder' | translate" />
+    </div>
 
-      <div class="field">
-        <label for="branchManagerPhone">{{ 'organization.branch.create.managerPhone.label' | translate }}</label>
-        <hexa-input-text id="branchManagerPhone" formControlName="managerPhone" [placeholder]="'organization.branch.create.managerPhone.placeholder' | translate" />
-      </div>
+    <div class="field">
+      <label for="branchManagerPhone">{{ 'organization.branch.create.managerPhone.label' | translate }}</label>
+      <hexa-input-text id="branchManagerPhone" formControlName="managerPhone"
+        [placeholder]="'organization.branch.create.managerPhone.placeholder' | translate" />
+    </div>
 
-      <div class="field">
-        <label for="branchManagerEmail">{{ 'organization.branch.create.managerEmail.label' | translate }}</label>
-        <hexa-input-text id="branchManagerEmail" formControlName="managerEmail" [placeholder]="'organization.branch.create.managerEmail.placeholder' | translate" />
-      </div>
-      <div class="field toggle-switch">
-        <p-toggleswitch formControlName="isGeoLocationEnabled" inputId="branchIsGeoLocationEnabled" />
-        <label for="branchIsGeoLocationEnabled" class="mb-0">{{ 'organization.branch.create.enableGeoLocation.label' | translate }}</label>
-      </div>
+    <div class="field">
+      <label for="branchManagerEmail">{{ 'organization.branch.create.managerEmail.label' | translate }}</label>
+      <hexa-input-text id="branchManagerEmail" formControlName="managerEmail"
+        [placeholder]="'organization.branch.create.managerEmail.placeholder' | translate" />
+    </div>
+    <div class="field toggle-switch">
+      <p-toggleswitch formControlName="isGeoLocationEnabled" inputId="branchIsGeoLocationEnabled" />
+      <label for="branchIsGeoLocationEnabled" class="mb-0">{{ 'organization.branch.create.enableGeoLocation.label' |
+        translate }}</label>
+    </div>
     }
   </div>
 
 </form>
 <div class="actions">
-  <hexa-button type="button" styleType="cancel" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
-
-  @if (!isFirstStep() && id() === null) {
-    <hexa-button type="button" [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()" styleType="transparent" />
-  }
+  <hexa-button [severity]="'secondary'"   [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
 
   @if (currentStep() > 1) {
-    <hexa-button type="button" styleType="transparent" [label]="'buttons.back' | translate" (clicked)="goBack()" />
+  <hexa-button [severity]="'secondary'"  [label]="'buttons.back' | translate" (clicked)="goBack()" />
   }
-
-  <hexa-button [disabled]="!isLastStep() ? false : disabledForm()" type="button" styleType="primary"
+  @if (!isFirstStep() && id() === null) {
+  <hexa-button  [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()"/>
+  }
+  <hexa-button [disabled]="!isLastStep() ? false : disabledForm()"
     (clicked)="onPrimaryAction()"
     [label]="!isLastStep() ? ('buttons.next' | translate) : (id() === null ? ('buttons.next' | translate) : ('buttons.edit' | translate))" />
 </div>
 
-<app-location-modal
-  [visible]="showMapModal()"
-  [data]="mapData()"
-  (close)="onLocationModalClose()"
+<app-location-modal [visible]="showMapModal()" [data]="mapData()" (close)="onLocationModalClose()"
   (saveLocation)="onLocationSelected($event)">
 </app-location-modal>

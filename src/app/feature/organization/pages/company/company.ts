@@ -15,10 +15,12 @@ import { NotFound } from '../../../shared/components/common/not-found/not-found'
 import { OrganizationLogic } from '../../services/organization-logic';
 import { HierarchySteps } from '../../models/organization-creation.model';
 import { OrganizationManual } from '../../partials/organization-manual/organization-manual';
+import { HeaderButton } from '../../../shared/layout/hexa-sub-header/models/header-config.model';
+import { HexaSubHeader } from '../../../shared/layout/hexa-sub-header/hexa-sub-header';
 
 @Component({
   selector: 'app-company',
-  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound,OrganizationManual],
+  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound,OrganizationManual,HexaSubHeader],
   templateUrl: './company.html',
   styleUrl: './company.scss',
 })
@@ -194,4 +196,23 @@ export class Company implements OnInit{
       }
     });
   }
+
+
+  headerButtons:HeaderButton[]=
+    [
+        {
+          icon: 'pi pi-plus',
+          severity: 'primary',
+          action: 'create',
+          label: 'organization.company.home.addCompany',
+          visible: true,
+        },
+    ];
+    onHeaderAction(action: string): void {
+      switch (action) {
+        case 'create':
+          this.openManualSideBar();
+          break;
+      }
+    }
 }

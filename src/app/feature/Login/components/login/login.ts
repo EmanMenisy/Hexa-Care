@@ -109,7 +109,7 @@ export class Login{
       .subscribe({
         next: (res) => {
            console.log(res);
-
+          localStorage.setItem('orgID',res.organizationID)
           // Initialize user's access and permissions
           this.userAccessService.initialize(res.modules);
 

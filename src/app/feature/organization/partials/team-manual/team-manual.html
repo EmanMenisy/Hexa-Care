@@ -22,10 +22,10 @@
   </div>
 </form>
 <div class="actions">
-  <hexa-button type="button" styleType="cancel" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
+  <hexa-button  [severity]="'secondary'" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
   @if (!isFirstStep() && id() === null) {
-    <hexa-button type="button" [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()" styleType="transparent" />
+    <hexa-button  [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()"  />
   }
-  <hexa-button [disabled]="disabledForm()" type="button" styleType="primary"
+  <hexa-button [disabled]="disabledForm()"
     (clicked)="id() === null ? goNext() : editTeam()" [label]="id() === null ? ('buttons.save' | translate) : ('buttons.edit'|translate)" />
 </div>
