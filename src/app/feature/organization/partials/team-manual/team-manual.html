@@ -1,4 +1,4 @@
-<form [formGroup]="teamForm" class="flex flex-column justify-content-between h-100">
+<form [formGroup]="teamForm" >
   <div>
     <div class="field">
       <label for="name">{{ 'organization.team.create.teamName.label' | translate }}</label>
@@ -20,12 +20,12 @@
       }
     </div>
   </div>
-  <div class="d-flex justify-content-end gap-2 align-items-end bottom-0 mt-auto position-sticky" style="background: #f1f5f9;">
-    <hexa-button type="button" styleType="cancel" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
-    @if (!isFirstStep() && id() === null) {
-      <hexa-button type="button" [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()" styleType="transparent" />
-    }
-    <hexa-button [disabled]="disabledForm()" type="button" styleType="primary"
-      (clicked)="id() === null ? goNext() : editTeam()" [label]="id() === null ? ('buttons.save' | translate) : ('buttons.edit'|translate)" />
-  </div>
 </form>
+<div class="actions">
+  <hexa-button type="button" styleType="cancel" [label]="'buttons.cancel' | translate" (clicked)="closeSidebar()" />
+  @if (!isFirstStep() && id() === null) {
+    <hexa-button type="button" [label]="'buttons.skipAndSave' | translate" (clicked)="skipAndSave()" styleType="transparent" />
+  }
+  <hexa-button [disabled]="disabledForm()" type="button" styleType="primary"
+    (clicked)="id() === null ? goNext() : editTeam()" [label]="id() === null ? ('buttons.save' | translate) : ('buttons.edit'|translate)" />
+</div>

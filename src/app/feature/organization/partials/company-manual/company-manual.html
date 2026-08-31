@@ -1,247 +1,243 @@
-<form class="flex flex-column justify-content-between h-100" [formGroup]="companyForm">
+<form  [formGroup]="companyForm">
   <div>
-    <div class="field">
-      <label for="companyName">
-        {{ 'organization.company.create.companyName.label' | translate }}
-      </label>
+    <app-stepper
+      [steps]="stepperSteps"
+      [step]="currentStep()"
+      [completedSteps]="completedSteps()"
+      (stepChange)="onStepChange($event)"
+    >
+    </app-stepper>
 
-      <hexa-input-text id="companyName" [emitOnBlur]="false" formControlName="name"
-        [placeholder]="'organization.company.create.companyName.placeholder' | translate" />
+    @if (currentStep() === 1) {
+      <div class="field">
+        <label for="companyName">
+          {{ 'organization.company.create.companyName.label' | translate }}
+        </label>
 
-      @if (companyForm.get('name')?.touched && companyForm.get('name')?.invalid) {
-      @if (companyForm.get('name')?.hasError('required')) {
-      <label class="text-danger">
-        {{ 'organization.company.create.companyName.errors.required' | translate }}
-      </label>
-      }
-      }
-    </div>
+        <hexa-input-text id="companyName" [emitOnBlur]="false" formControlName="name"
+          [placeholder]="'organization.company.create.companyName.placeholder' | translate" />
 
-    <div class="field">
-      <label for="companyNameArabic">
-        {{ 'organization.company.create.companyNameArabic.label' | translate }}
-      </label>
+        @if (companyForm.get('name')?.touched && companyForm.get('name')?.invalid) {
+        @if (companyForm.get('name')?.hasError('required')) {
+        <label class="text-danger">
+          {{ 'organization.company.create.companyName.errors.required' | translate }}
+        </label>
+        }
+        }
+      </div>
 
-      <hexa-input-text id="companyNameArabic" [emitOnBlur]="false" formControlName="nameArabic"
-        [placeholder]="'organization.company.create.companyNameArabic.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="companyNameArabic">
+          {{ 'organization.company.create.companyNameArabic.label' | translate }}
+        </label>
 
-    <div class="field">
-      <label for="companyCode">
-        {{ 'organization.company.create.companyCode.label' | translate }}
-      </label>
+        <hexa-input-text id="companyNameArabic" [emitOnBlur]="false" formControlName="nameArabic"
+          [placeholder]="'organization.company.create.companyNameArabic.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="companyCode" [emitOnBlur]="false" formControlName="code"
-        [placeholder]="'organization.company.create.companyCode.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="companyCode">
+          {{ 'organization.company.create.companyCode.label' | translate }}
+        </label>
 
-    <div class="field">
-      <label for="country">{{ 'organization.company.create.country.label' | translate }}</label>
+        <hexa-input-text id="companyCode" [emitOnBlur]="false" formControlName="code"
+          [placeholder]="'organization.company.create.companyCode.placeholder' | translate" />
+      </div>
 
-      <hexa-dropdown id="country" #countryDropdown formControlName="countryId" [options]="countries()"
-        [placeholder]="'organization.company.create.country.placeholder' | translate" optionLabel="label"
-        optionValue="value" [filter]="true" [showClear]="true"
-        [emptyFilterMessage]="'organization.company.create.country.emptyFilterMessage' | translate" appendTo="body">
-      </hexa-dropdown>
+      <div class="field">
+        <label for="description">
+          {{ 'organization.company.create.description.label' | translate }}
+        </label>
 
-      @if (companyForm.get('countryId')?.touched && companyForm.get('countryId')?.invalid) {
-      @if (companyForm.get('countryId')?.hasError('required')) {
-      <label class="text-danger">
-        {{ 'organization.company.create.country.errors.required' | translate }}
-      </label>
-      }
-      }
-    </div>
+        <hexa-input-text id="description" formControlName="description"
+          [placeholder]="'organization.company.create.description.placeholder' | translate" />
+      </div>
 
-    <div class="field">
-      <label for="state">{{ 'organization.company.create.state.label' | translate }}</label>
+      <div class="field">
+        <label for="descriptionArabic">
+          {{ 'organization.company.create.descriptionArabic.label' | translate }}
+        </label>
 
-      <hexa-dropdown #stateDropdown id="state" formControlName="stateId" [options]="states()"
-        [placeholder]="'organization.company.create.state.placeholder' | translate" optionLabel="label"
-        optionValue="value" [filter]="true" [showClear]="true"
-        [emptyFilterMessage]="'organization.company.create.state.emptyFilterMessage' | translate" appendTo="body">
-      </hexa-dropdown>
-
-      @if (companyForm.get('stateId')?.touched && companyForm.get('stateId')?.invalid) {
-      @if (companyForm.get('stateId')?.hasError('required')) {
-      <label class="text-danger">
-        {{ 'organization.company.create.state.errors.required' | translate }}
-      </label>
-      }
-      }
-    </div>
-
-    <div class="field">
-      <label for="city">{{ 'organization.company.create.city.label' | translate }}</label>
-
-      <hexa-dropdown #cityDropdown id="city" formControlName="cityId" [options]="cities()"
-        [placeholder]="'organization.company.create.city.placeholder' | translate" optionLabel="label"
-        optionValue="value" [showClear]="true" [filter]="true"
-        [emptyFilterMessage]="'organization.company.create.city.emptyFilterMessage' | translate" appendTo="body"
-        (dropdownChanged)="onCityChange($event)">
-      </hexa-dropdown>
-
-      @if (companyForm.get('cityId')?.touched && companyForm.get('cityId')?.invalid) {
-      @if (companyForm.get('cityId')?.hasError('required')) {
-      <label class="text-danger">
-        {{ 'organization.company.create.city.errors.required' | translate }}
-      </label>
-      }
-      }
-    </div>
-
-    @if (isOtherCity()) {
-    <div class="field">
-      <label for="OtherCity">{{ 'organization.company.create.otherCity' | translate }}</label>
-
-      <hexa-input-text formControlName="otherCityName"
-        [placeholder]="'organization.company.create.otherCity' | translate" />
-    </div>
+        <hexa-input-text id="descriptionArabic" formControlName="descriptionArabic"
+          [placeholder]="'organization.company.create.descriptionArabic.placeholder' | translate" />
+      </div>
     }
 
-    <div class="field">
-      <label for="address">
-        {{ 'organization.company.create.companyAddress.label' | translate }}
-      </label>
+    @if (currentStep() === 2) {
+      <div class="field">
+        <label for="country">{{ 'organization.company.create.country.label' | translate }}</label>
 
-      <hexa-input-text id="address" formControlName="address"
-        [placeholder]="'organization.company.create.companyAddress.placeholder' | translate" />
+        <hexa-input-text id="country" [emitOnBlur]="false" formControlName="country"
+          [placeholder]="'organization.company.create.country.placeholder' | translate" />
 
-      @if (companyForm.get('address')?.touched && companyForm.get('address')?.invalid) {
-      @if (companyForm.get('address')?.hasError('required')) {
-      <label class="text-danger">
-        {{ 'organization.company.create.companyAddress.errors.required' | translate }}
-      </label>
-      }
-      }
-    </div>
+        @if (companyForm.get('country')?.touched && companyForm.get('country')?.invalid) {
+        @if (companyForm.get('country')?.hasError('required')) {
+        <label class="text-danger">
+          {{ 'organization.company.create.country.errors.required' | translate }}
+        </label>
+        }
+        }
+      </div>
 
-    <div class="field">
-      <label for="commercialRegisterNo">
-        {{ 'organization.company.create.commercialRegisterNo.label' | translate }}
-      </label>
+      <div class="field">
+        <label for="state">{{ 'organization.company.create.state.label' | translate }}</label>
 
-      <hexa-input-text id="commercialRegisterNo" formControlName="commercialRegisterNo"
-        [placeholder]="'organization.company.create.commercialRegisterNo.placeholder' | translate" />
-    </div>
+        <hexa-input-text id="state" [emitOnBlur]="false" formControlName="state"
+          [placeholder]="'organization.company.create.state.placeholder' | translate" />
 
-    <div class="field">
-      <label for="taxNumber">
-        {{ 'organization.company.create.taxNumber.label' | translate }}
-      </label>
+        @if (companyForm.get('state')?.touched && companyForm.get('state')?.invalid) {
+        @if (companyForm.get('state')?.hasError('required')) {
+        <label class="text-danger">
+          {{ 'organization.company.create.state.errors.required' | translate }}
+        </label>
+        }
+        }
+      </div>
 
-      <hexa-input-text id="taxNumber" formControlName="taxNumber"
-        [placeholder]="'organization.company.create.taxNumber.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="city">{{ 'organization.company.create.city.label' | translate }}</label>
 
-    <div class="field">
-      <label for="licenseNumber">
-        {{ 'organization.company.create.licenseNumber.label' | translate }}
-      </label>
+        <hexa-input-text id="city" [emitOnBlur]="false" formControlName="city"
+          [placeholder]="'organization.company.create.city.placeholder' | translate" />
 
-      <hexa-input-text id="licenseNumber" formControlName="licenseNumber"
-        [placeholder]="'organization.company.create.licenseNumber.placeholder' | translate" />
-    </div>
+        @if (companyForm.get('city')?.touched && companyForm.get('city')?.invalid) {
+        @if (companyForm.get('city')?.hasError('required')) {
+        <label class="text-danger">
+          {{ 'organization.company.create.city.errors.required' | translate }}
+        </label>
+        }
+        }
+      </div>
 
-    <div class="field">
-      <label for="description">
-        {{ 'organization.company.create.description.label' | translate }}
-      </label>
+      <div class="field">
+        <label for="address">
+          {{ 'organization.company.create.companyAddress.label' | translate }}
+        </label>
 
-      <hexa-input-text id="description" formControlName="description"
-        [placeholder]="'organization.company.create.description.placeholder' | translate" />
-    </div>
+        <hexa-input-text id="address" formControlName="address"
+          [placeholder]="'organization.company.create.companyAddress.placeholder' | translate" />
 
-    <div class="field">
-      <label for="descriptionArabic">
-        {{ 'organization.company.create.descriptionArabic.label' | translate }}
-      </label>
+        @if (companyForm.get('address')?.touched && companyForm.get('address')?.invalid) {
+        @if (companyForm.get('address')?.hasError('required')) {
+        <label class="text-danger">
+          {{ 'organization.company.create.companyAddress.errors.required' | translate }}
+        </label>
+        }
+        }
+      </div>
 
-      <hexa-input-text id="descriptionArabic" formControlName="descriptionArabic"
-        [placeholder]="'organization.company.create.descriptionArabic.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="phone">{{ 'organization.company.create.phone.label' | translate }}</label>
 
-    <div class="field">
-      <label for="phone">{{ 'organization.company.create.phone.label' | translate }}</label>
+        <hexa-input-text id="phone" formControlName="phone"
+          [placeholder]="'organization.company.create.phone.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="phone" formControlName="phone"
-        [placeholder]="'organization.company.create.phone.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="email">{{ 'organization.company.create.email.label' | translate }}</label>
 
-    <div class="field">
-      <label for="email">{{ 'organization.company.create.email.label' | translate }}</label>
+        <hexa-input-text id="email" formControlName="email"
+          [placeholder]="'organization.company.create.email.placeholder' | translate" />
 
-      <hexa-input-text id="email" formControlName="email"
-        [placeholder]="'organization.company.create.email.placeholder' | translate" />
+        @if (companyForm.get('email')?.touched && companyForm.get('email')?.invalid) {
+        @if (companyForm.get('email')?.hasError('email')) {
+        <label class="text-danger">
+          {{ 'organization.company.create.email.errors.invalid' | translate }}
+        </label>
+        }
+        }
+      </div>
 
-      @if (companyForm.get('email')?.touched && companyForm.get('email')?.invalid) {
-      @if (companyForm.get('email')?.hasError('email')) {
-      <label class="text-danger">
-        {{ 'organization.company.create.email.errors.invalid' | translate }}
-      </label>
-      }
-      }
-    </div>
+      <div class="field">
+        <label for="website">
+          {{ 'organization.company.create.website.label' | translate }}
+        </label>
 
-    <div class="field">
-      <label for="website">
-        {{ 'organization.company.create.website.label' | translate }}
-      </label>
+        <hexa-input-text id="website" formControlName="website"
+          [placeholder]="'organization.company.create.website.placeholder' | translate" />
+      </div>
+    }
 
-      <hexa-input-text id="website" formControlName="website"
-        [placeholder]="'organization.company.create.website.placeholder' | translate" />
-    </div>
+    @if (currentStep() === 3) {
+      <div class="field">
+        <label for="commercialRegisterNo">
+          {{ 'organization.company.create.commercialRegisterNo.label' | translate }}
+        </label>
 
-    <div class="field">
-      <label for="managerName">{{ 'organization.company.create.managerName.label' | translate }}</label>
+        <hexa-input-text id="commercialRegisterNo" formControlName="commercialRegisterNo"
+          [placeholder]="'organization.company.create.commercialRegisterNo.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="managerName" formControlName="managerName"
-        [placeholder]="'organization.company.create.managerName.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="taxNumber">
+          {{ 'organization.company.create.taxNumber.label' | translate }}
+        </label>
 
-    <div class="field">
-      <label for="managerPhone">{{ 'organization.company.create.managerPhone.label' | translate }}</label>
+        <hexa-input-text id="taxNumber" formControlName="taxNumber"
+          [placeholder]="'organization.company.create.taxNumber.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="managerPhone" formControlName="managerPhone"
-        [placeholder]="'organization.company.create.managerPhone.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="licenseNumber">
+          {{ 'organization.company.create.licenseNumber.label' | translate }}
+        </label>
 
-    <div class="field">
-      <label for="managerEmail">{{ 'organization.company.create.managerEmail.label' | translate }}</label>
+        <hexa-input-text id="licenseNumber" formControlName="licenseNumber"
+          [placeholder]="'organization.company.create.licenseNumber.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="managerEmail" formControlName="managerEmail"
-        [placeholder]="'organization.company.create.managerEmail.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="managerName">{{ 'organization.company.create.managerName.label' | translate }}</label>
 
-    <div class="field">
-      <label for="medicalDirector">
-        {{ 'organization.company.create.medicalDirector.label' | translate }}
-      </label>
+        <hexa-input-text id="managerName" formControlName="managerName"
+          [placeholder]="'organization.company.create.managerName.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="medicalDirector" formControlName="medicalDirector"
-        [placeholder]="'organization.company.create.medicalDirector.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="managerPhone">{{ 'organization.company.create.managerPhone.label' | translate }}</label>
 
-    <div class="field">
-      <label for="medicalDirectorPhone">
-        {{ 'organization.company.create.medicalDirectorPhone.label' | translate }}
-      </label>
+        <hexa-input-text id="managerPhone" formControlName="managerPhone"
+          [placeholder]="'organization.company.create.managerPhone.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="medicalDirectorPhone" formControlName="medicalDirectorPhone"
-        [placeholder]="'organization.company.create.medicalDirectorPhone.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="managerEmail">{{ 'organization.company.create.managerEmail.label' | translate }}</label>
 
-    <div class="field">
-      <label for="medicalDirectorEmail">
-        {{ 'organization.company.create.medicalDirectorEmail.label' | translate }}
-      </label>
+        <hexa-input-text id="managerEmail" formControlName="managerEmail"
+          [placeholder]="'organization.company.create.managerEmail.placeholder' | translate" />
+      </div>
 
-      <hexa-input-text id="medicalDirectorEmail" formControlName="medicalDirectorEmail"
-        [placeholder]="'organization.company.create.medicalDirectorEmail.placeholder' | translate" />
-    </div>
+      <div class="field">
+        <label for="medicalDirector">
+          {{ 'organization.company.create.medicalDirector.label' | translate }}
+        </label>
+
+        <hexa-input-text id="medicalDirector" formControlName="medicalDirector"
+          [placeholder]="'organization.company.create.medicalDirector.placeholder' | translate" />
+      </div>
+
+      <div class="field">
+        <label for="medicalDirectorPhone">
+          {{ 'organization.company.create.medicalDirectorPhone.label' | translate }}
+        </label>
+
+        <hexa-input-text id="medicalDirectorPhone" formControlName="medicalDirectorPhone"
+          [placeholder]="'organization.company.create.medicalDirectorPhone.placeholder' | translate" />
+      </div>
+
+      <div class="field">
+        <label for="medicalDirectorEmail">
+          {{ 'organization.company.create.medicalDirectorEmail.label' | translate }}
+        </label>
+
+        <hexa-input-text id="medicalDirectorEmail" formControlName="medicalDirectorEmail"
+          [placeholder]="'organization.company.create.medicalDirectorEmail.placeholder' | translate" />
+      </div>
+    }
   </div>
 
-  <div class="d-flex justify-content-end gap-2 align-items-end bottom-0 mt-auto position-sticky" >
+</form>
+  <div class="actions" >
     <hexa-button type="button" styleType="cancel" label="{{ 'buttons.cancel' | translate }}"
       (clicked)="closeSidebar()" />
 
@@ -251,8 +247,11 @@
     </hexa-button>
     }
 
-    <hexa-button [disabled]="disabledForm()" type="button" styleType="primary"
-      (clicked)="id() === null ? goNext() : editCompany()"
-      [label]="id() === null ? ('buttons.next' | translate) : ('buttons.edit' | translate)" />
+    @if (currentStep() > 1) {
+      <hexa-button type="button" styleType="transparent" [label]="'buttons.back' | translate" (clicked)="goBack()" />
+    }
+
+    <hexa-button [disabled]="!isLastStep() ? false : disabledForm()" type="button" styleType="primary"
+      (clicked)="onPrimaryAction()"
+      [label]="!isLastStep() ? ('buttons.next' | translate) : (id() === null ? ('buttons.save' | translate) : ('buttons.edit' | translate))" />
   </div>
-</form>

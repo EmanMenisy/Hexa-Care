@@ -118,7 +118,7 @@ export class Company implements OnInit{
   onTableAction(event: { action: string; row: any }): void {
     switch (event.action) {
       case 'edit':
-        this.onEdit(event.row);
+        this.onEdit(event.row.id);
         break;
       case 'delete':
         this.onDelete(event.row.id);

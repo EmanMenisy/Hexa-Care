@@ -16,7 +16,6 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { DropdownComponent } from '../../../shared/components/primeng/drop-down/drop-down';
 import { InputTextComponent } from '../../../shared/components/primeng/input-text/input-text';
 import { ButtonComponent } from '../../../shared/components/primeng/button/button';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -26,7 +25,26 @@ import { ToastService } from '../../../../core/services/toast/toast';
 import { Localization } from '../../../../core/services/localization/localization';
 import { ToastType } from '../../../../core/models/enums/toast-type';
 import { HierarchySteps } from '../../models/organization-creation.model';
+import { StepperComponent } from '../../../shared/components/common/stepper/stepper';
 
+/* -------------------- internal wizard steps -------------------- */
+// Each entry lists the companyForm control names that belong to that step,
+// used to validate/touch only the relevant controls when moving forward.
+const STEP_FIELDS: string[][] = [
+  ['name', 'nameArabic', 'code', 'description', 'descriptionArabic'],
+  ['country', 'state', 'city', 'address', 'phone', 'email', 'website'],
+  [
+    'commercialRegisterNo',
+    'taxNumber',
+    'licenseNumber',
+    'managerName',
+    'managerPhone',
+    'managerEmail',
+    'medicalDirector',
+    'medicalDirectorPhone',
+    'medicalDirectorEmail'
+  ]
+];
 
 @Component({
   selector: 'app-company-manual',
@@ -34,11 +52,10 @@ import { HierarchySteps } from '../../models/organization-creation.model';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DropdownComponent,
     InputTextComponent,
     ButtonComponent,
     TranslatePipe,
-    ButtonComponent
+    StepperComponent
   ],
   templateUrl: './company-manual.html',
   styleUrl: './company-manual.scss',
@@ -56,16 +73,13 @@ export class CompanyManual implements OnInit {
     private readonly destroyRef:DestroyRef,
     private readonly fb:FormBuilder
   ){
-    // بنبنيها هنا (بعد ما this.fb اتحط) مش كـ field initializer،
-    // عشان منعتمدش على ترتيب تنفيذ الـ native class fields مع الـ parameter properties
     this.companyForm = this.fb.group({
       name: ['', [Validators.required]],
       nameArabic: [''],
       code: [''],
-      countryId: ['', [Validators.required]],
-      stateId: ['', [Validators.required]],
-      cityId: ['', [Validators.required]],
-      otherCityName: [''],
+      country: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      city: ['', [Validators.required]],
       address: [''],
       commercialRegisterNo: [''],
       taxNumber: [''],
@@ -95,12 +109,19 @@ export class CompanyManual implements OnInit {
   update = output<boolean>();
 
   /* -------------------- state (signals) -------------------- */
-  countries = signal<any[]>([]);
-  states = signal<any[]>([]);
-  cities = signal<any[]>([]);
   id = signal<string | null>(null);
   isFirstStep = signal<boolean>(false);
-  isOtherCity = signal<boolean>(false);
+
+  /* -------------------- internal wizard (stepper) -------------------- */
+  totalSteps = STEP_FIELDS.length;
+  currentStep = signal<number>(1);
+  completedSteps = signal<boolean[]>(new Array(this.totalSteps).fill(false));
+  stepperSteps = [
+    { label: 'organization.company.steps.mainInformation' },
+    { label: 'organization.company.steps.contactAndLocation' },
+    { label: 'organization.company.steps.legalAndManagement' }
+  ];
+  isLastStep = computed(() => this.currentStep() === this.totalSteps);
 
   ngOnInit(): void {
     this.organizationLogicService.id$
@@ -117,16 +138,6 @@ export class CompanyManual implements OnInit {
       .subscribe((start) => {
         this.isFirstStep.set(start === HierarchySteps.Company);
       });
-
-    this.getCountries();
-
-    this.companyForm.get('countryId')?.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((countryId) => this.getStatesByCountryId(countryId!));
-
-    this.companyForm.get('stateId')?.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((stateId) => this.getCitiesByStateId(stateId!));
   }
 
   getCompanyById(id: string) {
@@ -141,10 +152,9 @@ export class CompanyManual implements OnInit {
       name: record.name,
       nameArabic: record.nameArabic,
       code: record.code,
-      countryId: record.countryID ?? record.countryId,
-      stateId: record.stateID ?? record.stateId,
-      cityId: record.cityID ?? record.cityId,
-      otherCityName: record.otherCityName,
+      country: record.country,
+      state: record.state,
+      city: record.city,
       address: record.address,
       commercialRegisterNo: record.commercialRegisterNo,
       taxNumber: record.taxNumber,
@@ -164,18 +174,54 @@ export class CompanyManual implements OnInit {
     } as any);
   }
 
+  /* -------------------- wizard navigation -------------------- */
+  onStepChange(step: number): void {
+    // allow free navigation only across already-completed steps (or back)
+    if (step <= this.currentStep() || this.completedSteps()[step - 2]) {
+      this.currentStep.set(step);
+    }
+  }
+
+  goBack(): void {
+    if (this.currentStep() > 1) {
+      this.currentStep.update((s) => s - 1);
+    }
+  }
+
+  private isStepValid(step: number): boolean {
+    const fields = STEP_FIELDS[step - 1] ?? [];
+    return fields.every((field) => this.companyForm.get(field)?.valid ?? true);
+  }
+
+  private touchStep(step: number): void {
+    const fields = STEP_FIELDS[step - 1] ?? [];
+    fields.forEach((field) => this.companyForm.get(field)?.markAsTouched());
+  }
+
+  onPrimaryAction(): void {
+    if (!this.isLastStep()) {
+      if (!this.isStepValid(this.currentStep())) {
+        this.touchStep(this.currentStep());
+        return;
+      }
+      this.completedSteps.update((steps) => {
+        const copy = [...steps];
+        copy[this.currentStep() - 1] = true;
+        return copy;
+      });
+      this.currentStep.update((s) => s + 1);
+      return;
+    }
+
+    this.id() === null ? this.goNext() : this.editCompany();
+  }
+
   goNext() {
     if (!this.companyForm.valid) return;
 
     const raw = this.companyForm.getRawValue();
 
-    const formData = {
-      ...raw,
-      cityId: raw.cityId === 'other' ? null : raw.cityId,
-      otherCityName: raw.cityId === 'other' ? raw.otherCityName : null
-    };
-
-    this.next.emit(formData);
+    this.next.emit(raw);
     this.resetForm();
   }
 
@@ -191,40 +237,8 @@ export class CompanyManual implements OnInit {
 
   resetForm() {
     this.companyForm.reset({}, { emitEvent: false });
-    this.isOtherCity.set(false);
-  }
-
-  getCountries(): void {
-    // TODO(Mohamed): confirm method name on Organization service (was CompanyService.getCountries)
-    this.organizationService.getCountries().subscribe((res: any) => {
-      this.countries.set(res.map((country: any) => ({
-        label: country.name,
-        value: country.id
-      })));
-    });
-  }
-
-  getStatesByCountryId(countryId: string): void {
-    this.organizationService.getStatesByCountryId(countryId).subscribe((res: any) => {
-      this.states.set(res.map((state: any) => ({
-        label: state.name,
-        value: state.id
-      })));
-    });
-  }
-
-  getCitiesByStateId(stateId: string): void {
-    this.organizationService.getCitiesByStateId(stateId).subscribe({
-      next: (res: any) => {
-        this.cities.set([
-          { label: 'other', value: 'other' },
-          ...res.map((city: any) => ({ label: city.name, value: city.id }))
-        ]);
-      },
-      error: () => {
-        this.cities.set([{ label: 'other', value: 'other' }]);
-      }
-    });
+    this.currentStep.set(1);
+    this.completedSteps.set(new Array(this.totalSteps).fill(false));
   }
 
   editCompany() {
@@ -250,18 +264,5 @@ export class CompanyManual implements OnInit {
         this.update.emit(true);
       }
     });
-  }
-
-  onCityChange(event: any) {
-    const control = this.companyForm.get('otherCityName');
-    if (event === 'other') {
-      this.isOtherCity.set(true);
-      control?.setValidators([Validators.required]);
-    } else {
-      this.isOtherCity.set(false);
-      control?.setValue(null);
-      control?.clearValidators();
-    }
-    control?.updateValueAndValidity();
   }
 }

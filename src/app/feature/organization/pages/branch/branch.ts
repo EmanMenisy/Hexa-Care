@@ -113,7 +113,7 @@ export class Branch {
   onTableAction(event: { action: string; row: any }): void {
     switch (event.action) {
       case 'edit':
-        this.onEdit(event.row);
+        this.onEdit(event.row.id);
         break;
       case 'delete':
         this.onDelete(event.row.id);
@@ -171,12 +171,9 @@ export class Branch {
    }
   //====================edit
   onEdit(id: string) {
-    this.organizationService.getBranchById(id).subscribe({
-      next: (res) => {
-        this.selectedItem = res;
-        this.isManualSidebarVisible.set(true);
-      },
-    });
+    this.organizationLogicService.setId(id);
+    this.organizationLogicService.setStart(HierarchySteps.Branch);
+    this.isManualSidebarVisible.set(true);
   }
   //====================Delete
   onDelete(roleId: string) {

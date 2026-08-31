@@ -9,7 +9,6 @@ import { GetRoleRequest, RoleFilters, RoleResponse } from '../modals/role';
 import { ISortRequest } from '../../../../core/models/interface/Isort';
 import { TableHeaderType } from '../../../../core/models/enums/table-header-type';
 import { ITableHeader } from '../../../../core/models/interface/ItableHeader';
-import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FilterService } from '../../../../core/services/filter/filter';
 import { Router } from '@angular/router';
@@ -25,8 +24,7 @@ import { ITableAction, ISortEvent } from '../../../shared/components/common/tabl
     ManualRole,
     CommonModule,
     Table,
-    NativeTableColumnTemplateDirective,
-    TranslatePipe
+    NativeTableColumnTemplateDirective
   ],
   templateUrl: './role.html',
   styleUrl: './role.scss',

@@ -27,6 +27,13 @@ import { ToastService } from '../../../../core/services/toast/toast';
 import { Localization } from '../../../../core/services/localization/localization';
 import { ToastType } from '../../../../core/models/enums/toast-type';
 import { BranchCreate, HierarchySteps } from '../../models/organization-creation.model';
+import { StepperComponent } from '../../../shared/components/common/stepper/stepper';
+
+/* -------------------- internal wizard steps -------------------- */
+const STEP_FIELDS: string[][] = [
+  ['name', 'nameArabic', 'description', 'descriptionArabic', 'branchIds'],
+  ['managerName', 'managerPhone', 'managerEmail', 'extension', 'location']
+];
 
 @Component({
   selector: 'app-department-manual',
@@ -37,7 +44,8 @@ import { BranchCreate, HierarchySteps } from '../../models/organization-creation
     InputTextComponent,
     MultiSelectComponent,
     ButtonComponent,
-    TranslatePipe
+    TranslatePipe,
+    StepperComponent
   ],
   templateUrl: './department-manual.html',
   styleUrl: './department-manual.scss',
@@ -55,8 +63,7 @@ export class DepartmentManual implements OnInit {
     private readonly destroyRef: DestroyRef,
     private readonly fb: FormBuilder
   ) {
-    // بنبنيها هنا (بعد ما this.fb اتحط) مش كـ field initializer،
-    // عشان منعتمدش على ترتيب تنفيذ الـ native class fields مع الـ parameter properties
+
     this.departmentForm = this.fb.group({
       name: ['', [Validators.required]],
       nameArabic: [''],
@@ -87,6 +94,16 @@ export class DepartmentManual implements OnInit {
   isFirstStep = signal<boolean>(false);
   branchList = signal<any[]>([]);
 
+  /* -------------------- internal wizard (stepper) -------------------- */
+  totalSteps = STEP_FIELDS.length;
+  currentStep = signal<number>(1);
+  completedSteps = signal<boolean[]>(new Array(this.totalSteps).fill(false));
+  stepperSteps = [
+    { label: 'organization.department.steps.basicInformation' },
+    { label: 'organization.department.steps.managementInformation' }
+  ];
+  isLastStep = computed(() => this.currentStep() === this.totalSteps);
+
   ngOnInit(): void {
     this.organizationLogicService.id$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -106,6 +123,8 @@ export class DepartmentManual implements OnInit {
 
   resetForm() {
     this.departmentForm.reset({}, { emitEvent: false });
+    this.currentStep.set(1);
+    this.completedSteps.set(new Array(this.totalSteps).fill(false));
   }
 
   getBranchList() {
@@ -115,7 +134,6 @@ export class DepartmentManual implements OnInit {
       this.departmentForm.get('branchIds')?.setValue([branch.name]);
       this.departmentForm.get('branchIds')?.disable();
     } else {
-      // TODO(Mohamed): confirm method name on Organization service (was LookupsService.getStructureBasedOnRoleScope)
       this.organizationService.getStructureBasedOnRoleScope().subscribe((res: any) => {
         this.branchList.set(res.branches.map((b: any) => ({
           label: b.name,
@@ -126,7 +144,6 @@ export class DepartmentManual implements OnInit {
   }
 
   getDepartmentById(id: string) {
-    // TODO(Mohamed): confirm method name on Organization service (was DepartmentService.getDepartmentById)
     this.organizationService.getDepartmentById(id).subscribe({
       next: (res: any) => {
         this.departmentForm.patchValue({
@@ -169,6 +186,47 @@ export class DepartmentManual implements OnInit {
         this.update.emit(true);
       }
     });
+  }
+
+  /* -------------------- wizard navigation -------------------- */
+  onStepChange(step: number): void {
+    if (step <= this.currentStep() || this.completedSteps()[step - 2]) {
+      this.currentStep.set(step);
+    }
+  }
+
+  goBack(): void {
+    if (this.currentStep() > 1) {
+      this.currentStep.update((s) => s - 1);
+    }
+  }
+
+  private isStepValid(step: number): boolean {
+    const fields = STEP_FIELDS[step - 1] ?? [];
+    return fields.every((field) => this.departmentForm.get(field)?.valid ?? true);
+  }
+
+  private touchStep(step: number): void {
+    const fields = STEP_FIELDS[step - 1] ?? [];
+    fields.forEach((field) => this.departmentForm.get(field)?.markAsTouched());
+  }
+
+  onPrimaryAction(): void {
+    if (!this.isLastStep()) {
+      if (!this.isStepValid(this.currentStep())) {
+        this.touchStep(this.currentStep());
+        return;
+      }
+      this.completedSteps.update((steps) => {
+        const copy = [...steps];
+        copy[this.currentStep() - 1] = true;
+        return copy;
+      });
+      this.currentStep.update((s) => s + 1);
+      return;
+    }
+
+    this.id() === null ? this.goNext() : this.editDepartment();
   }
 
   /* -------------------- Sidebar Buttons  -------------------- */

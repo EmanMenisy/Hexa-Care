@@ -163,3 +163,45 @@ label {
     }
   }
 }
+
+
+.p-drawer.sidebar,
+  .p-drawer {
+    font-size: 13px;
+    overflow-x: hidden;
+    .p-drawer-header,
+    .p-drawer-content {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+  }
+
+  app-stepper {
+    overflow-x: hidden;
+
+    .p-stepper,
+    .stepper,
+    .steps {
+      flex-wrap: nowrap;
+      overflow-x: hidden;
+      margin-bottom: 16px;
+    }
+
+    .step,
+    .step-item,
+    .p-stepper-header {
+      white-space: nowrap;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .step-label,
+    .p-stepper-title,
+    span,
+    p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 12px;
+    }
+  }
