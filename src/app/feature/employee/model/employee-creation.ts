@@ -56,3 +56,53 @@ export interface EmployeePayload {
 }
 
 export type EmployeeResponse = EmployeePayload; 
+
+export interface Company {
+  companyId: string;
+  name: string;
+  organizationId: string;
+}
+
+export interface Branch {
+  branchId: string;
+  name: string;
+  companyId: string;
+}
+
+export interface Department {
+  departmentId: string;
+  name: string;
+  branchId: string;
+}
+
+export interface Team {
+  teamId: string;
+  name: string;
+  departmentId: string;
+}
+
+export interface OrganizationalStructure {
+  currentLevel?: string;
+  currentHeadId?: string;
+  organizationId?: string;
+  companies: Company[];
+  branches: Branch[];
+  departments: Department[];
+  teams: Team[];
+}
+
+export interface SystemRole {
+  id: string;
+  name: string;
+}
+
+export interface CustomRole {
+  id: string;
+  name: string;
+  teams: string[];
+}
+
+export interface RolesResponse {
+  getAllCoustemRoles: any[];
+  getAllSystemRoles: SystemRole[];
+}

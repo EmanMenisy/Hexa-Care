@@ -1,7 +1,6 @@
 export enum Gender {
   Male = 1,
   Female = 2,
-  Other = 3,
 }
 
 export enum MaritalStatus {
@@ -22,19 +21,31 @@ export enum EmploymentType {
   Intern = 5,
 }
 
-export enum BloodGroup {
-  APositive = 'A+',
-  ANegative = 'A-',
-  BPositive = 'B+',
-  BNegative = 'B-',
-  ABPositive = 'AB+',
-  ABNegative = 'AB-',
-  OPositive = 'O+',
-  ONegative = 'O-',
-}
-
 
 export enum EmployeeCreationMode {
   Doctor = 1,
   StaffMember = 2,
+}
+
+export enum BloodType {
+  A_Positive = 1,
+  A_Negative = 2,
+  B_Positive = 3,
+  B_Negative = 4,
+  AB_Positive = 5,
+  AB_Negative = 6,
+  O_Positive = 7,
+  O_Negative = 8,
+}
+
+
+export enum DoctorRank {
+  None = 0,
+  HouseOfficer = 1,
+  Resident = 2,
+  Registrar = 3,
+  Specialist = 4,
+  SeniorSpecialist = 5,
+  Consultant = 6,
+  SeniorConsultant = 7,
 }

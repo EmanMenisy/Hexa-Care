@@ -1,0 +1,59 @@
+<div class="container-fluid">
+
+  @if (selectedSector() === null) {
+    <div class="card sector-container">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <span class="icon-wrapper"><i class="pi pi-users"></i></span>
+        <h3 class="section-title">{{ 'employee.home.staff_kind' | translate }}</h3>
+      </div>
+
+      <div class="sector-grid">
+        <div class="sector-card" (click)="showSector(false)">
+          <span class="icon-wrapper medical"><i class="pi pi-heart-fill"></i></span>
+          <div class="sector-info">
+            <h4>{{ 'employee.home.doctor' | translate }}</h4>
+            <p>{{ 'employee.home.doctor_subtitle' | translate }}</p>
+          </div>
+        </div>
+
+        <div class="sector-card" (click)="showSector(true)">
+          <span class="icon-wrapper admin"><i class="pi pi-briefcase"></i></span>
+          <div class="sector-info">
+            <h4>{{ 'employee.home.administrative' | translate }}</h4>
+            <p>{{ 'employee.home.administrative_subtitle' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="card mt-3">
+      <button class="back-btn mb-3" (click)="goBack()">
+        <i class="pi pi-arrow-right"></i> {{ 'employee.home.back' | translate }}
+      </button>
+
+      <div class="staff-type-grid">
+
+        @if (!selectedSector()) {
+          <div class="staff-type-card" (click)="selectDoctorCard()">
+            <span class="icon-wrapper medical"><i class="pi pi-heart-fill"></i></span>
+            <div class="staff-type-info">
+              <h4>{{ 'doctor' | translate }}</h4>
+              <p>{{ 'create doctor' | translate }}</p>
+            </div>
+          </div>
+        }
+
+        @for (staff of filteredTypes(); track staff.id) {
+          <div class="staff-type-card" (click)="selectStaffType(staff.id)">
+            <span class="icon-wrapper"><i class="pi pi-user"></i></span>
+            <div class="staff-type-info">
+              <p>{{ staff.nameArabic || staff.name }}</p>
+            </div>
+          </div>
+        }
+
+      </div>
+    </div>
+  }
+
+</div>

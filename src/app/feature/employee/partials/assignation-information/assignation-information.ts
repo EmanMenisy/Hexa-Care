@@ -1,18 +1,31 @@
 import { Component, inject, input } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { AssignationService, OrganizationalStructure } from '../../../shared/service/assignation-service';
+import { FormArray, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AssignationService } from '../../../shared/service/assignation-service';
 import { MultiSelectComponent } from '../../../shared/components/primeng/multi-select/multi-select';
 import { DropdownComponent } from '../../../shared/components/primeng/drop-down/drop-down';
-
+import { ButtonComponent } from "../../../shared/components/primeng/button/button";
+import { EmployeeCreationService } from '../../service/employee-creation-service';
+import { OrganizationalStructure } from '../../model/employee-creation';
+EmployeeCreationService
 @Component({
   selector: 'hexa-assignation-information',
-  imports: [ReactiveFormsModule , MultiSelectComponent , DropdownComponent],
+  imports: [ReactiveFormsModule, MultiSelectComponent, DropdownComponent, ButtonComponent],
   templateUrl: './assignation-information.html',
   styleUrl: './assignation-information.scss',
 })
 export class AssignationInformation {
   assignationForm = input.required<FormGroup>();
-  private assignationService = inject(AssignationService);
+  private employeeCreationService = inject(EmployeeCreationService);
+  createRoleFn = input.required<(isMain?: boolean) => FormGroup>();
+    private currentLevel: string = 'Team';
+
+  private readonly roleHierarchy: Record<string, number> = {
+    Organization: 4,
+    Company: 3,
+    Branch: 2,
+    Department: 1,
+    Team: 0,
+  };  
 
   companiesOptions: any[] = [];
   branchsOptions: any[] = [];
@@ -35,7 +48,7 @@ export class AssignationInformation {
   }
 
   private loadStructure(): void {
-    this.assignationService.getOrganizationalStructure().subscribe({
+    this.employeeCreationService.getOrganizationalStructure().subscribe({
       next: (res: OrganizationalStructure) => {
         console.log(res , 'structure');
         
@@ -44,11 +57,15 @@ export class AssignationInformation {
         this.branchsOptions = res.branches ?? [];
         this.departmentOptions = res.departments ?? [];
         this.teamOptions = res.teams ?? [];
+        this.currentLevel = res.currentLevel ?? 'Team';
       },
       error: (err) => console.error('Error loading organizational structure', err),
     });
   }
 
+  getScopeLevel(): number {
+    return this.roleHierarchy[this.currentLevel] ?? 0;
+  }
 
   // ----------- Cascade handlers -----------
 
@@ -98,7 +115,7 @@ onTeamChange(selectedTeamIds: string[]): void {
     return;
   }
 
-  this.assignationService.getSystemAndCustomRoles(selectedTeamIds).subscribe({
+  this.employeeCreationService.getSystemAndCustomRoles(selectedTeamIds).subscribe({
     next: (res) => {
       console.log('roles response:', res);
 
@@ -212,11 +229,194 @@ onRoleChanged(roleId: string, index: number): void {
 
     row.get('headOptions')?.setValue(headOptions);
     row.get('headValueField')?.setValue('id');
-
+    console.log(headOptions);
+    
     return;
   }
 
-  // System Role - هنكملها في الخطوة التالية
+
+  const roleName = (selectedRole.name ?? '').toLowerCase();
+  if (roleName.includes('company')) {
+    row.get('headOptions')?.setValue(this.companiesOptions);
+    row.get('headValueField')?.setValue('companyId');
+
+  } else if (roleName.includes('branch')) {
+    row.get('headOptions')?.setValue(this.branchsFilteredOptions);
+    row.get('headValueField')?.setValue('branchId');
+
+  } else if (roleName.includes('department')) {
+    row.get('headOptions')?.setValue(this.departmentFilteredOptions);
+    row.get('headValueField')?.setValue('departmentId');
+
+  } else if (roleName.includes('team')) {
+    row.get('headOptions')?.setValue(this.teamFilteredOptions);
+    row.get('headValueField')?.setValue('teamId');
+
+  } else {
+    row.get('headOptions')?.setValue([]);
+    row.get('headValueField')?.setValue('');
+  }
 }
+
+
+getFilteredHeadOptions(index: number): any[] {
+  const row = this.rolesArray.at(index) as FormGroup;
+
+  const all = row.get('headOptions')?.value || [];
+  const selectedMain = row.get('mainHeadHierarchy')?.value;
+  const valueField = row.get('headValueField')?.value;
+
+  return all.filter(
+    (item: any) => item[valueField] !== selectedMain
+  );
+}
+
+onMainHeadChanged(selectedMainId: string, index: number): void {
+  const row = this.rolesArray.at(index) as FormGroup;
+
+  const selectedMore = row.get('headHierarchy')?.value ?? [];
+
+  row.get('headHierarchy')?.setValue(
+    selectedMore.filter((id: string) => id !== selectedMainId)
+  );
+}
+
+
+setDefaultRole(selectedIndex: number): void {
+  this.rolesArray.controls.forEach((control, index) => {
+    const isSelected = index === selectedIndex;
+    control.get('isMainRole')?.setValue(isSelected);
+
+    const mainHeadControl = control.get('mainHeadHierarchy');
+    if (isSelected) {
+      mainHeadControl?.setValidators([Validators.required]);
+    } else {
+      mainHeadControl?.clearValidators();
+    }
+    mainHeadControl?.updateValueAndValidity();
+  });
+}
+
+  // ============ Array management ============
+addRole(): void {
+  this.rolesArray.push(this.createRoleFn()());
+}
+
+removeRole(index: number): void {
+  const removedControl = this.rolesArray.at(index);
+  const wasMain = removedControl?.get('isMainRole')?.value === true;
+
+  this.rolesArray.removeAt(index);
+
+  if (wasMain && this.rolesArray.length > 0) {
+    const newMainControl = this.rolesArray.at(0);
+    newMainControl.get('isMainRole')?.setValue(true);
+
+    const mainHeadControl = newMainControl.get('mainHeadHierarchy');
+    mainHeadControl?.setValidators([Validators.required]);
+    mainHeadControl?.updateValueAndValidity();
+  }
+}
+
+
+buildAssignmentPayload(): any {
+  const raw = this.assignationForm().getRawValue();
+  const organizationId = this.companiesOptions[0]?.organizationId ?? '';
+
+  return {
+    assigneStructure: this.buildStructure(raw, organizationId),
+    roles: this.buildRoles(raw.roles),
+  };
+}
+
+
+
+private buildStructure(raw: any, organizationId: string): any {
+  const companyPayload = (raw.company || []).map((cId: string) => {
+    const branchesForThisCompany = (raw.branch || [])
+      .filter((bId: string) => {
+        const branchOpt = this.branchsOptions.find((opt: any) => opt.branchId === bId);
+        return branchOpt?.companyId === cId;
+      })
+      .map((bId: string) => {
+        const deptsForThisBranch = (raw.department || [])
+          .filter((dId: string) => {
+            const deptOpt = this.departmentOptions.find((opt: any) => opt.departmentId === dId);
+            return deptOpt?.branchId === bId;
+          })
+          .map((dId: string) => {
+            const teamsForThisDept = (raw.team || [])
+              .filter((tId: string) => {
+                const teamOpt = this.teamOptions.find((opt: any) => opt.teamId === tId);
+                return teamOpt?.departmentId === dId;
+              });
+
+            return {
+              id: dId,
+              teamId: teamsForThisDept,
+            };
+          });
+
+        return {
+          id: bId,
+          departments: deptsForThisBranch,
+        };
+      });
+
+    return {
+      id: cId,
+      branches: branchesForThisCompany,
+    };
+  });
+
+  return {
+    organzationId: organizationId,
+    company: companyPayload,
+  };
+}
+
+private buildRoles(roles: any[]): any[] {
+  if (!Array.isArray(roles)) return [];
+
+  return roles.map((r: any) => {
+    const hierarchies: any[] = [];
+    const localOptions = r.headOptions || [];
+    const valueField = r.headValueField;
+
+    const getNameFromId = (id: string): string => {
+      if (!id || !valueField || localOptions.length === 0) return '';
+      const option = localOptions.find((o: any) => o[valueField] === id);
+      return option?.name || '';
+    };
+
+    if (r.mainHeadHierarchy) {
+      hierarchies.push({
+        headHierarchyId: r.mainHeadHierarchy,
+        headHierarchyName: getNameFromId(r.mainHeadHierarchy),
+        isMainHierarchy: true,
+      });
+    }
+
+    if (Array.isArray(r.headHierarchy)) {
+      r.headHierarchy.forEach((hhId: any) => {
+        if (!r.mainHeadHierarchy || hhId !== r.mainHeadHierarchy) {
+          hierarchies.push({
+            headHierarchyId: hhId,
+            headHierarchyName: getNameFromId(hhId),
+            isMainHierarchy: false,
+          });
+        }
+      });
+    }
+
+    return {
+      roleId: r.roleId,
+      isMainRole: r.isMainRole,
+      isSystemRole: r.isSystemRole,
+      hierarchies,
+    };
+  });
+ }
+
 
 }

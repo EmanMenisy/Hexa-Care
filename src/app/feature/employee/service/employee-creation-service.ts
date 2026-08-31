@@ -4,6 +4,7 @@ import { XhrService } from '../../../core/services/API/xhr/xhr';
 import { HttpMethod } from '../../../core/models/enums/http-method';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { OrganizationalStructure, RolesResponse } from '../model/employee-creation';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,50 @@ export class EmployeeCreationService {
      return this.xhrService.call({
       method: HttpMethod.Get,
       url: 'StaffMemberType/GetAll',
+    });
+  }
+
+  getAllStaffMembers(payload:any): Observable<any>{
+     return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: 'StaffMembers/GetAll',
+       params: new HttpParams({ fromObject: payload })
+    });
+  }
+
+  createStaffMember(PayLoad:any): Observable<any>{
+     return this.xhrService.call({
+      method: HttpMethod.Post,
+      url: 'StaffMembers/Create',
+      body: PayLoad
+    });
+  }
+
+   createDoctor(PayLoad:FormData): Observable<any>{
+     return this.xhrService.call({
+      method: HttpMethod.Post,
+      url: 'Doctors/Create',
+      body: PayLoad
+    });
+  }
+  
+    getOrganizationalStructure(): Observable<OrganizationalStructure> {
+    return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: `RoleScope/Get/Roleid`,
+    });
+   }
+  
+
+  getSystemAndCustomRoles(teamIds: string[]): Observable<RolesResponse> {
+    let params = new HttpParams();
+    teamIds.forEach((id) => {
+      params = params.append('TeamIds', id);
+    });
+    return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: `Role/GetAllRoleType`,
+      params,
     });
   }
 }

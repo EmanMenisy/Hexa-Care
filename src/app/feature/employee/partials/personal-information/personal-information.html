@@ -1,6 +1,5 @@
 <div class="container-fluid">
   <form [formGroup]="personalForm()" class="personal-info">
-
     <!-- Personal Information -->
     <section class="card">
       <div class="d-flex align-items-center gap-2 mb-3">
@@ -14,7 +13,6 @@
       </div>
 
       <div class="row g-3">
-
         <!-- First Name -->
         <div class="col-md-3">
           <label class="field-label">
@@ -26,6 +24,11 @@
             [placeholder]="'employee.personal_info.first_name_placeholder' | translate"
             formControlName="firstName"
           />
+          @if (
+            personalForm().get('firstName')?.invalid && personalForm().get('firstName')?.touched
+          ) {
+            <div class="text-danger text-small">First Name is required.</div>
+          }
         </div>
 
         <!-- Second Name -->
@@ -63,10 +66,13 @@
             [placeholder]="'employee.personal_info.last_name_placeholder' | translate"
             formControlName="lastName"
           />
+          @if (personalForm().get('lastName')?.invalid && personalForm().get('lastName')?.touched) {
+            <div class="text-danger text-small">last Name is required.</div>
+          }
         </div>
 
         <!-- Name -->
-        <div class="col-md-6">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.name' | translate }}
           </label>
@@ -92,7 +98,7 @@
         }
 
         <!-- Gender -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.gender' | translate }}
           </label>
@@ -100,12 +106,14 @@
           <hexa-dropdown
             [placeholder]="'employee.personal_info.gender_placeholder' | translate"
             [options]="genderOptions"
+            optionLabel="label"
+            optionValue="value"
             formControlName="gender"
           />
         </div>
 
         <!-- Date of Birth -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.date_of_birth' | translate }}
           </label>
@@ -117,16 +125,14 @@
         </div>
 
         <!-- Age -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.age' | translate }}
           </label>
 
           <hexa-input-text
             [valueInput]="
-              age() !== null
-                ? age() + ' ' + ('employee.personal_info.years' | translate)
-                : '-'
+              age() !== null ? age() + ' ' + ('employee.personal_info.years' | translate) : '-'
             "
             [disabled]="true"
             prefixIcon="pi pi-gift"
@@ -134,7 +140,7 @@
         </div>
 
         <!-- Nationality -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.nationality' | translate }}
           </label>
@@ -147,7 +153,7 @@
 
         <!-- National Id (Staff Member only) -->
         @if (staffMode() === EmployeeCreationMode.StaffMember) {
-          <div class="col-lg-2 col-md-4 col-12">
+          <div class="col-lg-3 col-md-4 col-12">
             <label class="field-label">
               {{ 'employee.personal_info.national_id' | translate }}
             </label>
@@ -160,7 +166,7 @@
         }
 
         <!-- Marital Status -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.marital_status' | translate }}
           </label>
@@ -168,12 +174,14 @@
           <hexa-dropdown
             [placeholder]="'employee.personal_info.marital_status_placeholder' | translate"
             [options]="maritalStatusOptions"
+            optionLabel="label"
+            optionValue="value"
             formControlName="maritalStatus"
           />
         </div>
 
         <!-- Blood Group -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.blood_group' | translate }}
           </label>
@@ -185,22 +193,10 @@
           />
         </div>
 
-        <!-- Photo URL (Staff Member only) -->
-        @if (staffMode() === EmployeeCreationMode.StaffMember) {
-          <div class="col-md-6">
-            <label class="field-label">
-              {{ 'employee.personal_info.photo_url' | translate }}
-            </label>
-
-            <hexa-input-text
-              [placeholder]="'employee.personal_info.photo_url_placeholder' | translate"
-              formControlName="photoUrl"
-            />
-          </div>
-        }
+      
 
         <!-- Phone -->
-        <div class="col-md-6">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.phone' | translate }}
           </label>
@@ -211,8 +207,23 @@
           />
         </div>
 
+        <div class="col-lg-6 col-md-4 col-12">
+        <div class="field">
+        <label for="attachment">{{'employee.personal_info.photo_placeholder'|translate}}</label>
+        <div class="input-group inputFile">
+          <input #fileInput type="file" class="form-control inputFile" (change)="onUpload($event)"
+            accept=".png,.jpg,.jpeg,.gif,.webp,.pdf" />
+
+          @if(photoPreviewUrl()){
+             <button (click)="onRemove(fileInput)" class="btn btn-danger">
+             remove
+            </button>
+            }
+          </div>
+        </div>
+        </div>
         <!-- Email -->
-        <div class="col-md-6">
+        <div class="col-lg-6 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.personal_info.email' | translate }}
           </label>
@@ -223,10 +234,8 @@
             formControlName="email"
           />
         </div>
-
       </div>
     </section>
-
 
     <!-- Contact Information -->
     <section class="card">
@@ -241,9 +250,8 @@
       </div>
 
       <div class="row g-3">
-
         <!-- Address -->
-        <div class="col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.contact_info.address' | translate }}
           </label>
@@ -255,7 +263,7 @@
         </div>
 
         <!-- City -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.contact_info.city' | translate }}
           </label>
@@ -267,7 +275,7 @@
         </div>
 
         <!-- Governorate -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.contact_info.governorate' | translate }}
           </label>
@@ -279,7 +287,7 @@
         </div>
 
         <!-- Postal Code -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.contact_info.postal_code' | translate }}
           </label>
@@ -291,7 +299,7 @@
         </div>
 
         <!-- Country -->
-        <div class="col-lg-2 col-md-4 col-12">
+        <div class="col-lg-3 col-md-4 col-12">
           <label class="field-label">
             {{ 'employee.contact_info.country' | translate }}
           </label>
@@ -304,8 +312,7 @@
 
         <!-- Emergency Contact (Staff Member only) -->
         @if (staffMode() === EmployeeCreationMode.StaffMember) {
-
-          <div class="col-lg-2 col-md-4 col-12">
+          <div class="col-lg-3 col-md-4 col-12">
             <label class="field-label">
               {{ 'employee.contact_info.emergency_contact' | translate }}
             </label>
@@ -316,7 +323,7 @@
             />
           </div>
 
-          <div class="col-lg-2 col-md-4 col-12">
+          <div class="col-lg-3 col-md-4 col-12">
             <label class="field-label">
               {{ 'employee.contact_info.emergency_phone' | translate }}
             </label>
@@ -326,12 +333,9 @@
               formControlName="emergencyContactPhone"
             />
           </div>
-
         }
-
       </div>
     </section>
-
 
     <!-- Account Information -->
     <section class="card">
@@ -346,12 +350,10 @@
       </div>
 
       <div class="row g-3">
-
         <!-- Username -->
         <div class="col-md-6">
           <label class="field-label">
             {{ 'employee.login_info.username' | translate }}
-            <span class="text-danger">*</span>
           </label>
 
           <hexa-input-text
@@ -364,7 +366,6 @@
         <div class="col-md-6">
           <label class="field-label">
             {{ 'employee.login_info.password' | translate }}
-            <span class="text-danger">*</span>
           </label>
 
           <hexa-input-text
@@ -373,9 +374,7 @@
             formControlName="password"
           />
         </div>
-
       </div>
     </section>
-
   </form>
 </div>

@@ -1,0 +1,16 @@
+.inputFile {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.inputFile::file-selector-button,
+.inputFile:hover::file-selector-button,
+.inputFile::file-selector-button:hover,
+.inputFile::file-selector-button:active {
+  background-color: #418397 !important;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}

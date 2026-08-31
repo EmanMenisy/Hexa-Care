@@ -235,8 +235,16 @@
       "skills_placeholder": "أدخل المهارات",
       "certifications": "الشهادات",
       "certifications_placeholder": "أدخل الشهادات"
+    },
+    "home": {
+      "staff_kind": "نوع الموظف",
+      "doctor": "القطاع الطبي",
+      "doctor_subtitle": "الأطباء والمهنيون في المجال الطبي",
+      "administrative": "القطاع الإداري",
+      "administrative_subtitle": "الموظفون الإداريون وموظفو الدعم",
+      "back": "رجوع"
     }
-  },,
+  },
   "organization": {
     "organizationProfile": {
       "identity": {

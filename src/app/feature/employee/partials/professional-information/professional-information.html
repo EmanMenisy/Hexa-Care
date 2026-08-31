@@ -157,8 +157,10 @@
               {{ 'employee.professional_info.rank' | translate }}
             </label>
 
-            <hexa-input-text
-              type="text"
+            <hexa-dropdown
+              [options]="rankOptions"
+              optionLabel="label"
+              optionValue="value"
               formControlName="rank"
               [placeholder]="'employee.professional_info.rank_placeholder' | translate"
             />
@@ -258,6 +260,8 @@
             <hexa-dropdown
               formControlName="employmentType"
               [options]="employmentTypeOptions"
+              optionLabel="label"
+              optionValue="value"
               [placeholder]="'employee.professional_info.employment_type_placeholder' | translate"
             />
           </div>
@@ -342,8 +346,7 @@
             {{ 'employee.professional_info.commission_percent' | translate }}
           </label>
 
-          <hexa-input-text
-            type="text"
+          <hexa-input-number
             formControlName="commissionPercent"
             [placeholder]="'employee.professional_info.commission_percent_placeholder' | translate"
           />
@@ -356,8 +359,7 @@
               {{ 'employee.professional_info.cash_commission_percent' | translate }}
             </label>
 
-            <hexa-input-text
-              type="text"
+            <hexa-input-number
               formControlName="cashCommissionPercent"
               [placeholder]="'employee.professional_info.cash_commission_percent_placeholder' | translate"
             />
@@ -368,17 +370,13 @@
               {{ 'employee.professional_info.contract_commission_percent' | translate }}
             </label>
 
-            <hexa-input-text
-              type="text"
+            <hexa-input-number
               formControlName="contractCommissionPercent"
               [placeholder]="'employee.professional_info.contract_commission_percent_placeholder' | translate"
             />
           </div>
-
-        }
-
+         }
       </div>
     </section>
-
   </form>
 </div>

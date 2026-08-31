@@ -1,5 +1,7 @@
 <div class="container-fluid">
   <form [formGroup]="assignationForm()" class="assignation-form">
+
+    <!-- ============ Card 1: Assignation Structure ============ -->
     <div class="card">
       <div class="d-flex align-items-center gap-2 mb-3">
         <span class="icon-wrapper">
@@ -7,6 +9,7 @@
         </span>
         <h3 class="section-title">Assignation</h3>
       </div>
+
       <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-4">
           <div class="field">
@@ -17,8 +20,7 @@
               optionValue="companyId"
               formControlName="company"
               placeholder="Select company"
-              (multiSelectChanged)="onCompanyChange($event)"
-            >
+              (multiSelectChanged)="onCompanyChange($event)">
             </hexa-multi-select>
             @if (
               assignationForm().get('company')?.invalid && assignationForm().get('company')?.touched
@@ -37,8 +39,7 @@
               optionValue="branchId"
               formControlName="branch"
               placeholder="Select branch"
-              (multiSelectChanged)="onBranchChange($event)"
-            >
+              (multiSelectChanged)="onBranchChange($event)">
             </hexa-multi-select>
             @if (
               assignationForm().get('branch')?.invalid && assignationForm().get('branch')?.touched
@@ -57,8 +58,7 @@
               optionValue="departmentId"
               formControlName="department"
               placeholder="Select department"
-              (multiSelectChanged)="onDepartmentChange($event)"
-            >
+              (multiSelectChanged)="onDepartmentChange($event)">
             </hexa-multi-select>
             @if (
               assignationForm().get('department')?.invalid &&
@@ -78,8 +78,7 @@
               optionValue="teamId"
               formControlName="team"
               placeholder="Select team"
-              (multiSelectChanged)="onTeamChange($event)"
-            >
+              (multiSelectChanged)="onTeamChange($event)">
             </hexa-multi-select>
             @if (assignationForm().get('team')?.invalid && assignationForm().get('team')?.touched) {
               <div class="text-danger">Team is required.</div>
@@ -88,6 +87,8 @@
         </div>
       </div>
     </div>
+
+    <!-- ============ Card 2: Roles & Permissions ============ -->
     <div class="card">
       <div class="d-flex align-items-center gap-2 mb-3">
         <span class="icon-wrapper">
@@ -95,56 +96,102 @@
         </span>
         <h3 class="section-title">Role And Permission</h3>
       </div>
-      <div class="row">
-      <div formArrayName="roles" class="roles-section mt-4">
-      @for (role of rolesArray.controls; track $index; let i = $index) {
-      <div [formGroupName]="i" class="row role-row">
-      <div class="col-sm-12 col-md-4">
-        <div class="field">
-          <label>Role Type <span class="text-danger">*</span></label>
-          <hexa-dropdown
-            [options]="roleTypes"
-            optionLabel="label"
-            optionValue="value"
-            formControlName="isSystemRole"
-            placeholder="Select type"
-            (dropdownChanged)="onRoleTypeChanged($event, i)">
-          </hexa-dropdown>
-        </div>
-      </div>
 
-      <div class="col-sm-12 col-md-4">
-        <div class="field">
-          <label>Role & Permission Name <span class="text-danger">*</span></label>
-          <hexa-dropdown
-            [options]="role.get('roleOptions')?.value"
-            optionLabel="name"
-            optionValue="id"
-            formControlName="roleId"
-            placeholder="Select permission"
-            (dropdownChanged)="onRoleChanged($event, i)">
-            >
-         </hexa-dropdown>
-        </div>
-      </div>
+      <div formArrayName="roles" class="roles-section">
+        @for (role of rolesArray.controls; track role; let i = $index) {
+          <div [formGroupName]="i" class="row role-row mb-3 align-items-end">
 
-      <div class="col-sm-12 col-md-4">
-        <div class="field">
-        <label>Main Head Hierarchy<span class="text-danger">*</span></label>
-            <hexa-dropdown
-            [options]="role.get('headOptions')?.value"
-            optionLabel="name"
-            [optionValue]="role.get('headValueField')?.value"
-            formControlName="mainHeadHierarchy"
-            placeholder="Select hierarchy">
-            </hexa-dropdown>
-        </div>
-      </div>
+            <div class="col-sm-12 col-md-4">
+              <div class="field">
+                <label>Role Type <span class="text-danger">*</span></label>
+                <hexa-dropdown
+                  [options]="roleTypes"
+                  optionLabel="label"
+                  optionValue="value"
+                  formControlName="isSystemRole"
+                  placeholder="Select type"
+                  (dropdownChanged)="onRoleTypeChanged($event, i)">
+                </hexa-dropdown>
+              </div>
+            </div>
 
+            <div class="col-sm-12 col-md-4">
+              <div class="field">
+                <label>Role & Permission Name <span class="text-danger">*</span></label>
+                <hexa-dropdown
+                  [options]="role.get('roleOptions')?.value"
+                  optionLabel="name"
+                  optionValue="id"
+                  formControlName="roleId"
+                  placeholder="Select permission"
+                  (dropdownChanged)="onRoleChanged($event, i)">
+                </hexa-dropdown>
+              </div>
+               @if (role.get('isSystemRole')?.invalid && role.get('isSystemRole')?.touched) {
+                <div class="text-danger">Role type is required.</div>
+              }
+            </div>
+
+            <div class="col-sm-12 col-md-4">
+              <div class="field">
+                <label>
+                  Main Head Hierarchy
+                  @if (role.get('isMainRole')?.value) {
+                    <span class="text-danger">*</span>
+                  }
+                </label>
+                <hexa-dropdown
+                  [options]="role.get('headOptions')?.value"
+                  optionLabel="name"
+                  [optionValue]="role.get('headValueField')?.value"
+                  formControlName="mainHeadHierarchy"
+                  placeholder="Select branch"
+                  (dropdownChanged)="onMainHeadChanged($event, i)">
+                </hexa-dropdown>
+              </div>
+               @if (role.get('roleId')?.invalid && role.get('roleId')?.touched) {
+                  <div class="text-danger">Role name is required.</div>
+                }
+            </div>
+
+            <div class="col-sm-12 col-md-4">
+              <div class="field">
+                <label>More Head Hierarchy</label>
+                <hexa-multi-select
+                  [options]="getFilteredHeadOptions(i)"
+                  optionLabel="name"
+                  [optionValue]="role.get('headValueField')?.value"
+                  formControlName="headHierarchy"
+                  placeholder="Select branch">
+                </hexa-multi-select>
+              </div>
+               @if (role.get('mainHeadHierarchy')?.invalid && role.get('mainHeadHierarchy')?.touched) {
+              <div class="text-danger">Main head hierarchy is required.</div>
+               }
+              </div>
+
+            <div class="col-sm-12 col-md-12">
+              <hexa-button
+                label="Default"
+                [icon]="role.get('isMainRole')?.value ? 'pi pi-check' : 'pi pi-cog'"
+                [styleClass]="role.get('isMainRole')?.value ? 'active-default' : ''"
+                severity="primary"
+                (clicked)="setDefaultRole(i)">
+              </hexa-button>
+            </div>
+            @if (rolesArray.length > 1) {
+              <div class="col-sm-12 col-md-12 delete-role text-center">
+                <button (click)="removeRole(i)">
+                 <i class="pi pi-trash"></i>
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+       <a class="add-role" (click)="addRole()"><span><i class="pi pi-plus"></i></span> Add another role</a>
+      </div>
     </div>
-  }
-</div>
-      </div>
-    </div>
+
   </form>
 </div>

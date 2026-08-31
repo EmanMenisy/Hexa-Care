@@ -6,22 +6,20 @@
   [maxStep]="maxStep()"
 />  
 </div>
-  <div class="creation-page__content">
-    @switch (step()) {
-      @case (1) {
-        <hexa-personal-info [personalForm]="form.controls.personal"  [staffMode]="staffMode()"></hexa-personal-info>
-      }
-      @case (2) {
-        <hexa-professional-information [professionalForm]="form.controls.professional"  [staffMode]="staffMode()"></hexa-professional-information>
-      }
-      @case (3) {
-        <hexa-assignation-information [assignationForm]="form.controls.assignment"></hexa-assignation-information>
-      }
-      @case (4) {
-        <!-- <hexa-documents-info /> -->
-      }
-    }
+ <div class="creation-page__content">
+  <div [class.d-none]="step() !== 1">
+    <hexa-personal-info [personalForm]="form.controls.personal" [staffMode]="staffMode()"></hexa-personal-info>
   </div>
+  <div [class.d-none]="step() !== 2">
+    <hexa-professional-information [professionalForm]="form.controls.professional" [staffMode]="staffMode()"></hexa-professional-information>
+  </div>
+  <div [class.d-none]="step() !== 3">
+    <hexa-assignation-information #assignationInfo  [assignationForm]="form.controls.assignment" [createRoleFn]="createRole.bind(this)"></hexa-assignation-information>
+  </div>
+  <div [class.d-none]="step() !== 4">
+    <!-- <hexa-documents-info /> -->
+  </div>
+</div>
 
  <div
   class="creation-page__footer
@@ -45,23 +43,29 @@
       severity="secondary"
       (clicked)="onCancel()"
     ></hexa-button>
-
-    @if (!isLastStep) {
+    @if (isSaveStep) {
+      <hexa-button
+        type="button"
+        (click)="onSave()"
+        label="save"
+        [disabled]="form.controls.assignment.invalid"
+      >
+      </hexa-button>
+    }
+    @else if (!isLastStep) {
       <hexa-button
         label="Next"
         severity="primary"
         (clicked)="onNext()"
         [disabled]="!canGoNext()" 
       ></hexa-button>
-    } @else {
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="onSave()"
-      >
-        <em class="pi pi-save"></em>
-        Save doctor
-      </button>
+    } @else  {
+          <!-- step 4: Documents -->
+     <hexa-button
+      label="Upload & Finish"
+      severity="primary"
+      (clicked)="onUploadDocuments()">
+    </hexa-button>
     }
   </div>
 </div>

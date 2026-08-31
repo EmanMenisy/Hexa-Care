@@ -6,9 +6,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { CalenderComponent } from "../../../shared/components/primeng/date-picker/date-picker";
 import { TextareaModule } from 'primeng/textarea';
 import { EmployeeCreationMode, EmploymentType } from '../../model/enums/employee-Creation-enums';
+import { InputNumber } from "../../../shared/components/primeng/input-number/input-number";
 @Component({
   selector: 'hexa-professional-information',
-  imports: [InputTextComponent, DropdownComponent, TranslatePipe, CalenderComponent , ReactiveFormsModule , TextareaModule ],
+  imports: [InputTextComponent, DropdownComponent, TranslatePipe, CalenderComponent, ReactiveFormsModule, TextareaModule, InputNumber],
   templateUrl: './professional-information.html',
   styleUrl: './professional-information.scss',
 })

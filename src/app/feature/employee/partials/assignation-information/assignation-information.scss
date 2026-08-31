@@ -1,0 +1,44 @@
+::ng-deep .active-default {
+  background-color: gray !important;
+  color: white !important;
+}
+
+.add-role{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: rgb(89, 180, 237);
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  span{
+    border-radius: 50%;
+    border: 1px solid rgb(89, 180, 237);
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.delete-role{
+  background-color: rgb(246, 230, 230);
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  button{
+    border: none;
+    outline: none;
+    background-color: transparent;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // text-align: center;
+    i{
+      color: red;
+      font-size: 18px;
+    }
+  }
+}

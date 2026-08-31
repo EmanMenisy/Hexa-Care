@@ -21,6 +21,17 @@ export const SIDEBAR_MENU: ISidebarItem[] = [
       // { id: 'org-organizations', label: 'Organizations', icon: '🏛️', route: '/organizations', code: 1600 },
     ],
   },
+  {
+    id: 'Organizational Structure ',
+    label: 'Organizational Structure',
+    icon: '🏬',
+    code: 2,
+    standalone:true,
+    description: 'organization structure',
+    children: [
+      { id: 'org-companies', label: 'Organizational Structure', icon: '🏬', route: '/home', code: 2000 },
+    ],
+  },
 
   // // ── Care ───────────────────────────────────────────────
   // {

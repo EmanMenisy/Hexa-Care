@@ -1,0 +1,57 @@
+<section class="card">
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <span class="icon-wrapper"><i class="pi pi-image"></i></span>
+    <h3 class="section-title">{{ label() | translate }}</h3>
+  </div>
+
+  <p class="field-label mb-2">
+    {{ 'employee.documents.employee_image' | translate }}
+    @if (optional()) {
+      <span class="text-muted">({{ 'employee.documents.optional' | translate }})</span>
+    }
+  </p>
+
+  @if (!selectedFile()) {
+    <div
+      class="upload-dropzone"
+      [class.dragging]="isDragging()"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+    >
+      <i class="pi pi-upload upload-icon"></i>
+      <p class="upload-text">{{ 'employee.documents.drag_drop' | translate }}</p>
+      <p class="upload-subtext">{{ 'employee.documents.max_size' | translate }}</p>
+
+      <button type="button" class="browse-btn" (click)="onBrowseClick(fileInput)">
+        <i class="pi pi-search"></i>
+        {{ 'employee.documents.browse' | translate }}
+      </button>
+
+      <input
+        #fileInput
+        type="file"
+        hidden
+        accept="image/jpeg,image/png,image/gif,image/bmp,application/pdf"
+        (change)="onFileInputChange($event)"
+      />
+    </div>
+  } @else {
+    <div class="upload-preview">
+      @if (previewUrl()) {
+        <img [src]="previewUrl()" class="preview-image" alt="preview" />
+      } @else {
+        <i class="pi pi-file-pdf preview-pdf-icon"></i>
+      }
+      <span class="file-name">{{ selectedFile()!.name }}</span>
+      <button type="button" class="remove-btn" (click)="removeFile()">
+        <i class="pi pi-times"></i>
+      </button>
+    </div>
+  }
+
+  @if (errorMessage()) {
+    <p class="error-text">{{ errorMessage() | translate }}</p>
+  }
+</section>
+

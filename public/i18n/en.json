@@ -247,6 +247,13 @@
       "skills_placeholder": "Enter skills",
       "certifications": "Certifications",
       "certifications_placeholder": "Enter certifications"
+    },"home": {
+      "staff_kind": "Staff Type",
+      "doctor": "Medical Sector",
+      "doctor_subtitle": "Doctors and medical professionals",
+      "administrative": "Administrative Sector",
+      "administrative_subtitle": "Administrative and support staff",
+      "back": "Back"
     }
   },
   "organization": {
