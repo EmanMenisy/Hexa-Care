@@ -233,12 +233,15 @@ export class DepartmentManual implements OnInit {
   }
 
   /* -------------------- Sidebar Buttons  -------------------- */
-  goNext() {
-    if (!this.departmentForm.valid) return;
-    const formData = this.departmentForm.getRawValue();
-    this.next.emit(formData as any);
-    this.resetForm();
-  }
+ goNext() {
+  if (!this.departmentForm.valid) return;
+  const raw = this.departmentForm.getRawValue();
+  const { branchIds, ...rest } = raw;
+  const formData = this.branch() ? rest : raw;
+
+  this.next.emit(formData as any);
+  this.resetForm();
+}
 
   closeSidebar(): void {
     this.save.emit(false);
