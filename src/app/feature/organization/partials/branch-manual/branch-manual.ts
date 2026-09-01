@@ -8,15 +8,10 @@ import {
   computed,
   input,
   output,
-  signal
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InputTextComponent } from '../../../shared/components/primeng/input-text/input-text';
 import { MultiSelectComponent } from '../../../shared/components/primeng/multi-select/multi-select';
@@ -29,7 +24,7 @@ import { ToastType } from '../../../../core/models/enums/toast-type';
 import {
   CompanyCreate,
   GeoLocation,
-  HierarchySteps
+  HierarchySteps,
 } from '../../models/organization-creation.model';
 import { LocationModal } from '../location-modal/location-modal';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
@@ -37,14 +32,13 @@ import { StepperComponent } from '../../../shared/components/common/stepper/step
 
 /* -------------------- internal wizard steps -------------------- */
 const STEP_FIELDS: string[][] = [
-  ['name', 'nameArabic','companyIds', 'description', 'descriptionArabic'],
+  ['name', 'nameArabic', 'companyIds', 'description', 'descriptionArabic'],
   ['address', 'phone', 'email', 'country', 'state', 'city'],
-  ['managerName', 'managerPhone', 'managerEmail' ]
+  ['managerName', 'managerPhone', 'managerEmail'],
 ];
 
 @Component({
   selector: 'app-branch-manual',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -54,7 +48,7 @@ const STEP_FIELDS: string[][] = [
     LocationModal,
     TranslatePipe,
     ToggleSwitchModule,
-    StepperComponent
+    StepperComponent,
   ],
   templateUrl: './branch-manual.html',
   styleUrl: './branch-manual.scss',
@@ -70,14 +64,14 @@ export class BranchManual implements OnInit {
     private readonly toastService: ToastService,
     private readonly localizationService: Localization,
     private readonly destroyRef: DestroyRef,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
   ) {
     this.branchForm = this.fb.group({
       name: ['', [Validators.required]],
       nameArabic: [''],
       description: [''],
       descriptionArabic: [''],
-      address: ['',[Validators.required]],
+      address: ['', [Validators.required]],
       phone: [''],
       email: ['', [Validators.email]],
       country: ['', [Validators.required]],
@@ -87,11 +81,11 @@ export class BranchManual implements OnInit {
       managerPhone: [''],
       managerEmail: ['', [Validators.email]],
       isGeoLocationEnabled: [false],
-      companyIds: [[] as string[], [Validators.required]]
+      companyIds: [[] as string[], [Validators.required]],
     });
 
     this.formStatus = toSignal(this.branchForm.statusChanges, {
-      initialValue: this.branchForm.status
+      initialValue: this.branchForm.status,
     });
     this.disabledForm = computed(() => this.formStatus() !== 'VALID');
   }
@@ -118,13 +112,13 @@ export class BranchManual implements OnInit {
   stepperSteps = [
     { label: 'organization.branch.steps.basicInformation' },
     { label: 'organization.branch.steps.contactAndLocation' },
-    { label: 'organization.branch.steps.managementInformation' }
+    { label: 'organization.branch.steps.managementInformation' },
   ];
   isLastStep = computed(() => this.currentStep() === this.totalSteps);
 
   /* -------------------- code generation -------------------- */
   private generateCode(name: string): string {
-    const randomNum = Math.floor(Math.random() * 1001); // 0 -> 1000 inclusive
+    const randomNum = Math.floor(Math.random() * 1001);
     return `${name}-${randomNum}`;
   }
 
@@ -133,8 +127,9 @@ export class BranchManual implements OnInit {
     this.initStepListener();
     this.getCompanies();
 
-    this.branchForm.get('isGeoLocationEnabled')?.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef))
+    this.branchForm
+      .get('isGeoLocationEnabled')
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((enabled) => {
         if (enabled) {
           this.showMapModal.set(true);
@@ -145,14 +140,12 @@ export class BranchManual implements OnInit {
   }
 
   private initBranchId(): void {
-    this.organizationLogicService.id$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((id) => {
-        if (id) {
-          this.id.set(id);
-          this.getBranchById(id);
-        }
-      });
+    this.organizationLogicService.id$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((id) => {
+      if (id) {
+        this.id.set(id);
+        this.getBranchById(id);
+      }
+    });
   }
 
   private initStepListener(): void {
@@ -233,7 +226,7 @@ export class BranchManual implements OnInit {
     return {
       ...raw,
       code: this.generateCode(raw.name),
-      location: this.geoLocation()
+      location: this.geoLocation(),
     };
   }
 
@@ -253,11 +246,13 @@ export class BranchManual implements OnInit {
 
     this.organizationService.getStructureBasedOnRoleScope().subscribe({
       next: (res: any) => {
-        this.companies.set(res.companies.map((c: any) => ({
-          label: c.name,
-          value: c.companyId
-        })));
-      }
+        this.companies.set(
+          res.companies.map((c: any) => ({
+            label: c.name,
+            value: c.companyId,
+          })),
+        );
+      },
     });
   }
 
@@ -285,7 +280,7 @@ export class BranchManual implements OnInit {
         managerName: res.managerName,
         managerPhone: res.managerPhone,
         managerEmail: res.managerEmail,
-        companyIds: res.companyIds
+        companyIds: res.companyIds,
       } as any);
       if (res.location) {
         this.branchForm.get('isGeoLocationEnabled')?.setValue(true, { emitEvent: false });
@@ -298,7 +293,7 @@ export class BranchManual implements OnInit {
     const payload = {
       id: this.id(),
       ...this.branchForm.getRawValue(),
-      location: this.geoLocation()
+      location: this.geoLocation(),
     };
     this.organizationService.updateBranch(payload).subscribe({
       next: () => {
@@ -308,7 +303,7 @@ export class BranchManual implements OnInit {
           '',
           {},
           true,
-          false
+          false,
         );
       },
       error: () => {
@@ -316,7 +311,7 @@ export class BranchManual implements OnInit {
       },
       complete: () => {
         this.update.emit(true);
-      }
+      },
     });
   }
 

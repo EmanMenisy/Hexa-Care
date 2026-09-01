@@ -48,7 +48,6 @@ const STEP_FIELDS: string[][] = [
 
 @Component({
   selector: 'app-company-manual',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -151,7 +150,7 @@ export class CompanyManual implements OnInit {
     });
   }
 
-  // fills the form from the record returned by Organization.getCompanyById
+  // fills the form from the record returned by getCompanyById
   private patchForm(record: any): void {
     this.companyForm.patchValue({
       name: record.name,
@@ -180,7 +179,6 @@ export class CompanyManual implements OnInit {
 
   /* -------------------- wizard navigation -------------------- */
   onStepChange(step: number): void {
-    // allow free navigation only across already-completed steps (or back)
     if (step <= this.currentStep() || this.completedSteps()[step - 2]) {
       this.currentStep.set(step);
     }

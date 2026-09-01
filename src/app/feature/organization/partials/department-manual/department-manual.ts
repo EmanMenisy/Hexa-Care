@@ -37,7 +37,6 @@ const STEP_FIELDS: string[][] = [
 
 @Component({
   selector: 'app-department-manual',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,

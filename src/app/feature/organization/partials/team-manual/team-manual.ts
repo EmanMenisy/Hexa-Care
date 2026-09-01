@@ -30,7 +30,6 @@ import { DepartmentCreate, HierarchySteps } from '../../models/organization-crea
 
 @Component({
   selector: 'app-team-manual',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -51,11 +51,9 @@ export class OrganizationProfile {
   mode = signal<ProfileMode>('view');
   isEditMode = computed(() => this.mode() === 'edit');
 
-  // --- identity / read-only ---
-  organizationId = signal<string | null>(null);
 
-  // --- logo (file, not a plain text/url field) ---
-  logoUrl = signal<string | null>(null); // local preview only, never sent to the API
+  // --- logo ---
+  logoUrl = signal<string | null>(null);
   selectedLogo = signal<File | null>(null); // the actual "logo" file sent on save
   private initialValue: ReturnType<FormGroup['getRawValue']> | null = null;
   private initialLogoUrl: string | null = null;
@@ -145,7 +143,7 @@ export class OrganizationProfile {
     this.getAllCapacities();
   }
 
-  // Flat form matching the organization update DTO 1:1 (id + logo are handled outside the form).
+  // Flat form matching the organization update DTO, used for both view and edit modes
   private buildForm() {
     return this.fb.group({
       isActive: [true],
@@ -166,18 +164,18 @@ export class OrganizationProfile {
       phone2: [''],
       hotline: [''],
       fax: [''],
-      email: ['', Validators.email],
+      email: [''],
       website: [''],
 
       managerName: [''],
       managerPhone: [''],
-      managerEmail: ['', Validators.email],
+      managerEmail: [''],
       deputyManagerName: [''],
       deputyManagerPhone: [''],
-      deputyManagerEmail: ['', Validators.email],
+      deputyManagerEmail: [''],
       chairmanName: [''],
       chairmanPhone: [''],
-      chairmanEmail: ['', Validators.email],
+      chairmanEmail: [''],
       medicalDirector: [''],
 
       beds: [0],
@@ -196,15 +194,7 @@ export class OrganizationProfile {
       .getOrganizationData(id!)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data: any) => {
-
-        // form only owns the DTO fields, ignores extra read-only fields
-        // (createdDate, updatedDate, isOnBoardingOperationCompleted, ownerRoleId)
         this.form.patchValue(data);
-
-        // if (logoUrl) {
-        //   // server value is a URL used only for preview, never sent back on save
-        //   this.logoUrl.set(logoUrl);
-        // }
         this.captureSnapshot();
       });
   }
@@ -391,7 +381,7 @@ export class OrganizationProfile {
 
     this.getAllCapacities();
   }
-
+  // ===== Header Buttons =====
   headerButtons = computed<HeaderButton[]>(() => {
     const isEdit = this.isEditMode();
     return [
@@ -418,6 +408,7 @@ export class OrganizationProfile {
       },
     ];
   });
+  // ===== Header Action Handler =====
   onHeaderAction(action: string): void {
     switch (action) {
       case ORG_PROFILE_ACTIONS.EDIT:

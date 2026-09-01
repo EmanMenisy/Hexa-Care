@@ -24,8 +24,6 @@
           <hexa-input-text [ngModel]="selectedLocation()?.radiusInMeters" placeholder="0" [emitOnBlur]="false" (inputNumberChanged)="updateRadius($event)"/>
       </div>
       <div class="actions">
-        <!-- <hexa-button [severity]="'secondary'" label="{{'buttons.cancel'|translate}}" (clicked)="removeLocation(selectedLocation())"
-          [disabled]="selectedLocation() === null"/> -->
           <hexa-button  label="{{'buttons.save'|translate}}" (clicked)="saveData()"
           [disabled]="locations().length === 0"/>
       </div>
