@@ -1,10 +1,13 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { InputTextComponent } from '../../../shared/components/primeng/input-text/input-text';
-import {  TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Table } from '../../../shared/components/common/table/table';
-import { ButtonComponent } from "../../../shared/components/primeng/button/button";
+import { ButtonComponent } from '../../../shared/components/primeng/button/button';
 import { ITableHeader } from '../../../../core/models/interface/ItableHeader';
-import { ISortEvent, ITableAction } from '../../../shared/components/common/table/models/table.types';
+import {
+  ISortEvent,
+  ITableAction,
+} from '../../../shared/components/common/table/models/table.types';
 import { HeaderActionService } from '../../../shared/layout/sub-header/services/header-action.service';
 import { TableHeaderType } from '../../../../core/models/enums/table-header-type';
 import { Organization } from '../../services/organization';
@@ -15,10 +18,21 @@ import { NotFound } from '../../../shared/components/common/not-found/not-found'
 import { HierarchySteps } from '../../models/organization-creation.model';
 import { OrganizationLogic } from '../../services/organization-logic';
 import { OrganizationManual } from '../../partials/organization-manual/organization-manual';
+import { HexaSubHeader } from '../../../shared/layout/hexa-sub-header/hexa-sub-header';
+import { HeaderButton } from '../../../shared/layout/hexa-sub-header/models/header-config.model';
 
 @Component({
   selector: 'app-branch',
-  imports: [InputTextComponent, TranslatePipe, Table, ButtonComponent,EmptyState,NotFound,OrganizationManual],
+  imports: [
+    InputTextComponent,
+    TranslatePipe,
+    Table,
+    ButtonComponent,
+    EmptyState,
+    NotFound,
+    OrganizationManual,
+    HexaSubHeader,
+  ],
   templateUrl: './branch.html',
   styleUrl: './branch.scss',
 })
@@ -45,17 +59,17 @@ export class Branch {
   pageStatus: ApiStatus = ApiStatus.Loading;
   //====================Constructor
   constructor(
-    private readonly HeaderActionService:HeaderActionService,
-    private readonly organizationService:Organization,
-    private readonly filterService:FilterService,
-    private readonly organizationLogicService:OrganizationLogic,
-  ){}
-   ngOnInit(): void {
-    this.HeaderActionService.action$.subscribe((res)=>{
-      if(res=='create'){
+    private readonly HeaderActionService: HeaderActionService,
+    private readonly organizationService: Organization,
+    private readonly filterService: FilterService,
+    private readonly organizationLogicService: OrganizationLogic,
+  ) {}
+  ngOnInit(): void {
+    this.HeaderActionService.action$.subscribe((res) => {
+      if (res == 'create') {
         this.openManualSideBar();
       }
-    })
+    });
     this.getTableActions();
     this.getTableColumns();
     this.getAllList();
@@ -67,7 +81,7 @@ export class Branch {
         field: 'name',
         name: 'organization.branch.table.name',
         type: TableHeaderType.String,
-        sortable: false
+        sortable: false,
       },
       {
         field: 'cityName',
@@ -128,47 +142,45 @@ export class Branch {
       sortBy: event.field,
       isAscending: event.isAscending,
     } as any;
-      this.getAllList();
+    this.getAllList();
   }
   //====================Get List
-  getAllList(pageNumber=1){
+  getAllList(pageNumber = 1) {
     this.pageStatus = ApiStatus.Loading;
     this.payload = {
       ...this.payload,
-      pageNumber: pageNumber
+      pageNumber: pageNumber,
     };
     const request = this.filterService.cleanRequest(this.payload);
     this.isFilterApplied.set(this.hasFilters());
     this.organizationService.getBranches(request).subscribe({
-      next:(res)=>{
+      next: (res) => {
         this.list.set(res.items);
         this.pageStatus = ApiStatus.Success;
         this.totalRecordsLength = res.records;
       },
-      error:(err)=>{
+      error: (err) => {
         this.pageStatus = ApiStatus.Error;
-      }
-    })
+      },
+    });
   }
   //====================Has Filter
   hasFilters(): boolean {
-    return !!(
-      this.payload.name?.trim()
-    );
+    return !!this.payload.name?.trim();
   }
   //====================Manual
-  openManualSideBar(){
-     this.organizationLogicService.setId(null);
-     this.organizationLogicService.setStart(HierarchySteps.Branch);
-     this.isManualSidebarVisible.set(true);
-   }
-   closeManual(){
-     this.isManualSidebarVisible.set(false);
-   }
-   onSaveItem(){
-     this.isManualSidebarVisible.set(false);
-     this.getAllList(this.payload.pageNumber);
-   }
+  openManualSideBar() {
+    this.organizationLogicService.setId(null);
+    this.organizationLogicService.setStart(HierarchySteps.Branch);
+    this.isManualSidebarVisible.set(true);
+  }
+  closeManual() {
+    this.isManualSidebarVisible.set(false);
+  }
+  onSaveItem() {
+    this.isManualSidebarVisible.set(false);
+    this.getAllList(this.payload.pageNumber);
+  }
   //====================edit
   onEdit(id: string) {
     this.organizationLogicService.setId(id);
@@ -181,9 +193,24 @@ export class Branch {
       next: (res) => {
         this.getAllList();
       },
-      error: (err) => {
-
-      }
+      error: (err) => {},
     });
+  }
+
+  headerButtons: HeaderButton[] = [
+    {
+      icon: 'pi pi-plus',
+      severity: 'primary',
+      action: 'create',
+      label: 'organization.branch.home.addBranch',
+      visible: true,
+    },
+  ];
+  onHeaderAction(action: string): void {
+    switch (action) {
+      case 'create':
+        this.openManualSideBar();
+        break;
+    }
   }
 }

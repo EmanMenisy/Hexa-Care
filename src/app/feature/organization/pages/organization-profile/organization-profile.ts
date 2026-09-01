@@ -6,13 +6,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import {
   KpiItem,
   MOCK_CAPACITY_DATA,
-  MOCK_PROFILE_DATA,
   ORG_PROFILE_ACTIONS,
   OrganizationProfileData,
   ProfileMode,
 } from '../../models/organization.model';
-import { HeaderActionService } from '../../../shared/layout/sub-header/services/header-action.service';
-import { HeaderButtonStateService } from '../../../shared/layout/sub-header/services/header-button-state.service';
 import { Organization } from '../../services/organization';
 import { KpiCard } from '../../partials/kpi-card/kpi-card';
 import { delay, of } from 'rxjs';
@@ -26,13 +23,26 @@ import { ITableHeader } from '../../../../core/models/interface/ItableHeader';
 import { ApiStatus } from '../../../../core/models/enums/api-status';
 import { TableHeaderType } from '../../../../core/models/enums/table-header-type';
 import { NativeTableColumnTemplateDirective } from '../../../shared/components/common/table/directives/native-table-column-template.directive';
-
-// ideally move this to organization.model.ts alongside KpiItem
+import { InputTextComponent } from '../../../shared/components/primeng/input-text/input-text';
+import { InputNumber } from '../../../shared/components/primeng/input-number/input-number';
+import { HexaSubHeader } from '../../../shared/layout/hexa-sub-header/hexa-sub-header';
+import { HeaderButton } from '../../../shared/layout/hexa-sub-header/models/header-config.model';
 
 @Component({
   selector: 'app-organization-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, KpiCard, ButtonComponent, Table, NgClass,NativeTableColumnTemplateDirective],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    KpiCard,
+    ButtonComponent,
+    Table,
+    NgClass,
+    NativeTableColumnTemplateDirective,
+    InputTextComponent,
+    InputNumber,
+    HexaSubHeader,
+  ],
   templateUrl: './organization-profile.html',
   styleUrl: './organization-profile.scss',
 })
@@ -41,11 +51,13 @@ export class OrganizationProfile {
   mode = signal<ProfileMode>('view');
   isEditMode = computed(() => this.mode() === 'edit');
 
+
   // --- logo ---
   logoUrl = signal<string | null>(null);
-  selectedLogo = signal<File | null>(null);
+  selectedLogo = signal<File | null>(null); // the actual "logo" file sent on save
   private initialValue: ReturnType<FormGroup['getRawValue']> | null = null;
   private initialLogoUrl: string | null = null;
+  private initialSelectedLogo: File | null = null;
 
   // --- KPIs ---
   kpis = signal<KpiItem[]>([
@@ -55,7 +67,7 @@ export class OrganizationProfile {
       icon: 'pi pi-inbox',
       iconBg: '#e8f0fe',
       trend: '0 items',
-      trendLabel:'organization.organizationProfile.kpis.vsLastPeriod',
+      trendLabel: 'organization.organizationProfile.kpis.vsLastPeriod',
     },
     {
       label: 'organization.organizationProfile.kpis.criticalCare',
@@ -111,11 +123,10 @@ export class OrganizationProfile {
   constructor(
     private readonly fb: FormBuilder,
     private readonly destroyRef: DestroyRef,
-    private readonly headerActionService: HeaderActionService,
-    private readonly headerButtonStateService: HeaderButtonStateService,
     private readonly organizationService: Organization,
   ) {
     this.form = this.buildForm();
+
     effect(() => {
       if (this.isEditMode()) {
         this.form.enable({ emitEvent: false });
@@ -124,12 +135,6 @@ export class OrganizationProfile {
       }
     });
 
-    this.setViewButtonsState();
-
-    this.headerActionService.action$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((action) => this.handleHeaderAction(action));
-
     this.loadProfile();
   }
   ngOnInit(): void {
@@ -137,95 +142,80 @@ export class OrganizationProfile {
     this.getTableColumns();
     this.getAllCapacities();
   }
+
+  // Flat form matching the organization update DTO, used for both view and edit modes
   private buildForm() {
     return this.fb.group({
-      basicData: this.fb.group({
-        nameAr: [''],
-        nameEn: [''],
-        commercialRegister: [''],
-        taxNumber: [''],
-        licenseNumber: [''],
-        currency: [''],
-      }),
-      contactData: this.fb.group({
-        address: [''],
-        city: [''],
-        country: [''],
-        phone1: [''],
-        phone2: [''],
-        fax: [''],
-        email: ['', Validators.email],
-        website: [''],
-      }),
-      administration: this.fb.group({
-        hospitalManager: [''],
-        managerPhone: [''],
-        managerEmail: ['', Validators.email],
-        medicalDirector: [''],
-      }),
+      isActive: [true],
+      name: [''],
+      nameArabic: [''],
+      code: [''],
+      commercialRegisterNo: [''],
+      taxNumber: [''],
+      licenseNumber: [''],
+      currency: [''],
+      description: [''],
+      descriptionArabic: [''],
+
+      address: [''],
+      city: [''],
+      country: [''],
+      phone: [''],
+      phone2: [''],
+      hotline: [''],
+      fax: [''],
+      email: [''],
+      website: [''],
+
+      managerName: [''],
+      managerPhone: [''],
+      managerEmail: [''],
+      deputyManagerName: [''],
+      deputyManagerPhone: [''],
+      deputyManagerEmail: [''],
+      chairmanName: [''],
+      chairmanPhone: [''],
+      chairmanEmail: [''],
+      medicalDirector: [''],
+
+      beds: [0],
+      operationRooms: [0],
+      icuBeds: [0],
+      intermediateCareBeds: [0],
+      incubators: [0],
+      emergencyBeds: [0],
+      outpatientClinics: [0],
     });
   }
 
   private loadProfile(): void {
-    of(MOCK_PROFILE_DATA)
-      .pipe(delay(500), takeUntilDestroyed(this.destroyRef))
-      .subscribe((data: OrganizationProfileData) => {
-        this.form.patchValue({
-          basicData: data.basicData,
-          contactData: data.contactData,
-          administration: data.administration,
-        });
-        if (data.logoUrl) {
-          this.logoUrl.set(data.logoUrl);
-        }
+    const id = localStorage.getItem('orgID');
+    this.organizationService
+      .getOrganizationData(id!)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((data: any) => {
+        this.form.patchValue(data);
         this.captureSnapshot();
       });
-  }
-
-  private handleHeaderAction(action: string): void {
-    switch (action) {
-      case ORG_PROFILE_ACTIONS.EDIT:
-        this.onEditClick();
-        break;
-      case ORG_PROFILE_ACTIONS.CANCEL:
-        this.onCancel();
-        break;
-      case ORG_PROFILE_ACTIONS.SAVE:
-        this.onSave();
-        break;
-    }
   }
 
   private captureSnapshot(): void {
     this.initialValue = this.form.getRawValue();
     this.initialLogoUrl = this.logoUrl();
-  }
-
-  private setViewButtonsState(): void {
-    this.headerButtonStateService.setState(ORG_PROFILE_ACTIONS.EDIT, { hidden: false });
-    this.headerButtonStateService.setState(ORG_PROFILE_ACTIONS.CANCEL, { hidden: true });
-    this.headerButtonStateService.setState(ORG_PROFILE_ACTIONS.SAVE, { hidden: true });
-  }
-
-  private setEditButtonsState(): void {
-    this.headerButtonStateService.setState(ORG_PROFILE_ACTIONS.EDIT, { hidden: true });
-    this.headerButtonStateService.setState(ORG_PROFILE_ACTIONS.CANCEL, { hidden: false });
-    this.headerButtonStateService.setState(ORG_PROFILE_ACTIONS.SAVE, { hidden: false });
+    this.initialSelectedLogo = this.selectedLogo();
   }
 
   onEditClick(): void {
     this.captureSnapshot();
     this.mode.set('edit');
-    this.setEditButtonsState();
   }
-
   onCancel(): void {
     if (this.initialValue) {
       this.form.patchValue(this.initialValue);
     }
     this.logoUrl.set(this.initialLogoUrl);
+    this.selectedLogo.set(this.initialSelectedLogo);
     this.mode.set('view');
-    this.setViewButtonsState();
   }
 
   onSave(): void {
@@ -234,11 +224,36 @@ export class OrganizationProfile {
       return;
     }
 
-    const payload = this.form.getRawValue();
+    const formData = this.buildUpdateFormData();
 
-    this.captureSnapshot();
-    this.mode.set('view');
-    this.setViewButtonsState();
+    this.organizationService
+      .updateOrganizationData(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.captureSnapshot();
+        this.mode.set('view');
+      });
+  }
+
+
+  private buildUpdateFormData(): FormData {
+    const raw = this.form.getRawValue();
+    const formData = new FormData();
+    const id = localStorage.getItem('orgID');
+    formData.append('Id', id ?? '');
+
+    Object.entries(raw).forEach(([key, value]) => {
+      if (value === null || value === undefined) return;
+      const pascalKey = key.charAt(0).toUpperCase() + key.slice(1);
+      formData.append(pascalKey, String(value));
+    });
+
+    const logo = this.selectedLogo();
+    if (logo) {
+      formData.append('Logo', logo, logo.name);
+    }
+
+    return formData;
   }
 
   onLogoSelected(event: Event): void {
@@ -365,5 +380,46 @@ export class OrganizationProfile {
     } as any;
 
     this.getAllCapacities();
+  }
+  // ===== Header Buttons =====
+  headerButtons = computed<HeaderButton[]>(() => {
+    const isEdit = this.isEditMode();
+    return [
+      {
+        icon: 'pi pi-pen-to-square',
+        severity: 'primary',
+        action: ORG_PROFILE_ACTIONS.EDIT,
+        label: 'Update',
+        visible: !isEdit,
+      },
+      {
+        label: 'Save',
+        icon: 'pi pi-check',
+        severity: 'primary',
+        action: ORG_PROFILE_ACTIONS.SAVE,
+        visible: isEdit,
+      },
+      {
+        label: 'Cancel',
+        icon: 'pi pi-times',
+        severity: 'secondary',
+        action: ORG_PROFILE_ACTIONS.CANCEL,
+        visible: isEdit,
+      },
+    ];
+  });
+  // ===== Header Action Handler =====
+  onHeaderAction(action: string): void {
+    switch (action) {
+      case ORG_PROFILE_ACTIONS.EDIT:
+        this.onEditClick();
+        break;
+      case ORG_PROFILE_ACTIONS.CANCEL:
+        this.onCancel();
+        break;
+      case ORG_PROFILE_ACTIONS.SAVE:
+        this.onSave();
+        break;
+    }
   }
 }

@@ -345,72 +345,93 @@
   "organization": {
     "creationMessage": "You’ve created successfully",
     "updateMessage": "Your changes have been saved successfully.",
-    "organizationProfile": {
-      "identity": {
-        "logoAlt": "logo",
-        "uploadLogo": "Upload / change logo"
+     "organizationProfile": {
+    "identity": {
+      "logoAlt": "logo",
+      "uploadLogo": "Upload / change logo"
+    },
+    "kpis": {
+      "totalBeds": "Total Beds",
+      "criticalCare": "Critical Care",
+      "operationRooms": "Operation Rooms",
+      "clinics": "Clinics",
+      "departments": "Departments",
+      "rooms": "Rooms",
+      "vsLastPeriod": "vs last period"
+    },
+    "table": {
+      "sectionTitle": "Operational capacity",
+      "headers": {
+        "rank": "Rank",
+        "item": "Item",
+        "category": "Category",
+        "classification": "Classification",
+        "count": "Count",
+        "unit": "Unit",
+        "status": "Status"
       },
-      "kpis": {
-        "totalBeds": "Total Beds",
-        "criticalCare": "Critical Care",
-        "operationRooms": "Operation Rooms",
+      "categories": {
+        "criticalCare": "Critical care",
+        "operations": "Operations",
         "clinics": "Clinics",
-        "departments": "Departments",
-        "rooms": "Rooms",
-        "vsLastPeriod": "vs last period"
+        "equipment": "Equipment"
       },
-      "table": {
-        "sectionTitle": "Operational capacity",
-        "headers": {
-          "rank": "rank",
-          "item": "item",
-          "category": "category",
-          "classification": "classification",
-          "count": "count",
-          "unit": "unit",
-          "status": "status"
-        },
-        "categories": {
-          "criticalCare": "Critical care",
-          "operations": "Operations",
-          "clinics": "Clinics",
-          "equipment": "Equipment"
-        },
-        "status": {
-          "active": "Active",
-          "inactive": "Inactive"
-        }
-      },
-      "basicData": {
-        "sectionTitle": "Basic data",
-        "nameAr": "Name (Arabic)",
-        "nameEn": "Name (English)",
-        "commercialRegister": "Commercial register",
-        "taxNumber": "Tax number",
-        "licenseNumber": "License number",
-        "currency": "Currency"
-      },
-      "contactData": {
-        "sectionTitle": "Contact data",
-        "address": "Address",
-        "city": "City",
-        "country": "Country",
-        "phone1": "Phone 1",
-        "phone2": "Phone 2",
-        "fax": "Fax",
-        "email": "Email",
-        "website": "Website",
-        "invalidEmail": "Invalid email"
-      },
-      "administration": {
-        "sectionTitle": "Administration",
-        "hospitalManager": "Hospital manager",
-        "managerPhone": "Manager phone",
-        "managerEmail": "Manager email",
-        "medicalDirector": "Medical director",
-        "invalidEmail": "Invalid email"
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
       }
     },
+    "basicData": {
+      "sectionTitle": "Basic data",
+      "nameArabic": "Name (Arabic)",
+      "name": "Name (English)",
+      "code": "Code",
+      "commercialRegister": "Commercial register",
+      "taxNumber": "Tax number",
+      "licenseNumber": "License number",
+      "currency": "Currency",
+      "description": "Description (English)",
+      "descriptionArabic": "Description (Arabic)"
+    },
+    "contactData": {
+      "sectionTitle": "Contact data",
+      "address": "Address",
+      "city": "City",
+      "country": "Country",
+      "phone": "Phone",
+      "phone1": "Phone 1",
+      "phone2": "Phone 2",
+      "hotline": "Hotline",
+      "fax": "Fax",
+      "email": "Email",
+      "website": "Website",
+      "invalidEmail": "Invalid email"
+    },
+    "administration": {
+      "sectionTitle": "Administration",
+      "hospitalManager": "Hospital manager",
+      "managerPhone": "Manager phone",
+      "managerEmail": "Manager email",
+      "deputyManagerName": "Deputy manager name",
+      "deputyManagerPhone": "Deputy manager phone",
+      "deputyManagerEmail": "Deputy manager email",
+      "chairmanName": "Chairman name",
+      "chairmanPhone": "Chairman phone",
+      "chairmanEmail": "Chairman email",
+      "medicalDirector": "Medical director",
+      "invalidEmail": "Invalid email"
+    },
+    "capacity": {
+      "sectionTitle": "Capacity",
+      "beds": "Total beds",
+      "operationRooms": "Operation rooms",
+      "icuBeds": "ICU beds",
+      "intermediateCareBeds": "Intermediate care beds",
+      "incubators": "Incubators",
+      "emergencyBeds": "Emergency beds",
+      "outpatientClinics": "Outpatient clinics"
+    }
+  },
     "company": {
       "steps":{
           "mainInformation": "Main Information",
@@ -448,7 +469,7 @@
         },
         "country": {
           "label": "Country",
-          "placeholder": "Select country",
+          "placeholder": "enter country",
           "emptyFilterMessage": "No countries found",
           "errors": {
             "required": "Country is required"
@@ -456,7 +477,7 @@
         },
         "state": {
           "label": "State",
-          "placeholder": "Select state",
+          "placeholder": "enter state",
           "emptyFilterMessage": "No states found",
           "errors": {
             "required": "State is required"
@@ -464,7 +485,7 @@
         },
         "city": {
           "label": "City",
-          "placeholder": "Select city",
+          "placeholder": "enter city",
           "emptyFilterMessage": "No cities found",
           "errors": {
             "required": "City is required"
@@ -590,21 +611,21 @@
         },
         "country": {
           "label": "Country",
-          "placeholder": "Select country",
+          "placeholder": "enter country",
           "errors": {
             "required": "Country is required"
           }
         },
         "city": {
           "label": "City",
-          "placeholder": "Select city",
+          "placeholder": "enter city",
           "errors": {
             "required": "City is required"
           }
         },
         "state": {
           "label": "State",
-          "placeholder": "Select state",
+          "placeholder": "enter state",
           "errors": {
             "required": "State is required"
           }
@@ -612,7 +633,10 @@
         "otherCity": "Other City",
         "address": {
           "label": "Address",
-          "placeholder": "Enter address"
+          "placeholder": "Enter address",
+          "errors": {
+            "required": "Address is required"
+          }
         },
         "phone": {
           "label": "Phone",

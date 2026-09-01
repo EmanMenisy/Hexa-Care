@@ -48,7 +48,6 @@ const STEP_FIELDS: string[][] = [
 
 @Component({
   selector: 'app-company-manual',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -76,7 +75,6 @@ export class CompanyManual implements OnInit {
     this.companyForm = this.fb.group({
       name: ['', [Validators.required]],
       nameArabic: [''],
-      code: [''],
       country: ['', [Validators.required]],
       state: ['', [Validators.required]],
       city: ['', [Validators.required]],
@@ -123,6 +121,12 @@ export class CompanyManual implements OnInit {
   ];
   isLastStep = computed(() => this.currentStep() === this.totalSteps);
 
+  /* -------------------- code generation -------------------- */
+  private generateCode(name: string): string {
+    const randomNum = Math.floor(Math.random() * 1001); // 0 -> 1000 inclusive
+    return `${name}-${randomNum}`;
+  }
+
   ngOnInit(): void {
     this.organizationLogicService.id$
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -142,16 +146,15 @@ export class CompanyManual implements OnInit {
 
   getCompanyById(id: string) {
     this.organizationService.getCompanyById(id).subscribe((res: any) => {
-      this.patchForm(res);
+      this.patchForm(res.company);
     });
   }
 
-  // fills the form from the record returned by Organization.getCompanyById
+  // fills the form from the record returned by getCompanyById
   private patchForm(record: any): void {
     this.companyForm.patchValue({
       name: record.name,
       nameArabic: record.nameArabic,
-      code: record.code,
       country: record.country,
       state: record.state,
       city: record.city,
@@ -176,7 +179,6 @@ export class CompanyManual implements OnInit {
 
   /* -------------------- wizard navigation -------------------- */
   onStepChange(step: number): void {
-    // allow free navigation only across already-completed steps (or back)
     if (step <= this.currentStep() || this.completedSteps()[step - 2]) {
       this.currentStep.set(step);
     }
@@ -220,8 +222,12 @@ export class CompanyManual implements OnInit {
     if (!this.companyForm.valid) return;
 
     const raw = this.companyForm.getRawValue();
+    const payload = {
+      ...raw,
+      code: this.generateCode(raw.name)
+    };
 
-    this.next.emit(raw);
+    this.next.emit(payload);
     this.resetForm();
   }
 

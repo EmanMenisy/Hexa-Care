@@ -42,7 +42,9 @@ export const routes: Routes = [
           }
         }
       },
-      {path:'home' , component:HomeEmployeeCreation,
+      {
+        path:'home' ,
+        component:HomeEmployeeCreation,
          data:{
           header:{
             title:"employee.header.title",
@@ -51,7 +53,7 @@ export const routes: Routes = [
               {
                 label:"new Staff",
                 icon:'pi pi-plus',
-                action:'create',
+                action:'createStaff',
               },
             ]
           }
@@ -78,97 +80,22 @@ export const routes: Routes = [
       {
         path:'organizationProfile' ,
         component:OrganizationProfile,
-        data:{
-          header:{
-            title:"Organization Profile",
-            subtitle:"Identity, basic, operational, contact and administration data",
-            buttons:[
-              {
-                label:"buttons.edit",
-                icon:'pi pi-pen-to-square',
-                action:'edit',
-              },
-               {
-                label:"buttons.cancel",
-                action:'cancel',
-                severity:'secondary'
-              },
-               {
-                label:"buttons.save",
-                icon:'pi pi-save',
-                action:'save'
-              }
-            ]
-          }
-        }
       },
       {
         path:'company' ,
         component:Company,
-        data:{
-          header:{
-            title:"organization.company.home.title",
-            subtitle:"organization.company.home.subtitle",
-            buttons:[
-              {
-                label:"organization.company.home.addCompany",
-                icon:'pi pi-plus',
-                action:'create',
-              },
-            ]
-          }
-        }
       },
       {
         path:'branch' ,
         component:Branch,
-        data:{
-          header:{
-            title:"organization.branch.home.title",
-            subtitle:"organization.branch.home.subtitle",
-            buttons:[
-              {
-                label:"organization.branch.home.addBranch",
-                icon:'pi pi-plus',
-                action:'create',
-              },
-            ]
-          }
-        }
       },
       {
         path:'department' ,
         component:Department,
-        data:{
-          header:{
-            title:"organization.department.home.title",
-            subtitle:"organization.department.home.subtitle",
-            buttons:[
-              {
-                label:"organization.department.home.addDepartment",
-                icon:'pi pi-plus',
-                action:'create',
-              },
-            ]
-          }
-        }
       },
       {
         path:'team' ,
         component:Team,
-        data:{
-          header:{
-            title:"organization.team.home.title",
-            subtitle:"organization.team.home.subtitle",
-            buttons:[
-              {
-                label:"organization.team.home.addTeam",
-                icon:'pi pi-plus',
-                action:'create',
-              },
-            ]
-          }
-        }
       }
     ]
   },

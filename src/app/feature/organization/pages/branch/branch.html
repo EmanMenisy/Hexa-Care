@@ -1,3 +1,5 @@
+<app-hexa-sub-header [title]="'organization.branch.home.title'" [subtitle]="'organization.branch.home.subtitle'"
+    [buttons]="headerButtons" (action)="onHeaderAction($event)"></app-hexa-sub-header>
 @if(
 list().length === 0 &&
 !isFilterApplied() &&
@@ -36,4 +38,5 @@ pageStatus !== PageStatus.Loading
 </div>
 }
 
-<app-organization-manual [visible]="isManualSidebarVisible()" (close)="closeManual()" (onSave)="onSaveItem()"></app-organization-manual>
+<app-organization-manual [visible]="isManualSidebarVisible()" (close)="closeManual()"
+    (onSave)="onSaveItem()"></app-organization-manual>

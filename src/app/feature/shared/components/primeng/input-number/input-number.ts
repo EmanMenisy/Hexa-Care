@@ -34,9 +34,15 @@ export class InputNumber {
   emitOnBlur = input<boolean>(true);
   thousandsSeparator = input<boolean>(true);
 
-  // سيبتها زي ما هي كـ output منفصل لأنها كانت مستخدمة بره سياق الـ CVA أصلاً (نفس القيمة اللي بيتبعتها selectedValue.emit ضمنيًا عبر model، فهي دلوقتي redundant لكن سايباها للتوافق مع أي حد لسه مستخدم (inputNumberChanged) في مكان تاني)
   inputNumberChanged = output<number | undefined>();
+/**
+   * Disabled state coming from FormControl.
+   */
+  private formDisabled = false;
 
+  get disabledState(): boolean {
+    return this.formDisabled || this.disabled();
+  }
   ngAfterViewChecked(): void {
     const buttons = Array.prototype.filter.call(
       document.getElementsByClassName('p-inputnumber-button'),
@@ -95,5 +101,7 @@ export class InputNumber {
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-
+ setDisabledState(isDisabled: boolean): void {
+    this.formDisabled = isDisabled;
+  }
 }

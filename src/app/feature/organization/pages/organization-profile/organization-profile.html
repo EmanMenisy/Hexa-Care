@@ -1,9 +1,15 @@
+<app-hexa-sub-header
+  [title]="'Organization Profile'"
+  [subtitle]="'Identity, basic, operational, contact and administration data'"
+  [buttons]="headerButtons()"
+  (action)="onHeaderAction($event)"
+></app-hexa-sub-header>
 <div class="org-profile">
   <div class="org-profile__identity">
     <div class="org-profile__logo-wrapper">
       <img
         class="org-profile__logo"
-        [src]="logoUrl() ?? 'assets/images/default-org-logo.png'"
+        [src]="logoUrl() ?? '/images/screen.png'"
         alt="logo"
       />
     </div>
@@ -12,12 +18,12 @@
   class="org-profile__identity-info"
 >
   <h2 class="org-profile__name">
-    {{ form.get('basicData.nameEn')?.value }}
+    {{ form.get('name')?.value }}
   </h2>
 
   <span class="org-profile__meta">
-    {{ form.get('basicData.currency')?.value }} ·
-    {{ form.get('basicData.licenseNumber')?.value }}
+    {{ form.get('description')?.value }}
+    <!-- {{ form.get('licenseNumber')?.value }} -->
   </span>
 
   @if (isEditMode()) {
@@ -95,84 +101,155 @@
     </section>
   </div>
   <form [formGroup]="form" class="org-profile__form">
-    <section class="org-profile__section" formGroupName="basicData">
+    <section class="org-profile__section">
       <h3 class="org-profile__section-title">
         <i class="pi pi-building header-icon"></i>
         {{'organization.organizationProfile.basicData.sectionTitle'|translate}}
       </h3>
       <div class="org-profile__grid">
         <div class="org-profile__field">
-          <label>{{'organization.organizationProfile.basicData.nameAr'|translate}}</label>
-          <input type="text" formControlName="nameAr" />
+          <label>{{'organization.organizationProfile.basicData.nameArabic'|translate}}</label>
+          <hexa-input-text
+            formControlName="nameArabic"
+            [placeholder]="'organization.organizationProfile.basicData.nameArabic'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
-          <label>{{'organization.organizationProfile.basicData.nameEn'|translate}}</label>
-          <input type="text" formControlName="nameEn" />
+          <label>{{'organization.organizationProfile.basicData.name'|translate}}</label>
+          <hexa-input-text
+            formControlName="name"
+            [placeholder]="'organization.organizationProfile.basicData.name'|translate"
+          ></hexa-input-text>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.basicData.code'|translate}}</label>
+          <hexa-input-text
+            formControlName="code"
+            [placeholder]="'organization.organizationProfile.basicData.code'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.basicData.commercialRegister'|translate}}</label>
-          <input type="text" formControlName="commercialRegister" />
+          <hexa-input-text
+            formControlName="commercialRegisterNo"
+            [placeholder]="'organization.organizationProfile.basicData.commercialRegister'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.basicData.taxNumber'|translate}}</label>
-          <input type="text" formControlName="taxNumber" />
+          <hexa-input-text
+            formControlName="taxNumber"
+            [placeholder]="'organization.organizationProfile.basicData.taxNumber'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.basicData.licenseNumber'|translate}}</label>
-          <input type="text" formControlName="licenseNumber" />
+          <hexa-input-text
+            formControlName="licenseNumber"
+            [placeholder]="'organization.organizationProfile.basicData.licenseNumber'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.basicData.currency'|translate}}</label>
-          <input type="text" formControlName="currency" />
+          <hexa-input-text
+            formControlName="currency"
+            [placeholder]="'organization.organizationProfile.basicData.currency'|translate"
+          ></hexa-input-text>
+        </div>
+
+        <div class="org-profile__field org-profile__field--full">
+          <label>{{'organization.organizationProfile.basicData.description'|translate}}</label>
+          <hexa-input-text
+            formControlName="description"
+            [placeholder]="'organization.organizationProfile.basicData.description'|translate"
+          ></hexa-input-text>
+        </div>
+        <div class="org-profile__field org-profile__field--full">
+          <label>{{'organization.organizationProfile.basicData.descriptionArabic'|translate}}</label>
+          <hexa-input-text
+            formControlName="descriptionArabic"
+            [placeholder]="'organization.organizationProfile.basicData.descriptionArabic'|translate"
+          ></hexa-input-text>
         </div>
       </div>
     </section>
 
-    <section class="org-profile__section" formGroupName="contactData">
+    <section class="org-profile__section">
       <h3 class="org-profile__section-title">
         <i class="pi pi-phone header-icon"></i>
         {{'organization.organizationProfile.contactData.sectionTitle'|translate}}
       </h3>
       <div class="org-profile__field org-profile__field--full">
         <label>{{'organization.organizationProfile.contactData.address'|translate}}</label>
-        <input type="text" formControlName="address" />
+        <hexa-input-text
+          formControlName="address"
+          [placeholder]="'organization.organizationProfile.contactData.address'|translate"
+        ></hexa-input-text>
       </div>
       <div class="org-profile__grid">
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.contactData.city'|translate}}</label>
-          <input type="text" formControlName="city" />
+          <hexa-input-text
+            formControlName="city"
+            [placeholder]="'organization.organizationProfile.contactData.city'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.contactData.country'|translate}}</label>
-          <input type="text" formControlName="country" />
+          <hexa-input-text
+            formControlName="country"
+            [placeholder]="'organization.organizationProfile.contactData.country'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.contactData.phone1'|translate}}</label>
-          <input type="text" formControlName="phone1" />
+          <hexa-input-text
+            formControlName="phone"
+            [placeholder]="'organization.organizationProfile.contactData.phone1'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.contactData.phone2'|translate}}</label>
-          <input type="text" formControlName="phone2" />
+          <hexa-input-text
+            formControlName="phone2"
+            [placeholder]="'organization.organizationProfile.contactData.phone2'|translate"
+          ></hexa-input-text>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.contactData.hotline'|translate}}</label>
+          <hexa-input-text
+            formControlName="hotline"
+            [placeholder]="'organization.organizationProfile.contactData.hotline'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.contactData.fax'|translate}}</label>
-          <input type="text" formControlName="fax" />
+          <hexa-input-text
+            formControlName="fax"
+            [placeholder]="'organization.organizationProfile.contactData.fax'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.contactData.email'|translate}}</label>
-          <input type="email" formControlName="email" />
-          @if (  form.get('contactData.email')?.errors?.['email'] && form.get('contactData.email')?.touched) {
+          <hexa-input-text
+            formControlName="email"
+            [placeholder]="'organization.organizationProfile.contactData.email'|translate"
+          ></hexa-input-text>
+          @if (form.get('email')?.errors?.['email'] && form.get('email')?.touched) {
             <span class="org-profile__error">{{'organization.organizationProfile.contactData.invalidEmail'|translate}}</span>
           }
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.contactData.website'|translate}}</label>
-          <input type="text" formControlName="website" />
+          <hexa-input-text
+            formControlName="website"
+            [placeholder]="'organization.organizationProfile.contactData.website'|translate"
+          ></hexa-input-text>
         </div>
       </div>
     </section>
 
-    <section class="org-profile__section" formGroupName="administration">
+    <section class="org-profile__section">
       <h3 class="org-profile__section-title">
         <i class="pi pi-briefcase header-icon"></i>
         {{'organization.organizationProfile.administration.sectionTitle'|translate}}
@@ -180,25 +257,149 @@
       <div class="org-profile__grid">
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.administration.hospitalManager'|translate}}</label>
-          <input type="text" formControlName="hospitalManager" />
+          <hexa-input-text
+            formControlName="managerName"
+            [placeholder]="'organization.organizationProfile.administration.hospitalManager'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.administration.managerPhone'|translate}}</label>
-          <input type="text" formControlName="managerPhone" />
+          <hexa-input-text
+            formControlName="managerPhone"
+            [placeholder]="'organization.organizationProfile.administration.managerPhone'|translate"
+          ></hexa-input-text>
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.administration.managerEmail'|translate}}</label>
-          <input type="email" formControlName="managerEmail" />
-                @if (
-            form.get('administration.managerEmail')?.errors?.['email'] &&
-            form.get('administration.managerEmail')?.touched
+          <hexa-input-text
+            formControlName="managerEmail"
+            [placeholder]="'organization.organizationProfile.administration.managerEmail'|translate"
+          ></hexa-input-text>
+          @if (
+            form.get('managerEmail')?.errors?.['email'] &&
+            form.get('managerEmail')?.touched
+            ) {
+            <span class="org-profile__error">{{'organization.organizationProfile.administration.invalidEmail'|translate}}</span>
+            }
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.deputyManagerName'|translate}}</label>
+          <hexa-input-text
+            formControlName="deputyManagerName"
+            [placeholder]="'organization.organizationProfile.administration.deputyManagerName'|translate"
+          ></hexa-input-text>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.deputyManagerPhone'|translate}}</label>
+          <hexa-input-text
+            formControlName="deputyManagerPhone"
+            [placeholder]="'organization.organizationProfile.administration.deputyManagerPhone'|translate"
+          ></hexa-input-text>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.deputyManagerEmail'|translate}}</label>
+          <hexa-input-text
+            formControlName="deputyManagerEmail"
+            [placeholder]="'organization.organizationProfile.administration.deputyManagerEmail'|translate"
+          ></hexa-input-text>
+          @if (
+            form.get('deputyManagerEmail')?.errors?.['email'] &&
+            form.get('deputyManagerEmail')?.touched
+            ) {
+            <span class="org-profile__error">{{'organization.organizationProfile.administration.invalidEmail'|translate}}</span>
+            }
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.chairmanName'|translate}}</label>
+          <hexa-input-text
+            formControlName="chairmanName"
+            [placeholder]="'organization.organizationProfile.administration.chairmanName'|translate"
+          ></hexa-input-text>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.chairmanPhone'|translate}}</label>
+          <hexa-input-text
+            formControlName="chairmanPhone"
+            [placeholder]="'organization.organizationProfile.administration.chairmanPhone'|translate"
+          ></hexa-input-text>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.administration.chairmanEmail'|translate}}</label>
+          <hexa-input-text
+            formControlName="chairmanEmail"
+            [placeholder]="'organization.organizationProfile.administration.chairmanEmail'|translate"
+          ></hexa-input-text>
+          @if (
+            form.get('chairmanEmail')?.errors?.['email'] &&
+            form.get('chairmanEmail')?.touched
             ) {
             <span class="org-profile__error">{{'organization.organizationProfile.administration.invalidEmail'|translate}}</span>
             }
         </div>
         <div class="org-profile__field">
           <label>{{'organization.organizationProfile.administration.medicalDirector'|translate}}</label>
-          <input type="text" formControlName="medicalDirector" />
+          <hexa-input-text
+            formControlName="medicalDirector"
+            [placeholder]="'organization.organizationProfile.administration.medicalDirector'|translate"
+          ></hexa-input-text>
+        </div>
+      </div>
+    </section>
+
+    <section class="org-profile__section">
+      <h3 class="org-profile__section-title">
+        <i class="pi pi-inbox header-icon"></i>
+        {{'organization.organizationProfile.capacity.sectionTitle'|translate}}
+      </h3>
+      <div class="org-profile__grid">
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.capacity.beds'|translate}}</label>
+          <hexa-input-number
+            formControlName="beds"
+            [placeholder]="'organization.organizationProfile.capacity.beds'|translate"
+          ></hexa-input-number>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.capacity.operationRooms'|translate}}</label>
+          <hexa-input-number
+            formControlName="operationRooms"
+            [placeholder]="'organization.organizationProfile.capacity.operationRooms'|translate"
+          ></hexa-input-number>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.capacity.icuBeds'|translate}}</label>
+          <hexa-input-number
+            formControlName="icuBeds"
+            [placeholder]="'organization.organizationProfile.capacity.icuBeds'|translate"
+          ></hexa-input-number>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.capacity.intermediateCareBeds'|translate}}</label>
+          <hexa-input-number
+            formControlName="intermediateCareBeds"
+            [placeholder]="'organization.organizationProfile.capacity.intermediateCareBeds'|translate"
+          ></hexa-input-number>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.capacity.incubators'|translate}}</label>
+          <hexa-input-number
+            formControlName="incubators"
+            [placeholder]="'organization.organizationProfile.capacity.incubators'|translate"
+          ></hexa-input-number>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.capacity.emergencyBeds'|translate}}</label>
+          <hexa-input-number
+            formControlName="emergencyBeds"
+            [placeholder]="'organization.organizationProfile.capacity.emergencyBeds'|translate"
+          ></hexa-input-number>
+        </div>
+        <div class="org-profile__field">
+          <label>{{'organization.organizationProfile.capacity.outpatientClinics'|translate}}</label>
+          <hexa-input-number
+            formControlName="outpatientClinics"
+            [placeholder]="'organization.organizationProfile.capacity.outpatientClinics'|translate"
+          ></hexa-input-number>
         </div>
       </div>
     </section>

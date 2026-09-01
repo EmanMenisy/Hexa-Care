@@ -144,7 +144,6 @@ export class LocationModal {
     if (selected.radiusInMeters >= 0) {
       selected.circle?.setRadius(selected.radiusInMeters);
     }
-    // new reference so the template (radius input) reflects the change under OnPush
     this.selectedLocation.set({ ...selected });
     this.locations.set([{ ...selected }]);
   }
