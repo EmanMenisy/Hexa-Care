@@ -106,3 +106,12 @@ export interface RolesResponse {
   getAllCoustemRoles: any[];
   getAllSystemRoles: SystemRole[];
 }
+
+export interface AttachmentRow {
+  id: string;
+  label: string;
+  file?: File;      
+  date: Date;
+  fileUrl?: string;
+  isExisting?: boolean;
+}

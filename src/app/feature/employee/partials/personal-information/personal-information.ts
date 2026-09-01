@@ -7,7 +7,7 @@ import { DropdownComponent } from '../../../shared/components/primeng/drop-down/
 import { CalenderComponent } from '../../../shared/components/primeng/date-picker/date-picker';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SelectModule } from 'primeng/select';
-import { EmployeeCreationMode } from '../../model/enums/employee-Creation-enums';
+import { BloodType, EmployeeCreationMode } from '../../model/enums/employee-Creation-enums';
 import { ButtonComponent } from "../../../shared/components/primeng/button/button";
 
 @Component({
@@ -30,6 +30,11 @@ export class PersonalInfo {
   staffMode = input.required<EmployeeCreationMode>();
   readonly EmployeeCreationMode = EmployeeCreationMode;
   selectedPhotoName = signal<string>('');
+  existingPhotoUrl = input<string | null>(null);
+  photoPreviewUrl = signal<string | null>(null);
+  photoError = signal<string | null>(null);
+  age = signal<number | null>(null);
+  today = new Date();
   genderOptions = [
     { label: 'Male', value: 1 },
     { label: 'Female', value: 2 },
@@ -42,12 +47,17 @@ export class PersonalInfo {
     { label: 'Widowed', value: 4 },
   ];
 
-  bloodGroupOptions = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((v) => ({
-    label: v,
-    value: v,
-  }));
+  bloodGroupOptions = [
+  { label: 'A+', value: BloodType.A_Positive },
+  { label: 'A-', value: BloodType.A_Negative },
+  { label: 'B+', value: BloodType.B_Positive },
+  { label: 'B-', value: BloodType.B_Negative },
+  { label: 'AB+', value: BloodType.AB_Positive },
+  { label: 'AB-', value: BloodType.AB_Negative },
+  { label: 'O+', value: BloodType.O_Positive },
+  { label: 'O-', value: BloodType.O_Negative },
+ ];
 
-  age = signal<number | null>(null);
 
   constructor() {
     effect((onCleanup) => {
@@ -60,6 +70,14 @@ export class PersonalInfo {
 
       onCleanup(() => sub.unsubscribe());
     });
+
+    effect(() => {
+    const existingUrl = this.existingPhotoUrl();
+
+    if (existingUrl && !this.photoPreviewUrl()) {
+      this.photoPreviewUrl.set(existingUrl);
+    }
+    });
   }
 
   private calculateAge(dob: string | null): number | null {
@@ -71,8 +89,7 @@ export class PersonalInfo {
     return Math.floor(diffMs / (365.25 * 24 * 60 * 60 * 1000));
   }
 
-  photoPreviewUrl = signal<string | null>(null);
-  photoError = signal<string | null>(null);
+  
 
   private readonly maxSizeMb = 2;
   private readonly allowedTypes = ['image/png', 'image/jpeg', 'image/webp'];
@@ -108,8 +125,8 @@ export class PersonalInfo {
 
     reader.readAsDataURL(file);
 
-    this.personalForm().get('photoUrl')?.setValue(file);
-    this.personalForm().get('photoUrl')?.markAsTouched();
+    this.personalForm().get('Photo')?.setValue(file);
+    this.personalForm().get('Photo')?.markAsTouched();
   }
 
   onRemove(input: HTMLInputElement): void {
@@ -119,6 +136,6 @@ export class PersonalInfo {
 
     input.value = '';
 
-    this.personalForm().get('photoUrl')?.setValue(null);
+    this.personalForm().get('Photo')?.setValue(null);
   }
 }

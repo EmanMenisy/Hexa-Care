@@ -1,16 +1,45 @@
 .inputFile {
-  border: none !important;
   outline: none !important;
   box-shadow: none !important;
+  height: 40px;
 }
-
+.inputFile::file-selector-button{
+    height: 40px;
+}
 .inputFile::file-selector-button,
 .inputFile:hover::file-selector-button,
 .inputFile::file-selector-button:hover,
+.inputFile::file-selector-button:focus,
 .inputFile::file-selector-button:active {
   background-color: #418397 !important;
   color: #fff !important;
   border: none !important;
+  outline: none !important;
   box-shadow: none !important;
   cursor: pointer;
+}
+
+.photo-preview-wrapper {
+  position: relative;
+  display: inline-block;
+
+  .photo-preview {
+    display: block;
+    max-width: 180px;
+    max-height: 180px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+}
+
+:host-context([dir="rtl"]) {
+  .input-group.inputFile {
+    .btn-danger {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+   }
+   
 }

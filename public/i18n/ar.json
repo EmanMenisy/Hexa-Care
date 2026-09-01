@@ -120,6 +120,23 @@
     }
   },
   "employee": {
+     "header": {
+        "title": "الموظفون",
+        "subtitle": "إدارة وعرض بيانات الموظفين"
+      },
+      "stepper": {
+      "personal_info": "المعلومات الشخصية",
+      "personal_info_subtitle": "البيانات الشخصية",
+
+      "professional": "المعلومات المهنية",
+      "professional_subtitle": "الخبرات والمهارات",
+
+      "assignation": "التعيين",
+      "assignation_subtitle": "هيكل التعيين",
+
+      "documents": "المستندات",
+      "documents_subtitle": "المرفقات"
+    },
     "personal_info": {
       "title": "المعلومات الشخصية",
       "first_name": "الاسم الأول",
@@ -151,9 +168,10 @@
       "phone": "رقم الهاتف",
       "phone_placeholder": "أدخل رقم الهاتف",
       "email": "البريد الإلكتروني",
-      "email_placeholder": "أدخل عنوان البريد الإلكتروني"
+      "email_placeholder": "أدخل عنوان البريد الإلكتروني",
+      "photo": " الصورة",
+      "photo_placeholder": "اختر صورة"
     },
-
     "contact_info": {
       "title": "معلومات الاتصال",
       "address": "العنوان",
@@ -196,6 +214,7 @@
       "experience_summary_placeholder": "أدخل ملخص الخبرة",
       "bio": "نبذة تعريفية",
       "bio_placeholder": "أدخل نبذة تعريفية",
+      "is_active":"نشط",
       "commission_percent": "نسبة العمولة",
       "commission_percent_placeholder": "أدخل نسبة العمولة",
       "commission_details":"تفاصيل العمولة",
@@ -209,15 +228,13 @@
       "medical_council": "المجلس الطبي",
       "medical_council_placeholder": "أدخل المجلس الطبي",
       "academic_rank": "الرتبة الأكاديمية",
-      "academic_rank_placeholder": "أدخل الرتبة الأكاديمية",
+      "academic_rank_placeholder":  "أستاذ / مساعد",
       "areas_of_expertise": "مجالات الخبرة",
       "areas_of_expertise_placeholder": "أدخل مجالات الخبرة",
       "cash_commission_percent": "نسبة العمولة النقدية",
       "cash_commission_percent_placeholder": "أدخل نسبة العمولة النقدية",
       "contract_commission_percent": "نسبة عمولة التعاقد",
       "contract_commission_percent_placeholder": "أدخل نسبة عمولة التعاقد",
-      "photo_url": "رابط الصورة",
-      "photo_url_placeholder": "أدخل رابط الصورة",
       "employment_details": "تفاصيل التوظيف",
       "job_title": "المسمى الوظيفي",
       "job_title_placeholder": "أدخل المسمى الوظيفي",
@@ -235,6 +252,59 @@
       "skills_placeholder": "أدخل المهارات",
       "certifications": "الشهادات",
       "certifications_placeholder": "أدخل الشهادات"
+    }, "assignation": {
+      "title": "التعيين",
+      "assignation_structure": "هيكل التعيين",
+      "role_and_permission": "الدور والصلاحيات",
+
+      "company": "الشركة",
+      "company_placeholder": "اختر الشركة",
+      "company_required": "الشركة مطلوبة.",
+
+      "branch": "الفرع",
+      "branch_placeholder": "اختر الفرع",
+      "branch_required": "الفرع مطلوب.",
+
+      "department": "القسم",
+      "department_placeholder": "اختر القسم",
+      "department_required": "القسم مطلوب.",
+
+      "team": "الفريق",
+      "team_placeholder": "اختر الفريق",
+      "team_required": "الفريق مطلوب.",
+
+      "role_type": "نوع الدور",
+      "role_type_placeholder": "اختر النوع",
+      "role_type_required": "نوع الدور مطلوب.",
+
+      "role_permission_name": "اسم الدور والصلاحية",
+      "role_permission_placeholder": "اختر الصلاحية",
+      "role_name_required": "اسم الدور مطلوب.",
+
+      "main_head_hierarchy": "التسلسل الإداري",
+      "main_head_hierarchy_placeholder": "اختر الفرع",
+      "main_head_hierarchy_required": "التسلسل الإداري الرئيسي مطلوب.",
+
+      "more_head_hierarchy": "التسلسلات الإدارية الإضافية",
+      "more_head_hierarchy_placeholder": "اختر الفرع",
+
+      "default": "افتراضي",
+      "add_another_role": "إضافة دور آخر"
+    },
+     "documents": {
+      "title": "رفع المستندات",
+      "supported_formats": "JPG أو PNG أو GIF أو BMP أو PDF، بحد أقصى 30 ميجابايت لكل ملف.",
+      "document_label": "اسم المستند",
+      "document_label_placeholder": "الرخصة / المؤهل",
+      "upload": "رفع",
+      "document": "المستند",
+      "file": "الملف",
+      "date": "التاريخ",
+      "no_documents": "لا توجد مستندات",
+      "unsupported_type": "نوع الملف غير مدعوم: {{fileName}}",
+      "file_too_large": "حجم الملف أكبر من 30 ميجابايت: {{fileName}}",
+      "default_label": "مستند",
+      "upload_success": "تم رفع المرفقات بنجاح"
     },
     "home": {
       "staff_kind": "نوع الموظف",
@@ -242,7 +312,18 @@
       "doctor_subtitle": "الأطباء والمهنيون في المجال الطبي",
       "administrative": "القطاع الإداري",
       "administrative_subtitle": "الموظفون الإداريون وموظفو الدعم",
-      "back": "رجوع"
+      "back": "رجوع",
+      "table": {
+        "staff_code": "كود الموظف",
+        "first_name": "الاسم الأول",
+        "second_name": "الاسم الثاني",
+        "third_name": "الاسم الثالث",
+        "last_name": "اسم العائلة",
+        "name": "الاسم",
+        "name_arabic": "الاسم بالعربية",
+        "job_title": "المسمى الوظيفي",
+        "role_name": "اسم الدور"
+      }
     }
   },
   "organization": {

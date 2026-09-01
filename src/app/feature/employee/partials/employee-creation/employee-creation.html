@@ -8,16 +8,19 @@
 </div>
  <div class="creation-page__content">
   <div [class.d-none]="step() !== 1">
-    <hexa-personal-info [personalForm]="form.controls.personal" [staffMode]="staffMode()"></hexa-personal-info>
+    <hexa-personal-info [existingPhotoUrl]="photoUrl()"
+     [personalForm]="form.controls.personal" [staffMode]="staffMode()"></hexa-personal-info>
   </div>
   <div [class.d-none]="step() !== 2">
-    <hexa-professional-information [professionalForm]="form.controls.professional" [staffMode]="staffMode()"></hexa-professional-information>
+    <hexa-professional-information [professionalForm]="form.controls.professional" [staffMode]="staffMode()"  
+   ></hexa-professional-information>
   </div>
   <div [class.d-none]="step() !== 3">
-    <hexa-assignation-information #assignationInfo  [assignationForm]="form.controls.assignment" [createRoleFn]="createRole.bind(this)"></hexa-assignation-information>
+    <hexa-assignation-information #assignationInfo   [initialAssignation]="staffAssignationData()"
+     [assignationForm]="form.controls.assignment" [createRoleFn]="createRole.bind(this)"></hexa-assignation-information>
   </div>
   <div [class.d-none]="step() !== 4">
-    <!-- <hexa-documents-info /> -->
+    <hexa-attachments  [existingAttachments]="existingAttachments()"></hexa-attachments>
   </div>
 </div>
 
@@ -33,13 +36,13 @@
     <em class="pi pi-info-circle"></em>
 
     <span>
-      Fields marked * are required; the doctor code is generated automatically.
+      Fields marked <span class="text-danger">*</span> are required; the doctor code is generated automatically.
     </span>
   </div>
 
   <div class="creation-page__footer-actions d-flex align-items-center gap-2">
     <hexa-button
-      label="Cancel"
+      label="{{ 'buttons.cancel' | translate }}"
       severity="secondary"
       (clicked)="onCancel()"
     ></hexa-button>
@@ -47,14 +50,14 @@
       <hexa-button
         type="button"
         (click)="onSave()"
-        label="save"
+        label="{{ 'buttons.save' | translate }}"
         [disabled]="form.controls.assignment.invalid"
       >
       </hexa-button>
     }
     @else if (!isLastStep) {
       <hexa-button
-        label="Next"
+        label="{{ 'buttons.next' | translate }}"
         severity="primary"
         (clicked)="onNext()"
         [disabled]="!canGoNext()" 

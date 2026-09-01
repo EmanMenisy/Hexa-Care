@@ -1,17 +1,26 @@
 <div class="container-fluid">
   <form [formGroup]="professionalForm()" class="professional-info">
-
     <!-- Shared -->
     <section class="card">
-      <div class="d-flex align-items-center gap-2 mb-3">
-        <span class="icon-wrapper"><i class="pi pi-briefcase"></i></span>
-        <h3 class="section-title">
-          {{ 'employee.professional_info.title' | translate }}
-        </h3>
+      <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <span class="icon-wrapper"><i class="pi pi-briefcase"></i></span>
+          <h3 class="section-title">
+            {{ 'employee.professional_info.title' | translate }}
+          </h3>
+        </div>
+
+        @if (staffMode() === EmployeeCreationMode.Doctor) {
+          <div class="col-md-4 d-flex align-items-center gap-2 justify-content-end">
+            <label class="field-label mb-0">
+              {{ 'employee.professional_info.is_active' | translate }}
+            </label>
+
+            <p-toggleswitch formControlName="isActive" />
+          </div>
+        }
       </div>
-
       <div class="row g-3">
-
         <div class="col-md-4">
           <label class="field-label">
             {{ 'employee.professional_info.specialty' | translate }}
@@ -52,8 +61,7 @@
             {{ 'employee.professional_info.years_of_experience' | translate }}
           </label>
 
-          <hexa-input-text
-            type="text"
+          <hexa-input-number
             formControlName="yearsOfExperience"
             [placeholder]="'employee.professional_info.years_of_experience_placeholder' | translate"
           />
@@ -132,10 +140,8 @@
             [placeholder]="'employee.professional_info.bio_placeholder' | translate"
           ></textarea>
         </div>
-
       </div>
     </section>
-
 
     <!-- Doctor only -->
     @if (staffMode() === EmployeeCreationMode.Doctor) {
@@ -151,7 +157,6 @@
         </div>
 
         <div class="row g-3">
-
           <div class="col-md-4">
             <label class="field-label">
               {{ 'employee.professional_info.rank' | translate }}
@@ -206,25 +211,14 @@
 
             <hexa-input-text
               formControlName="areasOfExpertise"
-              [placeholder]="'employee.professional_info.areas_of_expertise_placeholder' | translate"
+              [placeholder]="
+                'employee.professional_info.areas_of_expertise_placeholder' | translate
+              "
             />
           </div>
-
-          <div class="col-md-4">
-            <label class="field-label">
-              {{ 'employee.professional_info.photo_url' | translate }}
-            </label>
-
-            <hexa-input-text
-              formControlName="photoUrl"
-              [placeholder]="'employee.professional_info.photo_url_placeholder' | translate"
-            />
-          </div>
-
         </div>
       </section>
     }
-
 
     <!-- Staff Member only -->
     @if (staffMode() === EmployeeCreationMode.StaffMember) {
@@ -240,7 +234,6 @@
         </div>
 
         <div class="row g-3">
-
           <div class="col-md-4">
             <label class="field-label">
               {{ 'employee.professional_info.job_title' | translate }}
@@ -296,7 +289,9 @@
 
             <hexa-input-text
               formControlName="licensingAuthority"
-              [placeholder]="'employee.professional_info.licensing_authority_placeholder' | translate"
+              [placeholder]="
+                'employee.professional_info.licensing_authority_placeholder' | translate
+              "
             />
           </div>
 
@@ -321,11 +316,9 @@
               [placeholder]="'employee.professional_info.certifications_placeholder' | translate"
             />
           </div>
-
         </div>
       </section>
     }
-
 
     <!-- Commission -->
     <section class="card">
@@ -340,20 +333,22 @@
       </div>
 
       <div class="row g-3">
+        @if (staffMode() === EmployeeCreationMode.StaffMember) {
+          <div class="col-md-4">
+            <label class="field-label">
+              {{ 'employee.professional_info.commission_percent' | translate }}
+            </label>
 
-        <div class="col-md-4">
-          <label class="field-label">
-            {{ 'employee.professional_info.commission_percent' | translate }}
-          </label>
-
-          <hexa-input-number
-            formControlName="commissionPercent"
-            [placeholder]="'employee.professional_info.commission_percent_placeholder' | translate"
-          />
-        </div>
+            <hexa-input-number
+              formControlName="commissionPercent"
+              [placeholder]="
+                'employee.professional_info.commission_percent_placeholder' | translate
+              "
+            />
+          </div>
+        }
 
         @if (staffMode() === EmployeeCreationMode.Doctor) {
-
           <div class="col-md-4">
             <label class="field-label">
               {{ 'employee.professional_info.cash_commission_percent' | translate }}
@@ -361,7 +356,9 @@
 
             <hexa-input-number
               formControlName="cashCommissionPercent"
-              [placeholder]="'employee.professional_info.cash_commission_percent_placeholder' | translate"
+              [placeholder]="
+                'employee.professional_info.cash_commission_percent_placeholder' | translate
+              "
             />
           </div>
 
@@ -372,10 +369,12 @@
 
             <hexa-input-number
               formControlName="contractCommissionPercent"
-              [placeholder]="'employee.professional_info.contract_commission_percent_placeholder' | translate"
+              [placeholder]="
+                'employee.professional_info.contract_commission_percent_placeholder' | translate
+              "
             />
           </div>
-         }
+        }
       </div>
     </section>
   </form>

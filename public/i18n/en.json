@@ -133,6 +133,23 @@
     }
   },
   "employee": {
+    "header": {
+        "title": "Staff",
+        "subtitle": "Manage and view staff members"
+      },
+      "stepper": {
+      "personal_info": "Personal Info",
+      "personal_info_subtitle": "Personal Details",
+
+      "professional": "Professional",
+      "professional_subtitle": "Experience & Skills",
+
+      "assignation": "Assignation",
+      "assignation_subtitle": "Assignation Structure",
+
+      "documents": "Documents",
+      "documents_subtitle": "Attachments"
+    },
     "personal_info": {
       "title": "Personal Information",
       "first_name": "First Name",
@@ -164,7 +181,9 @@
       "phone": "Phone Number",
       "phone_placeholder": "Enter phone number",
       "email": "Email",
-      "email_placeholder": "Enter email address"
+      "email_placeholder": "Enter email address",
+      "photo": "Photo",
+      "photo_placeholder": "Choose Photo"
     },
     "contact_info": {
       "title": "Contact Information",
@@ -183,7 +202,62 @@
       "emergency_phone": "Emergency Phone",
       "emergency_phone_placeholder": "phone number"
     },
-    "login_info": {
+     "assignation": {
+      "title": "Assignation",
+      "assignation_structure": "Assignation",
+      "role_and_permission": "Role And Permission",
+
+      "company": "Company",
+      "company_placeholder": "Select company",
+      "company_required": "Company is required.",
+
+      "branch": "Branch",
+      "branch_placeholder": "Select branch",
+      "branch_required": "Branch is required.",
+
+      "department": "Department",
+      "department_placeholder": "Select department",
+      "department_required": "Department is required.",
+
+      "team": "Team",
+      "team_placeholder": "Select team",
+      "team_required": "Team is required.",
+
+      "role_type": "Role Type",
+      "role_type_placeholder": "Select type",
+      "role_type_required": "Role type is required.",
+
+      "role_permission_name": "Role & Permission Name",
+      "role_permission_placeholder": "Select permission",
+      "role_name_required": "Role name is required.",
+
+      "main_head_hierarchy": "Main Head Hierarchy",
+      "main_head_hierarchy_placeholder": "Select branch",
+      "main_head_hierarchy_required": "Main head hierarchy is required.",
+
+      "more_head_hierarchy": "More Head Hierarchy",
+      "more_head_hierarchy_placeholder": "Select branch",
+
+      "default": "Default",
+      "add_another_role": "Add another role"
+    }
+    ,"documents": {
+      "title": "Upload Documents",
+      "supported_formats": "JPG, PNG, GIF, BMP or PDF, max 30 MB each.",
+      "document_label": "Document label",
+      "document_label_placeholder": "License / degree",
+      "upload": "Upload",
+      "document": "Document",
+      "file": "File",
+      "date": "Date",
+      "no_documents": "No documents found",
+      "unsupported_type": "Unsupported file type: {{fileName}}",
+      "file_too_large": "File is larger than 30 MB: {{fileName}}",
+      "default_label": "Document",
+      "upload_success": "Documents uploaded successfully"
+
+    },
+     "login_info": {
       "title": "Account Information",
       "username": "Username",
       "username_placeholder": "Enter username",
@@ -208,6 +282,7 @@
       "experience_summary_placeholder": "Enter experience summary",
       "bio": "Bio",
       "bio_placeholder": "Enter bio",
+      "is_active":"active",
       "commission_percent": "Commission Percentage",
       "commission_percent_placeholder": "Enter commission percentage",
       "medical_details": "Medical Details",
@@ -220,7 +295,7 @@
       "medical_council": "Medical Council",
       "medical_council_placeholder": "Enter medical council",
       "academic_rank": "Academic Rank",
-      "academic_rank_placeholder": "Enter academic rank",
+      "academic_rank_placeholder": "Professor / Assistant",
       "areas_of_expertise": "Areas of Expertise",
       "areas_of_expertise_placeholder": "Enter areas of expertise",
       "cash_commission_percent": "Cash Commission Percentage",
@@ -253,7 +328,18 @@
       "doctor_subtitle": "Doctors and medical professionals",
       "administrative": "Administrative Sector",
       "administrative_subtitle": "Administrative and support staff",
-      "back": "Back"
+      "back": "Back",
+      "table": {
+        "staff_code": "Staff Code",
+        "first_name": "First Name",
+        "second_name": "Second Name",
+        "third_name": "Third Name",
+        "last_name": "Last Name",
+        "name": "Name",
+        "name_arabic": "Arabic Name",
+        "job_title": "Job Title",
+        "role_name": "Role Name"
+      }
     }
   },
   "organization": {

@@ -1,57 +1,96 @@
-<section class="card">
+<div class="form-section card p-4">
   <div class="d-flex align-items-center gap-2 mb-3">
-    <span class="icon-wrapper"><i class="pi pi-image"></i></span>
-    <h3 class="section-title">{{ label() | translate }}</h3>
+    <span class="icon-wrapper">
+      <i class="pi pi-file"></i>
+    </span>
+
+    <h3 class="section-title">
+      {{ 'employee.documents.title' | translate }}
+    </h3>
   </div>
 
-  <p class="field-label mb-2">
-    {{ 'employee.documents.employee_image' | translate }}
-    @if (optional()) {
-      <span class="text-muted">({{ 'employee.documents.optional' | translate }})</span>
-    }
-  </p>
+  <small class="text-muted d-block mb-3">
+    {{ 'employee.documents.supported_formats' | translate }}
+  </small>
 
-  @if (!selectedFile()) {
-    <div
-      class="upload-dropzone"
-      [class.dragging]="isDragging()"
-      (dragover)="onDragOver($event)"
-      (dragleave)="onDragLeave($event)"
-      (drop)="onDrop($event)"
-    >
-      <i class="pi pi-upload upload-icon"></i>
-      <p class="upload-text">{{ 'employee.documents.drag_drop' | translate }}</p>
-      <p class="upload-subtext">{{ 'employee.documents.max_size' | translate }}</p>
-
-      <button type="button" class="browse-btn" (click)="onBrowseClick(fileInput)">
-        <i class="pi pi-search"></i>
-        {{ 'employee.documents.browse' | translate }}
-      </button>
+  <div class="d-flex align-items-end gap-2 mb-4 my-2">
+    <div>
+      <label class="form-label">
+        {{ 'employee.documents.document_label' | translate }}
+      </label>
 
       <input
-        #fileInput
-        type="file"
-        hidden
-        accept="image/jpeg,image/png,image/gif,image/bmp,application/pdf"
-        (change)="onFileInputChange($event)"
+        type="text"
+        class="form-control p-2 w-100"
+        [placeholder]="'employee.documents.document_label_placeholder' | translate"
+        [(ngModel)]="label"
+        name="documentLabel"
       />
     </div>
-  } @else {
-    <div class="upload-preview">
-      @if (previewUrl()) {
-        <img [src]="previewUrl()" class="preview-image" alt="preview" />
-      } @else {
-        <i class="pi pi-file-pdf preview-pdf-icon"></i>
+
+    <hexa-button
+      (clicked)="triggerUpload()"
+      icon="opus-icon-upload"
+      [label]="'employee.documents.upload' | translate">
+    </hexa-button>
+
+    <input
+      #fileInput
+      type="file"
+      class="d-none"
+      accept="image/jpeg,image/png,image/gif,image/bmp,application/pdf"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+
+  @if (error()) {
+    <small class="text-danger d-block mb-3">
+      {{ error() }}
+    </small>
+  }
+
+  @if (items().length) {
+  <table class="table documents-table">
+    <thead>
+      <tr>
+        <th>{{ 'employee.documents.document' | translate }}</th>
+        <th>{{ 'employee.documents.file' | translate }}</th>
+        <th>{{ 'employee.documents.date' | translate }}</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (item of items(); track item.id) {
+        <tr>
+          <td>{{ item.label }}</td>
+
+          <td>
+            <a class="text-primary file-link" (click)="downloadFile(item)">
+              <em class="pi pi-file"></em>
+              {{ item.file?.name ?? item.fileUrl }}
+            </a>
+          </td>
+
+          <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
+
+          <td class="text-end">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm"
+              (click)="removeItem(item.id)"
+            >
+              <em class="pi pi-trash"></em>
+            </button>
+          </td>
+        </tr>
       }
-      <span class="file-name">{{ selectedFile()!.name }}</span>
-      <button type="button" class="remove-btn" (click)="removeFile()">
-        <i class="pi pi-times"></i>
-      </button>
-    </div>
-  }
-
-  @if (errorMessage()) {
-    <p class="error-text">{{ errorMessage() | translate }}</p>
-  }
-</section>
-
+    </tbody>
+  </table>
+} @else {
+  <div class="no-documents">
+    <i class="pi pi-upload"></i>
+    <span>{{ 'employee.documents.no_documents' | translate }}</span>
+  </div>
+}
+</div>

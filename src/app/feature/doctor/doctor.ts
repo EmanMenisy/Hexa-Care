@@ -1,49 +1,43 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { EmployeeCreationService } from '../../service/employee-creation-service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { EmployeeCreationMode } from '../../model/enums/employee-Creation-enums';
-import { InputTextComponent } from '../../../shared/components/primeng/input-text/input-text';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Table } from '../../../shared/components/common/table/table';
-import { ButtonComponent } from '../../../shared/components/primeng/button/button';
-import { ITableHeader } from '../../../../core/models/interface/ItableHeader';
-import {
-  ISortEvent,
-  ITableAction,
-} from '../../../shared/components/common/table/models/table.types';
-import { HeaderActionService } from '../../../shared/layout/sub-header/services/header-action.service';
-import { TableHeaderType } from '../../../../core/models/enums/table-header-type';
-import { ApiStatus } from '../../../../core/models/enums/api-status';
-import { FilterService } from '../../../../core/services/filter/filter';
-import { EmptyState } from '../../../shared/components/common/empty-state/empty-state';
-import { NotFound } from '../../../shared/components/common/not-found/not-found';
+import { TranslatePipe } from "@ngx-translate/core";
+import { NotFound } from "../shared/components/common/not-found/not-found";
+import { Table } from "../shared/components/common/table/table";
+import { ButtonComponent } from "../shared/components/primeng/button/button";
+import { InputTextComponent } from "../shared/components/primeng/input-text/input-text";
+import { EmptyState } from "../shared/components/common/empty-state/empty-state";
+import { CommonModule } from "@angular/common";
+import { Component, inject, signal } from "@angular/core";
+import { EmployeeCreationService } from "../employee/service/employee-creation-service";
+import { Router } from "@angular/router";
+import { HeaderActionService } from "../shared/layout/sub-header/services/header-action.service";
+import { ITableHeader } from "../../core/models/interface/ItableHeader";
+import { ISortEvent, ITableAction } from "../shared/components/common/table/models/table.types";
+import { ApiStatus } from "../../core/models/enums/api-status";
+import { TableHeaderType } from "../../core/models/enums/table-header-type";
+import { EmployeeCreationMode } from "../employee/model/enums/employee-Creation-enums";
+import { FilterService } from "../../core/services/filter/filter";
 
 @Component({
-  selector: 'app-home-employee-creation',
-  imports: [
-    CommonModule,
-    Table,
-    NotFound,
-    InputTextComponent,
-    ButtonComponent,
-    TranslatePipe,
-    EmptyState,
-  ],
-  templateUrl: './home-employee-creation.html',
-  styleUrl: './home-employee-creation.scss',
+  selector: 'app-doctor',
+  imports: [    CommonModule,
+      Table,
+      NotFound,
+      InputTextComponent,
+      ButtonComponent,
+      TranslatePipe,
+      EmptyState,],
+  templateUrl: './doctor.html',
+  styleUrl: './doctor.scss',
 })
-export class HomeEmployeeCreation {
-  private readonly creationService = inject(EmployeeCreationService);
+export class Doctor {
+private readonly creationService = inject(EmployeeCreationService);
   private readonly HeaderActionService = inject(HeaderActionService);
   private readonly filterService = inject(FilterService);
   private router = inject(Router);
-  selectedSector = signal<boolean | null>(null);
-  staffTypes = signal<any[]>([]);
+  
 
   ngOnInit() {
     this.HeaderActionService.action$.subscribe((res) => {
-      if (res == 'createStaff') {
+      if (res == 'create') {
         this.routeToSectorPage();
       }
     });
@@ -58,7 +52,9 @@ export class HomeEmployeeCreation {
   activeSortField?: string;
   activeSortAscending: boolean | null = null;
   totalRecordsLength: number = 0;
-
+  //====================Manual
+  isManualSidebarVisible = signal(false);
+  selectedItem = signal<any>(null);
   //====================List and Payload
   list = signal<any[]>([]);
   payload: any = {
@@ -74,55 +70,50 @@ export class HomeEmployeeCreation {
 
   //====================Table configurations
   getTableColumns(): void {
-   this.tableColumns = [
+    this.tableColumns = [
   {
-    field: 'staffCode',
-    name: 'employee.home.table.staff_code',
+    field: 'doctorCode',
+    name: 'employee.table.doctor_code',
     type: TableHeaderType.String,
     sortable: false,
   },
   {
-    field: 'firstName',
-    name: 'employee.home.table.first_name',
+    field: 'fullName',
+    name: 'employee.table.full_name',
     type: TableHeaderType.String,
   },
   {
-    field: 'secondName',
-    name: 'employee.home.table.second_name',
+    field: 'rank',
+    name: 'employee.table.rank',
+    type: TableHeaderType.Number,
+  },
+  {
+    field: 'specialty',
+    name: 'employee.table.specialty',
     type: TableHeaderType.String,
   },
   {
-    field: 'thirdName',
-    name: 'employee.home.table.third_name',
+    field: 'phone',
+    name: 'employee.table.phone',
     type: TableHeaderType.String,
   },
   {
-    field: 'lastName',
-    name: 'employee.home.table.last_name',
-    type: TableHeaderType.String,
+    field: 'gender',
+    name: 'employee.table.gender',
+    type: TableHeaderType.Number,
   },
   {
-    field: 'name',
-    name: 'employee.home.table.name',
-    type: TableHeaderType.String,
+    field: 'isActive',
+    name: 'employee.table.status',
+    type: TableHeaderType.Boolean,
   },
   {
-    field: 'nameArabic',
-    name: 'employee.home.table.name_arabic',
-    type: TableHeaderType.String,
+    field: 'createdAt',
+    name: 'employee.table.created_at',
+    type: TableHeaderType.Date,
   },
-  {
-    field: 'jobTitle',
-    name: 'employee.home.table.job_title',
-    type: TableHeaderType.String,
-  },
-  {
-    field: 'roleName',
-    name: 'employee.home.table.role_name',
-    type: TableHeaderType.String,
-  },
- ] as ITableHeader[];
- }
+  ] as ITableHeader[];
+  }
 
   getTableActions(): void {
     this.tableActions = [
@@ -177,8 +168,9 @@ export class HomeEmployeeCreation {
     };
     const request = this.filterService.cleanRequest(this.payload);
     this.isFilterApplied.set(this.hasFilters());
-    this.creationService.getAllStaffMembers(request).subscribe({
+    this.creationService.getAllDoctors(request).subscribe({
       next: (res) => {
+        console.log(res , 'all staff');
         this.list.set(res.items);
         this.pageStatus = ApiStatus.Success;
         this.totalRecordsLength = res.records;
@@ -195,7 +187,7 @@ export class HomeEmployeeCreation {
 
   onEdit(id: string) {
   this.router.navigate(['/update', id], {
-    queryParams: { mode: EmployeeCreationMode.StaffMember },
+    queryParams: { mode: EmployeeCreationMode.Doctor },
     });;
   }
 
@@ -206,4 +198,3 @@ export class HomeEmployeeCreation {
     this.router.navigate(['sector']);
   }
 }
-

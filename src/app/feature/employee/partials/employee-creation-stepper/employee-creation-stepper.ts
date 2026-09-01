@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, model } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'hexa-creation-stepper',
-  imports: [CommonModule],
+  imports: [CommonModule , TranslatePipe],
   templateUrl: './employee-creation-stepper.html',
   styleUrl: './employee-creation-stepper.scss',
 })
