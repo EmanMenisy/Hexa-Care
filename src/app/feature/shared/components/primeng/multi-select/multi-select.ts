@@ -101,10 +101,7 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   // INTERNAL VALUES
   // ============================================================
 
-  placeholderText = '';
-
   emptyMessageText = '';
-
   emptyFilterMessageText = '';
 
 
@@ -168,12 +165,12 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   // MULTI SELECT EVENTS
   // ============================================================
 
- onMultiSelectChange(value: any[]): void {
-  this.selectedValues.set(value);
-  this.multiSelectChanged.emit(value);
-  this.onChange(value);
-  this.onTouched(value);
-}
+  onMultiSelectChange(value: any[]): void {
+    this.selectedValues.set(value);
+    this.multiSelectChanged.emit(value);
+    this.onChange(value);
+    this.onTouched(value);
+  }
 
 
   onClear(): void {
@@ -226,9 +223,6 @@ export class MultiSelectComponent implements OnInit, AfterViewInit {
   // ============================================================
 
   setTranslations(): void {
-
-    this.placeholderText =
-      this.placeholder() || ' ';
 
     this.emptyMessageText =
       this.emptyMessage() ||

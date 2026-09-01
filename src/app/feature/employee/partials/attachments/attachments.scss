@@ -78,3 +78,38 @@
   font-size: 0.85rem;
   margin-top: 0.5rem;
 }
+
+.documents-table th,
+.documents-table td {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+
+.documents-table th {
+  font-weight: 600;
+}
+
+.no-documents {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 30px 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.no-documents i {
+  font-size: 18px;
+}
+
+.file-link {
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

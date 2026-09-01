@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignationService } from '../../../shared/service/assignation-service';
 import { MultiSelectComponent } from '../../../shared/components/primeng/multi-select/multi-select';
@@ -6,10 +6,12 @@ import { DropdownComponent } from '../../../shared/components/primeng/drop-down/
 import { ButtonComponent } from "../../../shared/components/primeng/button/button";
 import { EmployeeCreationService } from '../../service/employee-creation-service';
 import { OrganizationalStructure } from '../../model/employee-creation';
-EmployeeCreationService
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
+
 @Component({
   selector: 'hexa-assignation-information',
-  imports: [ReactiveFormsModule, MultiSelectComponent, DropdownComponent, ButtonComponent],
+  imports: [ReactiveFormsModule, MultiSelectComponent,TranslatePipe, DropdownComponent, ButtonComponent],
   templateUrl: './assignation-information.html',
   styleUrl: './assignation-information.scss',
 })
@@ -17,8 +19,22 @@ export class AssignationInformation {
   assignationForm = input.required<FormGroup>();
   private employeeCreationService = inject(EmployeeCreationService);
   createRoleFn = input.required<(isMain?: boolean) => FormGroup>();
-    private currentLevel: string = 'Team';
+  initialAssignation = input<any>(null);
+  private currentLevel: string = 'Team';
+  private appliedInitialData = false;
+  private structureLoaded = signal(false);  
+  private destroyRef = inject(DestroyRef);
 
+   constructor() {
+    effect(() => {
+      const data = this.initialAssignation();
+      const loaded = this.structureLoaded();
+      if (data && loaded && !this.appliedInitialData) {
+        this.appliedInitialData = true;
+        this.applyInitialAssignation(data);
+      }
+    });
+  }
   private readonly roleHierarchy: Record<string, number> = {
     Organization: 4,
     Company: 3,
@@ -48,18 +64,15 @@ export class AssignationInformation {
   }
 
   private loadStructure(): void {
-    this.employeeCreationService.getOrganizationalStructure().subscribe({
-      next: (res: OrganizationalStructure) => {
-        console.log(res , 'structure');
-        
+    this.employeeCreationService.getOrganizationalStructure().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (res: OrganizationalStructure) => {        
         this.companiesOptions = res.companies ?? [];
-         console.log(this.companiesOptions , 'this.companiesOptions');
         this.branchsOptions = res.branches ?? [];
         this.departmentOptions = res.departments ?? [];
         this.teamOptions = res.teams ?? [];
         this.currentLevel = res.currentLevel ?? 'Team';
+        this.structureLoaded.set(true);
       },
-      error: (err) => console.error('Error loading organizational structure', err),
     });
   }
 
@@ -70,7 +83,6 @@ export class AssignationInformation {
   // ----------- Cascade handlers -----------
 
   onCompanyChange(selectedCompanyIds: string[]): void {
-    console.log(selectedCompanyIds);
     this.branchsFilteredOptions = this.branchsOptions.filter((b) =>
       selectedCompanyIds?.includes(b.companyId)
     );
@@ -84,9 +96,7 @@ export class AssignationInformation {
     });
   }
 
-  onBranchChange(selectedBranchIds: string[]): void {
-    console.log(selectedBranchIds);
-    
+  onBranchChange(selectedBranchIds: string[]): void {    
     this.departmentFilteredOptions = this.departmentOptions.filter((d) =>
       selectedBranchIds?.includes(d.branchId)
     );
@@ -112,13 +122,12 @@ onTeamChange(selectedTeamIds: string[]): void {
   if (!selectedTeamIds?.length) {
     this.systemRolesOptions = [];
     this.customRolesOptions = [];
+    this.resetAllRoleTypeSelections();
     return;
   }
 
   this.employeeCreationService.getSystemAndCustomRoles(selectedTeamIds).subscribe({
     next: (res) => {
-      console.log('roles response:', res);
-
       this.systemRolesOptions = (res?.getAllSystemRoles ?? []).map((role: any) => ({
         id: role.id,
         name: role.name,
@@ -129,11 +138,22 @@ onTeamChange(selectedTeamIds: string[]): void {
         name: role.roleName,
         teams: role.teams,
       }));
+      this.resetAllRoleTypeSelections();
     },
+  });
+}
 
-    error: (err) => {
-      console.error('Error loading roles', err);
-    }
+private resetAllRoleTypeSelections(): void {
+  this.rolesArray.controls.forEach((control) => {
+    const row = control as FormGroup;
+
+    row.get('isSystemRole')?.reset();
+    row.get('roleOptions')?.setValue([]);
+    row.get('roleId')?.reset();
+    row.get('mainHeadHierarchy')?.reset();
+    row.get('headHierarchy')?.reset([]);
+    row.get('headOptions')?.setValue([]);
+    row.get('headValueField')?.setValue('');
   });
 }
 
@@ -228,9 +248,7 @@ onRoleChanged(roleId: string, index: number): void {
     const headOptions = this.getCustomRoleHeadOptions(selectedRole);
 
     row.get('headOptions')?.setValue(headOptions);
-    row.get('headValueField')?.setValue('id');
-    console.log(headOptions);
-    
+    row.get('headValueField')?.setValue('id');    
     return;
   }
 
@@ -418,5 +436,112 @@ private buildRoles(roles: any[]): any[] {
   });
  }
 
+
+  private applyInitialAssignation(data: any): void {
+    const structure = data.assigneStructure ?? {};
+    const companyIds = (structure.companies ?? []).map((c: any) => c.companyId);
+    const branchIds = (structure.branches ?? []).map((b: any) => b.branchId);
+    const departmentIds = (structure.departments ?? []).map((d: any) => d.departmentId);
+    const teamIds = (structure.teams ?? []).map((t: any) => t.teamId);
+
+    // نبني الـ filtered options زي ما بيحصل بالظبط لما اليوزر يختار يدوي
+    this.branchsFilteredOptions = this.branchsOptions.filter((b) => companyIds.includes(b.companyId));
+    this.departmentFilteredOptions = this.departmentOptions.filter((d) => branchIds.includes(d.branchId));
+    this.teamFilteredOptions = this.teamOptions.filter((t) => departmentIds.includes(t.departmentId));
+
+    this.assignationForm().patchValue({
+      company: companyIds,
+      branch: branchIds,
+      department: departmentIds,
+      team: teamIds,
+    });
+
+    // نجيب اختيارات الرولز (system/custom) بناءً على الفرق دلوقتي
+    if (teamIds.length) {
+      this.employeeCreationService.getSystemAndCustomRoles(teamIds).subscribe({
+        next: (res) => {
+          this.systemRolesOptions = (res?.getAllSystemRoles ?? []).map((r: any) => ({ id: r.id, name: r.name }));
+          this.customRolesOptions = (res?.getAllCoustemRoles ?? []).map((r: any) => ({
+            id: r.roleId,
+            name: r.roleName,
+            teams: r.teams,
+          }));
+          this.applyRoles(data.roles ?? []);
+        },
+        error: (err) => {
+          this.applyRoles(data.roles ?? []); // نكمل بدون roleOptions لو فشل
+        },
+      });
+    } else {
+      this.applyRoles(data.roles ?? []);
+    }
+  }
+
+  private applyRoles(roles: any[]): void {
+    if (!roles.length) return;
+
+    // نفضي الـ array الافتراضي (اللي فيه صف واحد فاضي) ونبنيه من جديد
+    this.rolesArray.clear();
+
+    roles.forEach((role: any) => {
+      const group = this.createRoleFn()(role.mainRole);
+      this.rolesArray.push(group);
+      const index = this.rolesArray.length - 1;
+
+      const roleOptions = role.isSystemRole ? this.systemRolesOptions : this.customRolesOptions;
+      group.patchValue({ roleOptions });
+
+      const selectedRole = roleOptions.find((r: any) => r.id === role.roleId);
+
+      // نحدد headOptions وheadValueField بنفس منطق onRoleChanged بس من غير ريست
+      let headOptions: any[] = [];
+      let headValueField = '';
+
+      if (selectedRole) {
+        if (!role.isSystemRole) {
+          headOptions = this.getCustomRoleHeadOptionsPublic(selectedRole);
+          headValueField = 'id';
+        } else {
+          const roleName = (selectedRole.name ?? '').toLowerCase();
+          if (roleName.includes('company')) {
+            headOptions = this.companiesOptions;
+            headValueField = 'companyId';
+          } else if (roleName.includes('branch')) {
+            headOptions = this.branchsFilteredOptions;
+            headValueField = 'branchId';
+          } else if (roleName.includes('department')) {
+            headOptions = this.departmentFilteredOptions;
+            headValueField = 'departmentId';
+          } else if (roleName.includes('team')) {
+            headOptions = this.teamFilteredOptions;
+            headValueField = 'teamId';
+          }
+        }
+      }
+
+      const mainHierarchy = (role.hierarchies ?? []).find((h: any) => h.isMainHierarchy);
+      const extraHierarchies = (role.hierarchies ?? [])
+        .filter((h: any) => !h.isMainHierarchy)
+        .map((h: any) => h.headHierarchyId);
+
+      group.patchValue({
+        isSystemRole: role.isSystemRole,
+        roleId: role.roleId,
+        isMainRole: role.mainRole,
+        mainHeadHierarchy: mainHierarchy?.headHierarchyId ?? '',
+        headHierarchy: extraHierarchies,
+        headOptions,
+        headValueField,
+      });
+    });
+  }
+
+  private getCustomRoleHeadOptionsPublic(selectedRole: any): any[] {
+    return this.getCustomRoleHeadOptions(selectedRole);
+  }
+
+  get isTeamSelected(): boolean {
+  return (this.assignationForm().get('team')?.value ?? []).length > 0;
+  }
 
 }

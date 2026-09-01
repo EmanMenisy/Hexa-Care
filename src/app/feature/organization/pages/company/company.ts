@@ -125,6 +125,7 @@ export class Company implements OnInit{
         break;
     }
   }
+  
   onSortChanged(event: ISortEvent): void {
     this.activeSortField = event.field;
     this.activeSortAscending = event.isAscending;
@@ -179,7 +180,7 @@ export class Company implements OnInit{
      this.organizationLogicService.setId(id);
     this.organizationLogicService.setStart(HierarchySteps.Company);
     this.isManualSidebarVisible.set(true);
-  }
+   }
   //====================Delete
   onDelete(roleId: string) {
     this.organizationService.deleteCompany(roleId).subscribe({

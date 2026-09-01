@@ -14,6 +14,7 @@ import { Team } from './feature/organization/pages/team/team';
 import { HomeEmployeeCreation } from './feature/employee/pages/home-employee-creationon/home-employee-creation';
 import { Attachments } from './feature/employee/partials/attachments/attachments';
 import { SectorPage } from './feature/employee/partials/sector-page/sector-page';
+import { Doctor } from './feature/doctor/doctor';
 
 export const routes: Routes = [
   {
@@ -44,8 +45,8 @@ export const routes: Routes = [
       {path:'home' , component:HomeEmployeeCreation,
          data:{
           header:{
-            title:"organization.company.home.title",
-            subtitle:"organization.company.home.subtitle",
+            title:"employee.header.title",
+            subtitle:"employee.header.subtitle",
             buttons:[
               {
                 label:"new Staff",
@@ -56,7 +57,24 @@ export const routes: Routes = [
           }
         }
       },
+      { path: 'update/:id', component: EmployeeCreation },
       {path:'sector' , component:SectorPage},
+      {path:'doctors' , component:Doctor,
+         data:{
+          header:{
+            title:"doctor.header.title",
+            subtitle:"doctor.header.subtitle",
+            buttons:[
+              {
+                label:"new doctor",
+                icon:'pi pi-plus',
+                action:'createDoctor',
+              },
+            ]
+          }
+        }
+      },
+
       {
         path:'organizationProfile' ,
         component:OrganizationProfile,

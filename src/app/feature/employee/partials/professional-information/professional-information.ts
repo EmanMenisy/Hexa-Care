@@ -7,12 +7,15 @@ import { CalenderComponent } from "../../../shared/components/primeng/date-picke
 import { TextareaModule } from 'primeng/textarea';
 import { EmployeeCreationMode, EmploymentType } from '../../model/enums/employee-Creation-enums';
 import { InputNumber } from "../../../shared/components/primeng/input-number/input-number";
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+
 @Component({
   selector: 'hexa-professional-information',
-  imports: [InputTextComponent, DropdownComponent, TranslatePipe, CalenderComponent, ReactiveFormsModule, TextareaModule, InputNumber],
+  imports: [InputTextComponent, DropdownComponent, ToggleSwitchModule ,TranslatePipe, CalenderComponent, ReactiveFormsModule, TextareaModule, InputNumber],
   templateUrl: './professional-information.html',
   styleUrl: './professional-information.scss',
 })
+
 export class ProfessionalInformation {
  professionalForm = input.required<FormGroup>();
  staffMode = input.required<EmployeeCreationMode>();

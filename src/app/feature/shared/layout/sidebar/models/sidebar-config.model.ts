@@ -26,10 +26,10 @@ export const SIDEBAR_MENU: ISidebarItem[] = [
     label: 'Organizational Structure',
     icon: '🏬',
     code: 2,
-    standalone:true,
     description: 'organization structure',
     children: [
-      { id: 'org-companies', label: 'Organizational Structure', icon: '🏬', route: '/home', code: 2000 },
+      { id: 'org-companies', label: 'staff Member', icon: '🏬', route: '/home', code: 700 },
+      { id: 'Doctors', label: 'Doctors', icon: '🏬', route: '/doctors', code: 2400},
     ],
   },
 

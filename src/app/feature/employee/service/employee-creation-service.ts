@@ -23,7 +23,7 @@ export class EmployeeCreationService {
      return this.xhrService.call({
       method: HttpMethod.Get,
       url: 'StaffMembers/GetAll',
-       params: new HttpParams({ fromObject: payload })
+      params: new HttpParams({ fromObject: payload })
     });
   }
 
@@ -40,8 +40,8 @@ export class EmployeeCreationService {
       method: HttpMethod.Post,
       url: 'Doctors/Create',
       body: PayLoad
-    });
-  }
+     });
+    }
   
     getOrganizationalStructure(): Observable<OrganizationalStructure> {
     return this.xhrService.call({
@@ -62,4 +62,72 @@ export class EmployeeCreationService {
       params,
     });
   }
+
+  getStuffMemberById(staffMemberId:string){
+    return this.xhrService.call({
+      method: HttpMethod.Get,
+      url: `StaffMembers/GetById`,
+      params: new HttpParams({ fromObject: {StaffMemberId:staffMemberId}})
+    });
+  }
+
+ 
+  updateStaffMember(PayLoad:FormData){
+    return this.xhrService.call({
+      method: HttpMethod.Put,
+      url: `StaffMembers/UpdateStaffMember`,
+      body: PayLoad
+    });
+  }
+
+  updateDoctor(payload: FormData): Observable<any> {
+  return this.xhrService.call({
+    method: HttpMethod.Put,
+    url: 'Doctors/Update',
+    body: payload,
+  });
+  }
+
+  uploadFile(payload: FormData): Observable<any> {
+  return this.xhrService.call({
+    method: HttpMethod.Post,
+    url: 'Attachments/Upload',
+    body: payload,
+  });
+ }
+
+ //will remove later
+  getAllDoctors(payload: any): Observable<any> {
+   return this.xhrService.call({
+    method: HttpMethod.Get,
+    url: 'Doctors/GetAll',
+    params: new HttpParams({ fromObject: payload })
+   });
+ }
+
+   getDoctorDetails(doctorId: any): Observable<any> {
+   return this.xhrService.call({
+    method: HttpMethod.Get,
+    url: 'Doctors/Details',
+    params: new HttpParams({ fromObject: {id: doctorId}})
+   });
+  }
+ 
+  getAttachment(employeeId: any): Observable<any> {
+   return this.xhrService.call({
+    method: HttpMethod.Get,
+    url: 'Attachments/GetAll',
+    params: new HttpParams({ fromObject: {EntityId: employeeId}})
+   });
+  }
+
+  deleteAttachment(attachmentId: any): Observable<any> {
+   return this.xhrService.call({
+    method: HttpMethod.Delete,
+    url: 'Attachments/Delete',
+    body: {attachmentId: attachmentId}
+   });
+  }
+
 }
+

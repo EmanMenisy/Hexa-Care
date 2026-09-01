@@ -7,86 +7,129 @@
         <span class="icon-wrapper">
           <i class="pi pi-user"></i>
         </span>
-        <h3 class="section-title">Assignation</h3>
+
+        <h3 class="section-title">
+          {{ 'employee.assignation.assignation_structure' | translate }}
+        </h3>
       </div>
 
       <div class="row">
+
+        <!-- Company -->
         <div class="col-sm-12 col-md-6 col-lg-4">
           <div class="field">
-            <label>Company <span class="text-danger">*</span></label>
+            <label>
+              {{ 'employee.assignation.company' | translate }}
+              <span class="text-danger">*</span>
+            </label>
+
             <hexa-multi-select
               [options]="companiesOptions"
               optionLabel="name"
               optionValue="companyId"
               formControlName="company"
-              placeholder="Select company"
+              [placeholder]="'employee.assignation.company_placeholder' | translate"
               (multiSelectChanged)="onCompanyChange($event)">
             </hexa-multi-select>
+
             @if (
-              assignationForm().get('company')?.invalid && assignationForm().get('company')?.touched
+              assignationForm().get('company')?.invalid &&
+              assignationForm().get('company')?.touched
             ) {
-              <div class="text-danger">Company is required.</div>
+              <div class="text-danger">
+                {{ 'employee.assignation.company_required' | translate }}
+              </div>
             }
           </div>
         </div>
 
+        <!-- Branch -->
         <div class="col-sm-12 col-md-6 col-lg-4">
           <div class="field">
-            <label>Branch <span class="text-danger">*</span></label>
+            <label>
+              {{ 'employee.assignation.branch' | translate }}
+              <span class="text-danger">*</span>
+            </label>
+
             <hexa-multi-select
               [options]="branchsFilteredOptions"
               optionLabel="name"
               optionValue="branchId"
               formControlName="branch"
-              placeholder="Select branch"
+              [placeholder]="'employee.assignation.branch_placeholder' | translate"
               (multiSelectChanged)="onBranchChange($event)">
             </hexa-multi-select>
+
             @if (
-              assignationForm().get('branch')?.invalid && assignationForm().get('branch')?.touched
+              assignationForm().get('branch')?.invalid &&
+              assignationForm().get('branch')?.touched
             ) {
-              <div class="text-danger">Branch is required.</div>
+              <div class="text-danger">
+                {{ 'employee.assignation.branch_required' | translate }}
+              </div>
             }
           </div>
         </div>
 
+        <!-- Department -->
         <div class="col-sm-12 col-md-6 col-lg-4">
           <div class="field">
-            <label>Department <span class="text-danger">*</span></label>
+            <label>
+              {{ 'employee.assignation.department' | translate }}
+              <span class="text-danger">*</span>
+            </label>
+
             <hexa-multi-select
               [options]="departmentFilteredOptions"
               optionLabel="name"
               optionValue="departmentId"
               formControlName="department"
-              placeholder="Select department"
+              [placeholder]="'employee.assignation.department_placeholder' | translate"
               (multiSelectChanged)="onDepartmentChange($event)">
             </hexa-multi-select>
+
             @if (
               assignationForm().get('department')?.invalid &&
               assignationForm().get('department')?.touched
             ) {
-              <div class="text-danger">Department is required.</div>
+              <div class="text-danger">
+                {{ 'employee.assignation.department_required' | translate }}
+              </div>
             }
           </div>
         </div>
 
+        <!-- Team -->
         <div class="col-sm-12 col-md-6 col-lg-4">
           <div class="field">
-            <label>Team <span class="text-danger">*</span></label>
+            <label>
+              {{ 'employee.assignation.team' | translate }}
+              <span class="text-danger">*</span>
+            </label>
+
             <hexa-multi-select
               [options]="teamFilteredOptions"
               optionLabel="name"
               optionValue="teamId"
               formControlName="team"
-              placeholder="Select team"
+              [placeholder]="'employee.assignation.team_placeholder' | translate"
               (multiSelectChanged)="onTeamChange($event)">
             </hexa-multi-select>
-            @if (assignationForm().get('team')?.invalid && assignationForm().get('team')?.touched) {
-              <div class="text-danger">Team is required.</div>
+
+            @if (
+              assignationForm().get('team')?.invalid &&
+              assignationForm().get('team')?.touched
+            ) {
+              <div class="text-danger">
+                {{ 'employee.assignation.team_required' | translate }}
+              </div>
             }
           </div>
         </div>
+
       </div>
     </div>
+
 
     <!-- ============ Card 2: Roles & Permissions ============ -->
     <div class="card">
@@ -94,104 +137,183 @@
         <span class="icon-wrapper">
           <i class="pi pi-user"></i>
         </span>
-        <h3 class="section-title">Role And Permission</h3>
+
+        <h3 class="section-title">
+          {{ 'employee.assignation.role_and_permission' | translate }}
+        </h3>
       </div>
 
       <div formArrayName="roles" class="roles-section">
-        @for (role of rolesArray.controls; track role; let i = $index) {
-          <div [formGroupName]="i" class="row role-row mb-3 align-items-end">
 
+        @for (role of rolesArray.controls; track role; let i = $index) {
+
+          <div
+            [formGroupName]="i"
+            class="row role-row mb-3 align-items-end">
+
+            <!-- Role Type -->
             <div class="col-sm-12 col-md-4">
               <div class="field">
-                <label>Role Type <span class="text-danger">*</span></label>
+                <label>
+                  {{ 'employee.assignation.role_type' | translate }}
+                  <span class="text-danger">*</span>
+                </label>
+
                 <hexa-dropdown
                   [options]="roleTypes"
                   optionLabel="label"
                   optionValue="value"
                   formControlName="isSystemRole"
-                  placeholder="Select type"
+                  [placeholder]="'employee.assignation.role_type_placeholder' | translate"
                   (dropdownChanged)="onRoleTypeChanged($event, i)">
                 </hexa-dropdown>
+
+                @if (
+                  role.get('isSystemRole')?.invalid &&
+                  role.get('isSystemRole')?.touched
+                ) {
+                  <div class="text-danger">
+                    {{ 'employee.assignation.role_type_required' | translate }}
+                  </div>
+                }
               </div>
             </div>
 
+
+            <!-- Role & Permission Name -->
             <div class="col-sm-12 col-md-4">
               <div class="field">
-                <label>Role & Permission Name <span class="text-danger">*</span></label>
+                <label>
+                  {{ 'employee.assignation.role_permission_name' | translate }}
+                  <span class="text-danger">*</span>
+                </label>
+
                 <hexa-dropdown
                   [options]="role.get('roleOptions')?.value"
                   optionLabel="name"
                   optionValue="id"
                   formControlName="roleId"
-                  placeholder="Select permission"
+                  [placeholder]="'employee.assignation.role_permission_placeholder' | translate"
                   (dropdownChanged)="onRoleChanged($event, i)">
                 </hexa-dropdown>
               </div>
-               @if (role.get('isSystemRole')?.invalid && role.get('isSystemRole')?.touched) {
-                <div class="text-danger">Role type is required.</div>
+
+              @if (
+                role.get('roleId')?.invalid &&
+                role.get('roleId')?.touched
+              ) {
+                <div class="text-danger">
+                  {{ 'employee.assignation.role_name_required' | translate }}
+                </div>
               }
             </div>
 
+
+            <!-- Main Head Hierarchy -->
             <div class="col-sm-12 col-md-4">
               <div class="field">
+
                 <label>
-                  Main Head Hierarchy
+                  {{ 'employee.assignation.main_head_hierarchy' | translate }}
+
                   @if (role.get('isMainRole')?.value) {
                     <span class="text-danger">*</span>
                   }
                 </label>
+
                 <hexa-dropdown
                   [options]="role.get('headOptions')?.value"
                   optionLabel="name"
                   [optionValue]="role.get('headValueField')?.value"
                   formControlName="mainHeadHierarchy"
-                  placeholder="Select branch"
+                  [placeholder]="'employee.assignation.main_head_hierarchy_placeholder' | translate"
                   (dropdownChanged)="onMainHeadChanged($event, i)">
                 </hexa-dropdown>
-              </div>
-               @if (role.get('roleId')?.invalid && role.get('roleId')?.touched) {
-                  <div class="text-danger">Role name is required.</div>
+
+                @if (
+                  role.get('mainHeadHierarchy')?.invalid &&
+                  role.get('mainHeadHierarchy')?.touched
+                ) {
+                  <div class="text-danger">
+                    {{ 'employee.assignation.main_head_hierarchy_required' | translate }}
+                  </div>
                 }
+
+              </div>
             </div>
 
+
+            <!-- More Head Hierarchy -->
             <div class="col-sm-12 col-md-4">
               <div class="field">
-                <label>More Head Hierarchy</label>
+
+                <label>
+                  {{ 'employee.assignation.more_head_hierarchy' | translate }}
+                </label>
+
                 <hexa-multi-select
                   [options]="getFilteredHeadOptions(i)"
                   optionLabel="name"
                   [optionValue]="role.get('headValueField')?.value"
                   formControlName="headHierarchy"
-                  placeholder="Select branch">
+                  [placeholder]="'employee.assignation.more_head_hierarchy_placeholder' | translate">
                 </hexa-multi-select>
-              </div>
-               @if (role.get('mainHeadHierarchy')?.invalid && role.get('mainHeadHierarchy')?.touched) {
-              <div class="text-danger">Main head hierarchy is required.</div>
-               }
-              </div>
 
+              </div>
+            </div>
+
+
+            <!-- Default Role -->
             <div class="col-sm-12 col-md-12">
               <hexa-button
-                label="Default"
-                [icon]="role.get('isMainRole')?.value ? 'pi pi-check' : 'pi pi-cog'"
-                [styleClass]="role.get('isMainRole')?.value ? 'active-default' : ''"
+                [label]="'employee.assignation.default' | translate"
+                [icon]="
+                  role.get('isMainRole')?.value
+                    ? 'pi pi-check'
+                    : 'pi pi-cog'
+                "
+                [styleClass]="
+                  role.get('isMainRole')?.value
+                    ? 'active-default'
+                    : ''
+                "
                 severity="primary"
                 (clicked)="setDefaultRole(i)">
               </hexa-button>
             </div>
+
+
+            <!-- Delete Role -->
             @if (rolesArray.length > 1) {
               <div class="col-sm-12 col-md-12 delete-role text-center">
-                <button (click)="removeRole(i)">
-                 <i class="pi pi-trash"></i>
+                <button
+                  type="button"
+                  (click)="removeRole(i)">
+                  <i class="pi pi-trash"></i>
                 </button>
               </div>
             }
+
           </div>
         }
 
-       <a class="add-role" (click)="addRole()"><span><i class="pi pi-plus"></i></span> Add another role</a>
+
+        <!-- Add Another Role -->
+        <a
+          class="add-role"
+          (click)="addRole()">
+
+          <span>
+            <i class="pi pi-plus"></i>
+          </span>
+
+          {{ 'employee.assignation.add_another_role' | translate }}
+
+        </a>
+
       </div>
     </div>
 
   </form>
 </div>
+

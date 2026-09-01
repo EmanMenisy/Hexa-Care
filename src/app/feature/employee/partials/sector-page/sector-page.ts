@@ -60,7 +60,7 @@ export class SectorPage {
   }
 
   selectDoctorCard(): void {
-  this.router.navigate(['creation'], {
+   this.router.navigate(['creation'], {
     queryParams: { mode: EmployeeCreationMode.Doctor },
   });
 }

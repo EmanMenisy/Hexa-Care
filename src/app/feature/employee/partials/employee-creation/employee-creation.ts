@@ -13,10 +13,13 @@ import { EmployeeCreationService } from '../../service/employee-creation-service
 import { ToastService } from '../../../../core/services/toast/toast';
 import { Localization } from '../../../../core/services/localization/localization';
 import { ToastType } from '../../../../core/models/enums/toast-type';
+import { Attachments } from "../attachments/attachments";
+import { AttachmentRow } from '../../model/employee-creation';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'hexa-employee-creation',
-  imports: [EmployeeCreationStepper, ButtonComponent, PersonalInfo, ProfessionalInformation, AssignationInformation],
+  imports: [EmployeeCreationStepper, TranslatePipe, ButtonComponent, PersonalInfo, ProfessionalInformation, AssignationInformation, Attachments],
   templateUrl: './employee-creation.html',
   styleUrl: './employee-creation.scss',
 })
@@ -30,11 +33,14 @@ export class EmployeeCreation implements OnInit {
   public readonly localizationService = inject(Localization);
   private router = inject(Router);
   private EmployeeCreationService = inject(EmployeeCreationService);
+  photoUrl = signal<string | null>(null);
+  existingAttachments = signal<any[]>([]);
 
   // ============================================================
   // Form + stepper state
   // ============================================================
   form = this.buildForm();
+  staffAssignationData = signal<any>(null);
 
   // Step index where the "Save" button appears instead of "Next" (Assignation = step 3)
   private readonly saveStep = signal(3);
@@ -53,6 +59,7 @@ export class EmployeeCreation implements OnInit {
 
   // Reference to the child component so we can call buildAssignmentPayload()/getScopeLevel() on Save
   @ViewChild(AssignationInformation) assignationInfoCmp?: AssignationInformation;
+  @ViewChild(Attachments) attachmentsCmp?: Attachments;
 
   staffTypeId: string | null = null;
 
@@ -79,7 +86,7 @@ export class EmployeeCreation implements OnInit {
         nationalId: [''],           // staffMember only
         maritalStatus: [1],
         bloodGroup: [''],
-        phone: [''],
+        mobile: [''],
         email: [''],
         address: [''],
         city: [''],
@@ -165,11 +172,24 @@ export class EmployeeCreation implements OnInit {
   // ============================================================
   // Stepper config
   // ============================================================
+
   steps = signal([
-    { label: 'Personal info', subtitle: 'Personal details' },
-    { label: 'Professional', subtitle: 'Experience & skills' },
-    { label: 'Assignation', subtitle: 'Assignation structure' },
-    { label: 'Documents', subtitle: 'Attachments' },
+    {
+      label: 'employee.stepper.personal_info',
+      subtitle: 'employee.stepper.personal_info_subtitle',
+    },
+    {
+      label: 'employee.stepper.professional',
+      subtitle: 'employee.stepper.professional_subtitle',
+    },
+    {
+      label: 'employee.stepper.assignation',
+      subtitle: 'employee.stepper.assignation_subtitle',
+    },
+    {
+      label: 'employee.stepper.documents',
+      subtitle: 'employee.stepper.documents_subtitle',
+    },
   ]);
 
   // First invalid step (determines how far the user can jump ahead directly in the stepper)
@@ -206,21 +226,79 @@ export class EmployeeCreation implements OnInit {
     return this.step() === this.saveStep();
   }
 
+  // ============================================================
+  // Lifecycle
+  // ============================================================
   ngOnInit(): void {
+    this.initStaffTypeId();
+
+    if (this.mode === 'update' && this.employeeId) {
+      this.loadEmployeeData();
+      this.loadAttachments();
+    }
+  }
+
+  // ============================================================
+  // ngOnInit helpers
+  // ============================================================
+
+  // In create mode, the staff type comes from the route query param.
+  // In update mode, it's set later once the employee data is patched.
+  private initStaffTypeId(): void {
     const routeStaffTypeId = this.route.snapshot.queryParamMap.get('staffTypeId');
     if (this.mode === 'create') {
       this.staffTypeId = routeStaffTypeId;
     }
-    if (this.mode === 'update' && this.employeeId) {
-      // TODO: fetch the existing employee's data and patch the form when in update mode
-      // employeeService.getById(this.employeeId).subscribe(emp => {
-      //   this.form.patchValue({ personal: emp.personal, professional: emp.professional, assignment: emp.assignment });
-      // });
+  }
+
+  // Fetches and patches the employee's data (doctor or staff member) based on staffMode
+  private loadEmployeeData(): void {
+    if (!this.employeeId) return;
+
+    if (this.staffMode() === EmployeeCreationMode.StaffMember) {
+      this.loadStaffMember(this.employeeId);
+    } else {
+      this.loadDoctor(this.employeeId);
     }
   }
 
+  private loadStaffMember(employeeId: string): void {
+    this.EmployeeCreationService.getStuffMemberById(employeeId).subscribe({
+      next: (res) => {
+        this.patchStaffForm(res);
+        this.staffTypeId = res.basicInfo.staffMemberTypeId;
+      },
+    });
+  }
+
+  private loadDoctor(employeeId: string): void {
+    this.EmployeeCreationService.getDoctorDetails(employeeId).subscribe({
+      next: (res) => this.patchDoctorForm(res),
+      error: (err) => console.log(err),
+    });
+  }
+
+  // Fetches previously uploaded documents so they show up on the Documents step
+  private loadAttachments(): void {
+    if (!this.employeeId) return;
+
+    this.EmployeeCreationService.getAttachment(this.employeeId).subscribe({
+      next: (res) => {
+        const mapped: AttachmentRow[] = (res?.items ?? []).map((item: any) => ({
+          id: item.id,
+          label: item.title,
+          date: new Date(item.uploadedAt),
+          fileUrl: item.fileName,
+          isExisting: true,
+        }));
+        this.existingAttachments.set(mapped);
+        this.createdEmployeeId = this.employeeId;
+      },
+    });
+  }
+
   onCancel(): void {
-    this.router.navigate(['/employees']);
+    this.router.navigate(['/sector']);
   }
 
   // Called from the Next button (only available on step 1 and 2)
@@ -230,6 +308,116 @@ export class EmployeeCreation implements OnInit {
     if (this.step() > this.visitedStep()) {
       this.visitedStep.set(this.step());
     }
+  }
+
+  private patchStaffForm(data: any): void {
+    const basic = data.basicInfo ?? {};
+    const employment = data.employment ?? {};
+
+    this.form.patchValue({
+      personal: {
+        firstName: basic.firstName ?? '',
+        secondName: basic.secondName ?? '',
+        thirdName: basic.thirdName ?? '',
+        lastName: basic.lastName ?? '',
+        name: basic.name ?? '',
+        nameArabic: basic.nameArabic ?? '',
+        gender: basic.gender ?? 1,
+        dateOfBirth: basic.dateOfBirth ?? '',
+        nationality: basic.nationality ?? '',
+        nationalId: basic.nationalId ?? '',
+        maritalStatus: basic.maritalStatus ?? 1,
+        bloodGroup: basic.bloodGroup ?? '',
+        mobile: basic.mobile ?? '',
+        email: basic.email ?? '',
+        address: basic.address ?? '',
+        city: basic.city ?? '',
+        governorate: basic.governorate ?? '',
+        postalCode: basic.postalCode ?? '',
+        country: basic.country ?? '',
+        emergencyContactName: basic.emergencyContactName ?? '',
+        emergencyContactPhone: basic.emergencyContactPhone ?? '',
+        username: basic.username ?? '',
+        staffMemberTypeId: basic.staffMemberTypeId ?? '',
+      },
+      professional: {
+        jobTitle: employment.jobTitle ?? '',
+        employmentType: employment.employmentType ?? 1,
+        joiningDate: employment.joiningDate ?? '',
+        contractEndDate: employment.contractEndDate ?? '',
+        baseSalary: employment.baseSalary ?? 0,
+        commissionPercent: employment.commissionPercent ?? 0,
+        qualification: employment.qualification ?? '',
+        specialty: employment.specialty ?? '',
+        yearsOfExperience: employment.yearsOfExperience ?? 0,
+        insuranceNumber: employment.insuranceNumber ?? '',
+        licensingAuthority: employment.licensingAuthority ?? '',
+        registrationNumber: employment.registrationNumber ?? '',
+        experienceSummary: employment.experienceSummary ?? '',
+        bio: employment.bio ?? '',
+        skills: employment.skills ?? '',
+        certifications: employment.certifications ?? '',
+        languages: employment.languages ?? '',
+      },
+    });
+
+    this.staffTypeId = basic.staffMemberTypeId ?? this.staffTypeId;
+    this.photoUrl.set(basic.photoUrl ?? null);
+    this.staffAssignationData.set(data.assignation ?? null);
+  }
+
+  private patchDoctorForm(data: any): void {
+    const personalInfo = data.personalInformation ?? {};
+    const professionalInfo = data.professionalInformation ?? {};
+    const assignationInfo = data.assigneionInformation ?? {};
+
+    this.form.patchValue({
+      personal: {
+        firstName: personalInfo.firstName ?? '',
+        secondName: personalInfo.secondName ?? '',
+        thirdName: personalInfo.thirdName ?? '',
+        lastName: personalInfo.lastName ?? '',
+        name: personalInfo.name ?? '',
+        gender: personalInfo.gender ?? 1,
+        dateOfBirth: personalInfo.dateOfBirth ?? '',
+        nationality: personalInfo.nationality ?? '',
+        maritalStatus: personalInfo.maritalStatus ?? 1,
+        bloodGroup: personalInfo.bloodGroup ?? '',
+        mobile: personalInfo.mobile ?? '',
+        email: personalInfo.email ?? '',
+        address: personalInfo.address ?? '',
+        city: personalInfo.city ?? '',
+        governorate: personalInfo.governorate ?? '',
+        postalCode: personalInfo.postalCode ?? '',
+        country: personalInfo.country ?? '',
+        username: personalInfo.userName ?? '',
+      },
+      professional: {
+        specialty: professionalInfo.specialization ?? '',
+        subSpecialty: professionalInfo.subSpecialization ?? '',
+        rank: professionalInfo.rank ?? 0,
+        qualification: professionalInfo.qualification ?? '',
+        yearsOfExperience: professionalInfo.yearsOfExperience ?? 0,
+        academicRank: professionalInfo.academicRank ?? '',
+        licenseNumber: professionalInfo.licenseNumber ?? '',
+        medicalCouncil: professionalInfo.medicalCouncil ?? '',
+        registrationNumber: professionalInfo.registrationNumber ?? '',
+        joiningDate: professionalInfo.joiningDate ?? '',
+        experienceSummary: professionalInfo.experienceSummary ?? '',
+        bio: professionalInfo.bio ?? '',
+        areasOfExpertise: professionalInfo.areasOfExpertise ?? '',
+        languages: professionalInfo.languages ?? '',
+        cashCommissionPercent: professionalInfo.cashCommissionPercent ?? 0,
+        contractCommissionPercent: professionalInfo.contractCommissionPercent ?? 0,
+      },
+    });
+    this.photoUrl.set(personalInfo.photoUrl ?? null);
+
+    
+    this.staffAssignationData.set({
+      assigneStructure: assignationInfo.scopes ?? null,
+      roles: assignationInfo.roles ?? [],
+    });
   }
 
   // ============================================================
@@ -257,6 +445,9 @@ export class EmployeeCreation implements OnInit {
     const fd = new FormData();
 
     // ---------- PersonalInformation ----------
+    if (this.mode === 'update' && this.employeeId) {
+      fd.append('id', this.employeeId);
+    }
     fd.append('PersonalInformation.FirstName', personal.firstName ?? '');
     fd.append('PersonalInformation.LastName', personal.lastName ?? '');
     fd.append('PersonalInformation.SecondName', personal.secondName ?? '');
@@ -268,7 +459,7 @@ export class EmployeeCreation implements OnInit {
     fd.append('PersonalInformation.MaritalStatus', String(personal.maritalStatus ?? ''));
     fd.append('PersonalInformation.BloodGroup', String(personal.bloodGroup ?? ''));
     fd.append('PersonalInformation.Email', personal.email ?? '');
-    fd.append('PersonalInformation.Mobile', personal.phone ?? '');
+    fd.append('PersonalInformation.Mobile', personal.mobile ?? '');
     fd.append('PersonalInformation.Address', personal.address ?? '');
     fd.append('PersonalInformation.City', personal.city ?? '');
     fd.append('PersonalInformation.Governorate', personal.governorate ?? '');
@@ -317,6 +508,9 @@ export class EmployeeCreation implements OnInit {
     const fd = new FormData();
 
     // ---------- BasicInfo ----------
+    if (this.mode === 'update' && this.employeeId) {
+      fd.append('BasicInfo.StaffMemberId', this.employeeId);
+    }
     fd.append('BasicInfo.FirstName', personal.firstName ?? '');
     fd.append('BasicInfo.SecondName', personal.secondName ?? '');
     fd.append('BasicInfo.ThirdName', personal.thirdName ?? '');
@@ -329,7 +523,7 @@ export class EmployeeCreation implements OnInit {
     fd.append('BasicInfo.NationalId', personal.nationalId ?? '');
     fd.append('BasicInfo.MaritalStatus', String(personal.maritalStatus ?? ''));
     fd.append('BasicInfo.BloodGroup', String(personal.bloodGroup ?? ''));
-    fd.append('BasicInfo.Phone', personal.phone ?? '');
+    fd.append('BasicInfo.Mobile', personal.mobile ?? '');
     fd.append('BasicInfo.Email', personal.email ?? '');
     fd.append('BasicInfo.Address', personal.address ?? '');
     fd.append('BasicInfo.City', personal.city ?? '');
@@ -385,18 +579,24 @@ export class EmployeeCreation implements OnInit {
     }
 
     if (this.staffMode() === EmployeeCreationMode.Doctor) {
-      this.createDoctor(this.buildDoctorFormData());
+      if (this.mode === 'update') {
+        this.updateDoctor(this.buildDoctorFormData());
+      } else {
+        this.createDoctor(this.buildDoctorFormData());
+      }
     } else {
-      this.createStaffMember(this.buildStaffFormData());
+      if (this.mode === 'update') {
+        this.updateStaffMember(this.buildStaffFormData());
+      } else {
+        this.createStaffMember(this.buildStaffFormData());
+      }
     }
   }
 
   // Sends the create request for a Staff Member, then moves to the document upload step on success
   createStaffMember(formData: FormData): void {
-  console.log('from staff')
     this.EmployeeCreationService.createStaffMember(formData).subscribe({
       next: (res) => {
-        console.log(res);
         this.toasterService.addToast(
           ToastType.SUCCESS,
           this.localizationService.instant('Staff Member Has been created Successfully'),
@@ -408,20 +608,14 @@ export class EmployeeCreation implements OnInit {
         this.createdEmployeeId = res?.id ?? res?.employeeId ?? null;
         this.goToDocumentsStep();
       },
-      error: (err) => {
-        console.log(err);
-        // note: we don't advance to the Documents step if the save actually failed
-      },
-      complete: () => {},
+
     });
   }
 
   // Same idea as createStaffMember but for the doctor flow
   createDoctor(formData: FormData): void {
-    console.log('from doctor')
     this.EmployeeCreationService.createDoctor(formData).subscribe({
       next: (res) => {
-        console.log(res);
         this.toasterService.addToast(
           ToastType.SUCCESS,
           this.localizationService.instant('Doctor Has been created Successfully'),
@@ -433,60 +627,83 @@ export class EmployeeCreation implements OnInit {
         this.createdEmployeeId = res?.id ?? res?.employeeId ?? null;
         this.goToDocumentsStep();
       },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {},
     });
   }
 
-  // TODO: upload the attachments here, on a separate endpoint, using this.createdEmployeeId
-  onUploadDocuments(): void {
+  updateStaffMember(formData: FormData): void {
+    this.EmployeeCreationService.updateStaffMember(formData).subscribe({
+      next: (res) => {
+        this.toasterService.addToast(
+          ToastType.SUCCESS,
+          this.localizationService.instant('Staff Member Has been updated Successfully'),
+          '',
+          {},
+          true,
+          false,
+        );
+        this.goToDocumentsStep();
+      },
+    });
+  }
 
+  updateDoctor(formData: FormData): void {
+    this.EmployeeCreationService.updateDoctor(formData).subscribe({
+      next: (res) => {
+        this.toasterService.addToast(
+          ToastType.SUCCESS,
+          this.localizationService.instant('Doctor Has been updated Successfully'),
+          '',
+          {},
+          true,
+          false,
+        );
+        this.goToDocumentsStep();
+      },
+    });
   }
 
   // ============================================================
-// Appends the assignment structure + roles as indexed multipart
-// fields instead of a JSON .
-// ============================================================
-private appendAssignmentToFormData(fd: FormData, prefix: string, assignment: any): void {
-  const structure = assignment?.assigneStructure;
+  // Appends the assignment structure + roles as indexed multipart
+  // fields instead of a JSON.
+  // ============================================================
+  private appendAssignmentToFormData(fd: FormData, prefix: string, assignment: any): void {
+    const structure = assignment?.assigneStructure;
 
-  fd.append(`${prefix}.AssigneStructure.OrganzationId`, structure?.organzationId ?? '');
+    fd.append(`${prefix}.AssigneStructure.OrganzationId`, structure?.organzationId ?? '');
 
-  (structure?.company ?? []).forEach((company: any, cIndex: number) => {
-    const companyPrefix = `${prefix}.AssigneStructure.Company[${cIndex}]`;
-    fd.append(`${companyPrefix}.Id`, company.id ?? '');
+    (structure?.company ?? []).forEach((company: any, cIndex: number) => {
+      const companyPrefix = `${prefix}.AssigneStructure.Company[${cIndex}]`;
+      fd.append(`${companyPrefix}.Id`, company.id ?? '');
 
-    (company.branches ?? []).forEach((branch: any, bIndex: number) => {
-      const branchPrefix = `${companyPrefix}.branches[${bIndex}]`;
-      fd.append(`${branchPrefix}.Id`, branch.id ?? '');
+      (company.branches ?? []).forEach((branch: any, bIndex: number) => {
+        const branchPrefix = `${companyPrefix}.branches[${bIndex}]`;
+        fd.append(`${branchPrefix}.Id`, branch.id ?? '');
 
-      (branch.departments ?? []).forEach((dept: any, dIndex: number) => {
-        const deptPrefix = `${branchPrefix}.departments[${dIndex}]`;
-        fd.append(`${deptPrefix}.Id`, dept.id ?? '');
+        (branch.departments ?? []).forEach((dept: any, dIndex: number) => {
+          const deptPrefix = `${branchPrefix}.departments[${dIndex}]`;
+          fd.append(`${deptPrefix}.Id`, dept.id ?? '');
 
-        (dept.teamId ?? []).forEach((teamId: string, tIndex: number) => {
-          fd.append(`${deptPrefix}.TeamId[${tIndex}]`, teamId ?? '');
+          (dept.teamId ?? []).forEach((teamId: string, tIndex: number) => {
+            fd.append(`${deptPrefix}.TeamId[${tIndex}]`, teamId ?? '');
+          });
         });
       });
     });
-  });
 
-  (assignment?.roles ?? []).forEach((role: any, rIndex: number) => {
-    const rolePrefix = `${prefix}.Roles[${rIndex}]`;
-    fd.append(`${rolePrefix}.RoleId`, role.roleId ?? '');
-    fd.append(`${rolePrefix}.IsMainRole`, String(role.isMainRole ?? false));
-    fd.append(`${rolePrefix}.IsSystemRole`, String(role.isSystemRole ?? false));
+    (assignment?.roles ?? []).forEach((role: any, rIndex: number) => {
+      const rolePrefix = `${prefix}.Roles[${rIndex}]`;
+      fd.append(`${rolePrefix}.RoleId`, role.roleId ?? '');
+      fd.append(`${rolePrefix}.IsMainRole`, String(role.isMainRole ?? false));
+      fd.append(`${rolePrefix}.IsSystemRole`, String(role.isSystemRole ?? false));
 
-    (role.hierarchies ?? []).forEach((h: any, hIndex: number) => {
-      const hPrefix = `${rolePrefix}.Hierarchies[${hIndex}]`;
-      fd.append(`${hPrefix}.HeadHierarchyId`, h.headHierarchyId ?? '');
-      fd.append(`${hPrefix}.HeadHierarchyName`, h.headHierarchyName ?? '');
-      fd.append(`${hPrefix}.IsMainHierarchy`, String(h.isMainHierarchy ?? false));
+      (role.hierarchies ?? []).forEach((h: any, hIndex: number) => {
+        const hPrefix = `${rolePrefix}.Hierarchies[${hIndex}]`;
+        fd.append(`${hPrefix}.HeadHierarchyId`, h.headHierarchyId ?? '');
+        fd.append(`${hPrefix}.HeadHierarchyName`, h.headHierarchyName ?? '');
+        fd.append(`${hPrefix}.IsMainHierarchy`, String(h.isMainHierarchy ?? false));
+      });
     });
-  });
-}
+  }
 
   // Moves the user to the Documents step (step 4) after a successful create
   private goToDocumentsStep(): void {
@@ -496,7 +713,39 @@ private appendAssignmentToFormData(fd: FormData, prefix: string, assignment: any
     }
   }
 
+  onUploadDocuments(): void {
+  const attachments = this.attachmentsCmp?.getAttachments() ?? [];
 
+  const entityId = this.mode === 'update' ? this.employeeId : this.createdEmployeeId;
+
+  if (!attachments.length || !entityId) {
+    this.router.navigate(['/home']);
+    return;
+  }
+
+  const fd = new FormData();
+
+  fd.append('EntityId', entityId);
+
+  attachments.forEach((item, i) => {
+    fd.append(`Attachments[${i}].file`, item.file);
+    fd.append(`Attachments[${i}].title`, item.title);
+  });
+
+  this.EmployeeCreationService.uploadFile(fd).subscribe({
+    next: (res) => {
+      this.toasterService.addToast(
+        ToastType.SUCCESS,
+        this.localizationService.instant('employee.documents.upload_success'),
+        '',
+        {},
+        true,
+        false,
+      );
+      this.router.navigate(['/home']);
+    },
+  });
+}
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event: BeforeUnloadEvent) {
