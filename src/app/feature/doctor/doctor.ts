@@ -37,8 +37,8 @@ private readonly creationService = inject(EmployeeCreationService);
 
   ngOnInit() {
     this.HeaderActionService.action$.subscribe((res) => {
-      if (res == 'create') {
-        this.routeToSectorPage();
+      if (res == 'createDoctor') {
+        this.createDoctor();
       }
     });
     this.getTableColumns();
@@ -193,7 +193,9 @@ private readonly creationService = inject(EmployeeCreationService);
   //====================Delete
   onDelete(roleId: string) {}
 
-  routeToSectorPage() {
-    this.router.navigate(['sector']);
+  createDoctor() {
+     this.router.navigate(['/creation'], {
+     queryParams: { mode: EmployeeCreationMode.Doctor },
+  });
   }
 }
