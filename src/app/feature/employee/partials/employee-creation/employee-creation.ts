@@ -1,8 +1,7 @@
-import { Component, computed, inject, signal, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, computed, inject, signal, OnInit, ViewChild, HostListener, DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, NonNullableFormBuilder, ValidationErrors, Validators } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { merge, startWith } from 'rxjs';
 import { EmployeeCreationStepper } from '../employee-creation-stepper/employee-creation-stepper';
 import { ButtonComponent } from '../../../shared/components/primeng/button/button';
 import { PersonalInfo } from "../personal-information/personal-information";
@@ -33,6 +32,7 @@ export class EmployeeCreation implements OnInit {
   public readonly localizationService = inject(Localization);
   private router = inject(Router);
   private EmployeeCreationService = inject(EmployeeCreationService);
+  private readonly destroyRef = inject(DestroyRef);
   photoUrl = signal<string | null>(null);
   existingAttachments = signal<any[]>([]);
 
@@ -142,8 +142,6 @@ export class EmployeeCreation implements OnInit {
         team: this.fb.control<string[]>([], this.requiredArray),
         roles: this.fb.array([this.createRole(true)]), // first row is explicitly the default role
       }),
-
-      documents: this.fb.array<any>([]), // step 4, uploaded separately to a different endpoint after create
     });
   }
 
@@ -263,38 +261,44 @@ export class EmployeeCreation implements OnInit {
   }
 
   private loadStaffMember(employeeId: string): void {
-    this.EmployeeCreationService.getStuffMemberById(employeeId).subscribe({
-      next: (res) => {
-        this.patchStaffForm(res);
-        this.staffTypeId = res.basicInfo.staffMemberTypeId;
-      },
-    });
+    this.EmployeeCreationService.getStuffMemberById(employeeId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.patchStaffForm(res);
+          this.staffTypeId = res.basicInfo.staffMemberTypeId;
+        },
+      });
   }
 
   private loadDoctor(employeeId: string): void {
-    this.EmployeeCreationService.getDoctorDetails(employeeId).subscribe({
-      next: (res) => this.patchDoctorForm(res),
-      error: (err) => console.log(err),
-    });
+    this.EmployeeCreationService.getDoctorDetails(employeeId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => this.patchDoctorForm(res),
+        error: (err) => console.log(err),
+      });
   }
 
   // Fetches previously uploaded documents so they show up on the Documents step
   private loadAttachments(): void {
     if (!this.employeeId) return;
 
-    this.EmployeeCreationService.getAttachment(this.employeeId).subscribe({
-      next: (res) => {
-        const mapped: AttachmentRow[] = (res?.items ?? []).map((item: any) => ({
-          id: item.id,
-          label: item.title,
-          date: new Date(item.uploadedAt),
-          fileUrl: item.fileName,
-          isExisting: true,
-        }));
-        this.existingAttachments.set(mapped);
-        this.createdEmployeeId = this.employeeId;
-      },
-    });
+    this.EmployeeCreationService.getAttachment(this.employeeId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          const mapped: AttachmentRow[] = (res?.items ?? []).map((item: any) => ({
+            id: item.id,
+            label: item.title,
+            date: new Date(item.uploadedAt),
+            fileUrl: item.fileName,
+            isExisting: true,
+          }));
+          this.existingAttachments.set(mapped);
+          this.createdEmployeeId = this.employeeId;
+        },
+      });
   }
 
   onCancel(): void {
@@ -413,7 +417,6 @@ export class EmployeeCreation implements OnInit {
     });
     this.photoUrl.set(personalInfo.photoUrl ?? null);
 
-    
     this.staffAssignationData.set({
       assigneStructure: assignationInfo.scopes ?? null,
       roles: assignationInfo.roles ?? [],
@@ -595,71 +598,78 @@ export class EmployeeCreation implements OnInit {
 
   // Sends the create request for a Staff Member, then moves to the document upload step on success
   createStaffMember(formData: FormData): void {
-    this.EmployeeCreationService.createStaffMember(formData).subscribe({
-      next: (res) => {
-        this.toasterService.addToast(
-          ToastType.SUCCESS,
-          this.localizationService.instant('Staff Member Has been created Successfully'),
-          '',
-          {},
-          true,
-          false,
-        );
-        this.createdEmployeeId = res?.id ?? res?.employeeId ?? null;
-        this.goToDocumentsStep();
-      },
-
-    });
+    this.EmployeeCreationService.createStaffMember(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.toasterService.addToast(
+            ToastType.SUCCESS,
+            this.localizationService.instant('Staff Member Has been created Successfully'),
+            '',
+            {},
+            true,
+            false,
+          );
+          this.createdEmployeeId = res?.id ?? res?.employeeId ?? null;
+          this.goToDocumentsStep();
+        },
+      });
   }
 
   // Same idea as createStaffMember but for the doctor flow
   createDoctor(formData: FormData): void {
-    this.EmployeeCreationService.createDoctor(formData).subscribe({
-      next: (res) => {
-        this.toasterService.addToast(
-          ToastType.SUCCESS,
-          this.localizationService.instant('Doctor Has been created Successfully'),
-          '',
-          {},
-          true,
-          false,
-        );
-        this.createdEmployeeId = res?.id ?? res?.employeeId ?? null;
-        this.goToDocumentsStep();
-      },
-    });
+    this.EmployeeCreationService.createDoctor(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.toasterService.addToast(
+            ToastType.SUCCESS,
+            this.localizationService.instant('Doctor Has been created Successfully'),
+            '',
+            {},
+            true,
+            false,
+          );
+          this.createdEmployeeId = res?.id ?? res?.employeeId ?? null;
+          this.goToDocumentsStep();
+        },
+      });
   }
 
   updateStaffMember(formData: FormData): void {
-    this.EmployeeCreationService.updateStaffMember(formData).subscribe({
-      next: (res) => {
-        this.toasterService.addToast(
-          ToastType.SUCCESS,
-          this.localizationService.instant('Staff Member Has been updated Successfully'),
-          '',
-          {},
-          true,
-          false,
-        );
-        this.goToDocumentsStep();
-      },
-    });
+    this.EmployeeCreationService.updateStaffMember(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.toasterService.addToast(
+            ToastType.SUCCESS,
+            this.localizationService.instant('Staff Member Has been updated Successfully'),
+            '',
+            {},
+            true,
+            false,
+          );
+          this.goToDocumentsStep();
+        },
+      });
   }
 
   updateDoctor(formData: FormData): void {
-    this.EmployeeCreationService.updateDoctor(formData).subscribe({
-      next: (res) => {
-        this.toasterService.addToast(
-          ToastType.SUCCESS,
-          this.localizationService.instant('Doctor Has been updated Successfully'),
-          '',
-          {},
-          true,
-          false,
-        );
-        this.goToDocumentsStep();
-      },
-    });
+    this.EmployeeCreationService.updateDoctor(formData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.toasterService.addToast(
+            ToastType.SUCCESS,
+            this.localizationService.instant('Doctor Has been updated Successfully'),
+            '',
+            {},
+            true,
+            false,
+          );
+          this.goToDocumentsStep();
+        },
+      });
   }
 
   // ============================================================
@@ -714,38 +724,40 @@ export class EmployeeCreation implements OnInit {
   }
 
   onUploadDocuments(): void {
-  const attachments = this.attachmentsCmp?.getAttachments() ?? [];
+    const attachments = this.attachmentsCmp?.getAttachments() ?? [];
 
-  const entityId = this.mode === 'update' ? this.employeeId : this.createdEmployeeId;
+    const entityId = this.mode === 'update' ? this.employeeId : this.createdEmployeeId;
 
-  if (!attachments.length || !entityId) {
-    this.router.navigate(['/home']);
-    return;
-  }
-
-  const fd = new FormData();
-
-  fd.append('EntityId', entityId);
-
-  attachments.forEach((item, i) => {
-    fd.append(`Attachments[${i}].file`, item.file);
-    fd.append(`Attachments[${i}].title`, item.title);
-  });
-
-  this.EmployeeCreationService.uploadFile(fd).subscribe({
-    next: (res) => {
-      this.toasterService.addToast(
-        ToastType.SUCCESS,
-        this.localizationService.instant('employee.documents.upload_success'),
-        '',
-        {},
-        true,
-        false,
-      );
+    if (!attachments.length || !entityId) {
       this.router.navigate(['/home']);
-    },
-  });
-}
+      return;
+    }
+
+    const fd = new FormData();
+
+    fd.append('EntityId', entityId);
+
+    attachments.forEach((item, i) => {
+      fd.append(`Attachments[${i}].file`, item.file);
+      fd.append(`Attachments[${i}].title`, item.title);
+    });
+
+    this.EmployeeCreationService.uploadFile(fd)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.toasterService.addToast(
+            ToastType.SUCCESS,
+            this.localizationService.instant('employee.documents.upload_success'),
+            '',
+            {},
+            true,
+            false,
+          );
+          this.router.navigate(['/home']);
+        },
+      });
+  }
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event: BeforeUnloadEvent) {

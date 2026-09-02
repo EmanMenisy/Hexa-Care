@@ -342,6 +342,23 @@
       }
     }
   },
+   "doctor": {
+    "header": {
+      "title": "Doctors",
+      "subtitle": "Manage and view all doctors",
+      "addDoctor":"Add Doctor"
+    },
+    "table": {
+      "doctor_code": "Doctor Code",
+      "full_name": "Full Name",
+      "rank": "Rank",
+      "specialty": "Specialty",
+      "phone": "Phone",
+      "gender": "Gender",
+      "status": "Status",
+      "created_at": "Created At"
+    }
+   },
   "organization": {
     "creationMessage": "You’ve created successfully",
     "updateMessage": "Your changes have been saved successfully.",

@@ -206,7 +206,20 @@
           />
         </div>
 
+            <!-- Email -->
         <div class="col-lg-6 col-md-4 col-12">
+          <label class="field-label">
+            {{ 'employee.personal_info.email' | translate }}
+          </label>
+
+          <hexa-input-text
+            [placeholder]="'employee.personal_info.email_placeholder' | translate"
+            type="email"
+            formControlName="email"
+          />
+        </div>
+
+        <div class="col-lg-6 col-md-12 col-12">
           <div class="field">
             <label for="attachment">
               {{ 'employee.personal_info.photo_placeholder' | translate }}
@@ -229,7 +242,7 @@
             </div>
 
             @if (photoPreviewUrl()) {
-              <div class="mt-3 w-25 h-25">
+              <div class="mt-3">
                 <img [src]="photoPreviewUrl()" alt="Employee photo" class="photo-preview" />
               </div>
             }
@@ -240,19 +253,6 @@
               </div>
             }
           </div>
-        </div>
-
-        <!-- Email -->
-        <div class="col-lg-6 col-md-4 col-12">
-          <label class="field-label">
-            {{ 'employee.personal_info.email' | translate }}
-          </label>
-
-          <hexa-input-text
-            [placeholder]="'employee.personal_info.email_placeholder' | translate"
-            type="email"
-            formControlName="email"
-          />
         </div>
       </div>
     </section>

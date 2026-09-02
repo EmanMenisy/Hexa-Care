@@ -68,7 +68,7 @@ export const routes: Routes = [
             subtitle:"doctor.header.subtitle",
             buttons:[
               {
-                label:"new doctor",
+                label:"doctor.header.addDoctor",
                 icon:'pi pi-plus',
                 action:'createDoctor',
               },

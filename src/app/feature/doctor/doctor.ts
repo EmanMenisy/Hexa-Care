@@ -69,51 +69,51 @@ private readonly creationService = inject(EmployeeCreationService);
   //====================Constructor
 
   //====================Table configurations
-  getTableColumns(): void {
-    this.tableColumns = [
-  {
-    field: 'doctorCode',
-    name: 'employee.table.doctor_code',
-    type: TableHeaderType.String,
-    sortable: false,
-  },
-  {
-    field: 'fullName',
-    name: 'employee.table.full_name',
-    type: TableHeaderType.String,
-  },
-  {
-    field: 'rank',
-    name: 'employee.table.rank',
-    type: TableHeaderType.Number,
-  },
-  {
-    field: 'specialty',
-    name: 'employee.table.specialty',
-    type: TableHeaderType.String,
-  },
-  {
-    field: 'phone',
-    name: 'employee.table.phone',
-    type: TableHeaderType.String,
-  },
-  {
-    field: 'gender',
-    name: 'employee.table.gender',
-    type: TableHeaderType.Number,
-  },
-  {
-    field: 'isActive',
-    name: 'employee.table.status',
-    type: TableHeaderType.Boolean,
-  },
-  {
-    field: 'createdAt',
-    name: 'employee.table.created_at',
-    type: TableHeaderType.Date,
-  },
+ getTableColumns(): void {
+  this.tableColumns = [
+    {
+      field: 'doctorCode',
+      name: 'doctor.table.doctor_code',
+      type: TableHeaderType.String,
+      sortable: false,
+    },
+    {
+      field: 'fullName',
+      name: 'doctor.table.full_name',
+      type: TableHeaderType.String,
+    },
+    {
+      field: 'rank',
+      name: 'doctor.table.rank',
+      type: TableHeaderType.Number,
+    },
+    {
+      field: 'specialty',
+      name: 'doctor.table.specialty',
+      type: TableHeaderType.String,
+    },
+    {
+      field: 'phone',
+      name: 'doctor.table.phone',
+      type: TableHeaderType.String,
+    },
+    {
+      field: 'gender',
+      name: 'doctor.table.gender',
+      type: TableHeaderType.Number,
+    },
+    {
+      field: 'isActive',
+      name: 'doctor.table.status',
+      type: TableHeaderType.Boolean,
+    },
+    {
+      field: 'createdAt',
+      name: 'doctor.table.created_at',
+      type: TableHeaderType.Date,
+    },
   ] as ITableHeader[];
-  }
+}
 
   getTableActions(): void {
     this.tableActions = [
@@ -170,7 +170,6 @@ private readonly creationService = inject(EmployeeCreationService);
     this.isFilterApplied.set(this.hasFilters());
     this.creationService.getAllDoctors(request).subscribe({
       next: (res) => {
-        console.log(res , 'all staff');
         this.list.set(res.items);
         this.pageStatus = ApiStatus.Success;
         this.totalRecordsLength = res.records;

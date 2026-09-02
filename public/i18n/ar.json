@@ -326,6 +326,23 @@
       }
     }
   },
+  "doctor": {
+    "header": {
+      "title": "الأطباء",
+      "subtitle": "إدارة وعرض جميع الأطباء",
+      "addDoctor":"اضافة طبيب"
+    },
+    "table": {
+      "doctor_code": "كود الطبيب",
+      "full_name": "اسم الطبيب بالكامل",
+      "rank": "الرتبة",
+      "specialty": "التخصص",
+      "phone": "رقم الهاتف",
+      "gender": "النوع",
+      "status": "الحالة",
+      "created_at": "تاريخ الإنشاء"
+    }
+  },
   "organization": {
     "organizationProfile": {
       "identity": {

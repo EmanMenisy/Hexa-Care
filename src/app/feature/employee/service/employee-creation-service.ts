@@ -113,7 +113,7 @@ export class EmployeeCreationService {
    });
   }
  
-  getAttachment(employeeId: any): Observable<any> {
+  getAttachment(employeeId: string): Observable<any> {
    return this.xhrService.call({
     method: HttpMethod.Get,
     url: 'Attachments/GetAll',
@@ -121,13 +121,21 @@ export class EmployeeCreationService {
    });
   }
 
-  deleteAttachment(attachmentId: any): Observable<any> {
+  deleteAttachment(attachmentId: string): Observable<any> {
    return this.xhrService.call({
     method: HttpMethod.Delete,
     url: 'Attachments/Delete',
     body: {attachmentId: attachmentId}
    });
   }
+
+  downloadAttachment(attachmentId: string) {
+  return this.xhrService.call({
+    method: HttpMethod.Get,
+    url: `Attachments/${attachmentId}/Download`,
+    responseType: 'blob',
+  });
+ }
 
 }
 

@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
+import { afterNextRender, Component, DestroyRef, effect, inject, input, signal } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AssignationService } from '../../../shared/service/assignation-service';
 import { MultiSelectComponent } from '../../../shared/components/primeng/multi-select/multi-select';
@@ -49,7 +49,7 @@ export class AssignationInformation {
   teamOptions: any[] = [];
   systemRolesOptions: any[] = [];
   customRolesOptions: any[] = [];
-
+  
   branchsFilteredOptions: any[] = [];
   departmentFilteredOptions: any[] = [];
   teamFilteredOptions: any[] = [];
