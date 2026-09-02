@@ -152,12 +152,15 @@ export class TeamManual implements OnInit {
   }
 
   /* -------------------- Sidebar Buttons  -------------------- */
-  goNext() {
-    if (this.teamForm.invalid) return;
-    const formData = this.teamForm.getRawValue();
-    this.submit.emit(formData as any);
-    this.resetForm();
-  }
+ goNext() {
+  if (this.teamForm.invalid) return;
+  const raw = this.teamForm.getRawValue();
+  const { departmentIds, ...rest } = raw;
+  const formData = this.department() ? rest : raw;
+
+  this.submit.emit(formData as any);
+  this.resetForm();
+}
 
   closeSidebar(): void {
     this.save.emit(false);

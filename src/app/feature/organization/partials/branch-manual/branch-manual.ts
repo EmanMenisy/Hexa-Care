@@ -220,16 +220,17 @@ export class BranchManual implements OnInit {
     this.resetForm();
   }
 
-  private buildFormData() {
-    const raw = this.branchForm.getRawValue();
+ private buildFormData() {
+  const raw = this.branchForm.getRawValue();
+  const { companyIds, ...rest } = raw;
 
-    return {
-      ...raw,
-      code: this.generateCode(raw.name),
-      location: this.geoLocation(),
-    };
-  }
-
+  return {
+    ...rest,
+    ...(this.company() ? {} : { companyIds }),
+    code: this.generateCode(raw.name),
+    location: this.geoLocation(),
+  };
+}
   resetForm() {
     this.branchForm.reset({}, { emitEvent: false });
     this.geoLocation.set(null);
